@@ -1,0 +1,29 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="operational-considerations-massive-scale" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>运营因素</title>
+    <para>想要在极大规模的情况下正常运营一个 OpenStack 云，对尽可能多的操作过程做自动化的计划就显得尤为重要。自动化包括了准备实例时的配置、监控和警报系统。还有一部分的自动化过程包括了确定什么时候需要人工干预以及谁应该采取行动的能力。目标是将运行中的系统与运维人员数目的比值尽可能增大，以减少维护成本。在一个扩展到极大规模的环境中，想要运维人员对每个系统都进行单独照看是不可能的。</para>
+    <para>类似 Puppet 和 Chef 等配置管理工具允许运维人员将系统按照它们的角色进行分组，然后通过配置准备系统，对它们分别创建配置文件以及保证系统的状态。由于错误或者故障而离开预定义的状态的系统很快就会被从活动节点池中移除，并被替换。</para>
+    <para>在大规模部署的条件下，对单台发生故障系统的进行诊断和调试所耗费的资源成本要比直接替换它高得多。直接将发生故障的系统替换成一个能够被自动部署和配置并且能够很快地被重新加入到活动节点池中的系统，显然要更加经济。通过将劳力密集的、重复性的以及操作难度大的任务自动化，云运营团队就能够更高效的进行管理，因为这种保姆式的工作所需要的资源就更少了。于是，管理者便有时间来解决无法被容易地自动化的以及对业务有着长期影响的任务，比如说容量计划等等。</para>
+    <section xml:id="the-bleeding-edge">
+      <title>最前沿</title>
+    <para>在大规模的场景下运行 OpenStack 需要在稳定性与功能之间做好平衡。比如说，选择比较旧的稳定版本的 OpenStack 以便使得部署更容易看起来比较令人动心。然而在大规模部署的场景之下，对小规模部署造成的困扰不大或者甚至没有什么影响的已知问题，对于大规模的部署来说都可能是缺陷。假如该问题是广为人知的，在通常情况下它可能在较新的发布版本中被解决了。OpenStack 社区能够运用 OpenStack 社区开发者的集体智慧，帮助解决报告到社区中的问题。</para>
+    <para>当出现问题的时候，在差不多规模场景下运行 OpenStack 的组织的数量，相对于整个 OpenStack 社区来说，是极小的一个比例，因此很重要的一件事情是要与社区分享所遇到的问题，并且在社区中积极倡导将这些问题解决。有些问题可能只在大规模部署的场景下才会出现，所以能够重现和验证该问题的组织是为数不多的，因此将问题良好地文档化并且为问题的解决贡献一些必要的资源，是尤为重要的。</para>
+    <para>某种情况下，问题的最终解决办法会是部署一套更新版本的 OpenStack。所幸的是，当在一个不可能整个推倒重建的生产环境要解决这样的问题的时候，还可以只重新部署能够解决问题或者能够使得性能明显提高的底层组件的新版本。虽然这乍看起来像是可能给部署带来更高的风险和不稳定性，但是大多数情况下这并不是什么问题。</para>
+    <para>我们的建议是组织一个开发和运营的团队，由他们来负责开发所需要的特性，调试以及解决问题，并建造用以进行大规模持续集成测试以及持续部署的基础设施。这能够及早地发现缺陷以及使得部署更快和更加简单。除了开发的资源之外，我们也建议招聘消息队列、数据库、分布式系统、网络、云以及存储方面的专家人员。</para></section>
+    <section xml:id="growth-and-capacity-planning">
+      <title>增长和容量计划</title>
+    <para>在大规模场景下运行 OpenStack 还有一个重要的考虑因素，是要对增长和利用率趋势进行规划，从而为短期和长期计划资本性支出。这需要计算、网络以及存储等资源的利用率的测量数据，以及这些数据的历史记录。固定的大客户租户可能造成所有资源的利用率有个迅速的增长，在一个组织内部的对其内部云，或者在公有云上的用户对公开提供的服务等的稳定增长的部署及使用，则会使得利用率出现一个稳定的增长趋势。</para></section>
+    <section xml:id="skills-and-training">
+      <title>技能和培训</title>
+    <para>Projecting growth for storage, networking, and compute is
+        only one aspect of a growth plan for running OpenStack at
+        massive scale. Growing and nurturing development and
+        operational staff is an additional consideration. Sending team
+        members to OpenStack conferences, meetup events, and
+        encouraging active participation in the mailing lists and
+        committees is a very important way to maintain skills and
+        forge relationships in the community. A list of OpenStack
+        training providers in the marketplace can be found here: <link xlink:href="http://www.openstack.org/marketplace/training/">http://www.openstack.org/marketplace/training/</link>.
+    </para>
+    </section>
+</section>

@@ -1,0 +1,43 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="prescriptive-example-online-classifieds" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>示例</title>
+    <para>一家在线的广告公司，名称暂时保密，打算基于私有云方式运行他们的web应用，属于网站典型的架构：Tomcat + Nginx + MariaDB。 为了迎合他们的合规性需求，云基础设施运行在他们自己的数据中心。公司对负载需求有过预测，但是仍然提出了预防突发性的需求而能够灵活扩展。他们目前的环境不具有灵活的调整目标到运行开源的应用程序接口环境。目前的环境是如下面这样：</para>
+    <itemizedlist>
+        <listitem>
+            <para>Nginx和Tomcat的安装量在120和140之间，每个应用的实例是2 虚拟CPU和4 GB内存</para>
+        </listitem>
+        <listitem>
+            <para>MariaDB安装在3个节点并组成Galera集群，每节点拥有4 vCPU和8GB内存</para>
+        </listitem>
+    </itemizedlist>
+    <para>公司的网站运行着基于硬件的负载均衡服务器和多个web应用服务，且他们的编排环境是混合使用Puppet和脚本。网站每天都会产生大量的日志文件需要归档。</para>
+    <para>解决方案将由下列OpenStack组件组成：</para>
+    <itemizedlist>
+        <listitem>
+            <para>防火墙、交换机、以及负载均衡设备在公网中直接面向全网的连接。</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack控制器运行着诸如镜像服务、认证服务、以及网络服务等，支撑它们的服务有诸如：MariaDB、RabbitMQ，至少有三台控制器节点配置为高可用。</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack计算节点运行着KVM的hypervisor。</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack块存储为计算实例所使用，需要持久性存储(正如数据库对于动态站点)。</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack对象存储为静态对象(例如镜像)服务。</para>
+        </listitem>
+    </itemizedlist>
+    <mediaobject><imageobject><imagedata contentwidth="4in" fileref="../figures/General_Architecture3.png"/></imageobject></mediaobject>
+    <para>运行140个web实例以及少量的MariaDB实例需要292颗vCPU,以及584GB内存。在典型的1U的服务器，使用双socket，16核，开启超线程的IntelCPU，计算为2:1的CPU超分配比例，可以得出需要8台这样的OpenStack计算节点。</para>
+    <para>web应用实例均运行在每个OpenStack计算节点的本地存储之上。所有的web应用实例都是无状态的，也就是意味着任何的实例宕掉，都不会影响到整体功能的继续服务。</para>
+    <para>MariaDB服务器实例将数据存储在共享存储中，使用企业级存储，有NetApp和Solidfire的设备。如果一个MariaDB的实例宕掉，另外一个实例会重新挂接原来的存储，且重新加入到Galera集群中。</para>
+    <para>将web应用的日志放在OpenStack对象存储中，用来集中处理和归档。</para>
+    <para>附加功能可实现将静态的web内容迁移到OpenStack对象存储中，且使用OpenStack对象存储作为OpenStack镜像服务的后端。</para>
+      <note>
+        <para>增加OpenStack对象存储同时也意味着需要考虑更大的带宽。运行OpenStack对象存储，请使用10 GbE或更高的网络连接。</para>
+      </note>
+    <para>借助于Orchestration和Telemetry模块可以为web应用环境提供自动扩展的能力。使用Puppet脚本定义web应用的 <glossterm baseform="Heat Orchestration Template (HOT)">Heat Orchestration Templates (HOT)</glossterm>即可实现。</para>
+    <para>OpenStack网络可以通过使用插件和网络的应用程序接口控制硬件负载均衡器。允许用户控制硬件负载均衡池以及作为池的成员的实例，但是使用它们在生产环境的话要小心权衡它的稳定程度。</para>
+</section>

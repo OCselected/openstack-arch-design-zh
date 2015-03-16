@@ -1,0 +1,30 @@
+<?xml version="1.0" ?><chapter version="5.0" xml:id="specialized" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>特殊场景</title>
+
+    <para>尽管大多数的 OpenStack 架构设计都能归类于其它章节中描述的七种主要场景(计算密集型、网络密集型、存储密集型、通用设计、多站点、混合云以及可大规模扩展)，仍然存在其他一些场景独特到无法归类入主要场景中的任何一个之中。本章将讨论一些这种特殊的应用场景，以及每种场景的细节和设计的考虑因素。</para>
+    <itemizedlist>
+        <listitem>
+            <para><link linkend="specialized-networking-example">特殊的网络应用</link>：此节介绍运行可能涉及直接从网线上读取数据包或者参与路由协议的面向联网的软件。</para>
+        </listitem>
+        <listitem>
+            <para><link linkend="software-defined-networking-sdn">软件定义网络(SDN)</link>：这种场景详细介绍了在 OpenStack 之中运行 SDN 控制器以及 OpenStack 加入到一个软件定义的网络中的情况。</para>
+        </listitem>
+        <listitem>
+            <para><link linkend="desktop-as-a-service"><glossterm>桌面即服务</glossterm></link>：这是为希望在云环境中运行虚拟桌面环境的组织所准备的，在私有云以及公有云的情景下都可用。</para>
+        </listitem>
+        <listitem>
+            <para><link linkend="arch-guide-openstack-on-openstack">OpenStack 上的 OpenStack</link>：一些机构认为通过在一个 OpenStack 部署之上运行 OpenStack 的方式来构建多层次的云有其技术上的意义。</para>
+        </listitem>
+        <listitem>
+            <para><link linkend="specialized-hardware">专门的硬件</link>：有一些非常特别的情况可能需要在 OpenStack 环境中使用专门的硬件设备。</para>
+        </listitem>
+    </itemizedlist>
+
+    <xi:include href="specialized/section_multi_hypervisor_specialized.xml"/>
+    <xi:include href="specialized/section_networking_specialized.xml"/>
+    <xi:include href="specialized/section_software_defined_networking_specialized.xml"/>
+    <xi:include href="specialized/section_desktop_as_a_service_specialized.xml"/>
+    <xi:include href="specialized/section_openstack_on_openstack_specialized.xml"/>
+    <xi:include href="specialized/section_hardware_specialized.xml"/>
+
+</chapter>

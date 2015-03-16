@@ -1,0 +1,411 @@
+<?xml version="1.0" ?><!DOCTYPE section [
+<!ENTITY % openstack SYSTEM "../../common/entities/openstack.ent"> %openstack;
+<!-- The master of this file is in openstack-manuals repository, file
+     doc/common/entities/openstack.ent.
+     Any changes to the master file will override changes in other
+     repositories. --><!-- Some useful entities borrowed from HTML --><!ENTITY ndash "&#x2013;">
+<!ENTITY mdash "&#x2014;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY times "&#215;">
+<!ENTITY hellip "&#133;">
+<!-- Useful for describing APIs in the User Guide --><!ENTITY COPY '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+<!ENTITY CHECK '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="../common/figures/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]><section version="5.0" xml:id="architecture-storage-hardware" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>架构</title>
+    <para>当选择存储硬件时有三大块需要考虑：</para>
+    <itemizedlist>
+        <listitem>
+            <para>成本</para>
+        </listitem>
+        <listitem>
+            <para>性能</para>
+        </listitem>
+        <listitem>
+            <para>可靠性</para>
+        </listitem>
+    </itemizedlist>
+    <para>存储型OpenStack云须能反映出是针对存储密集型的负载因素。这些负载既不是计算密集型也不是网络密集型，网络也许在传输数据时有很高的负载，但是这是另外一个网络密集的范畴。</para>
+    <para>对于存储型OpenStack架构设计来说，存储硬件的选择将决定整个架构的性能和可扩展性。在设计过程中，一些需要考虑的不同因素：</para>
+    <variablelist>
+      <varlistentry>
+        <term>成本</term>
+        <listitem>
+            <para>使用什么存储架构和选择什么硬件将影响着开销。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>性能</term>
+        <listitem>
+            <para>存储I/O请求的延迟影响着性能。解决方案的选择会影响到性能的需求。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>可扩展性</term>
+        <listitem>
+            <para>此节参考术语&quot;扩展性“，来解释存储解决方案的表现可扩展到最大规模是怎么个好法。一个存储解决方案在小型配置时表现良好，但是在规模扩展的过程中性能降低，这就不是好的扩展性，也不会被考虑。换句话说，一个解决方案只有在规模扩展最大性能没有任何的降低才是好的扩展性。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>延伸性</term>
+        <listitem>
+            <para>规模扩展性是指在整个解决方案的扩张的整体能力。一个存储解决方案可以扩展到50PB，一定比仅能扩展到10PB的规模扩展性强，也会更加倾向于前者。</para>
+              <note>
+                <para>规模扩展性和通常所说的扩展性有关系。</para>
+              </note>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>对于存储型OpenStack云来说，存储的延迟是主要应该考虑的。使用固态硬盘(SSD)以使实例存储延迟最小以及减少由于等待存储产生的CPU延迟，可大大提升性能。考虑让计算主机的磁盘子系统使用RAID控制卡对改善性能也大有帮助。</para>
+    <para>存储架构的选择，以及存储硬件的选择，上面列出的几个因素是相互有冲突的，需评估决定。如果是横向扩展解决方案的选择诸如Ceph，GlusterFS，或类似的,如果是单一的，高扩展性的，那么选择中心化的存储阵列就没错。如果中心存储阵列能够满
+足需求，那么硬件的决定就是如何选择阵列供应商的事情了。使用商业硬件和开源软件来构建存储阵列也是完全可能的，只是需要构建这样的系统需要专业的人员罢了。</para>
+    <para>反过来说，一个横向扩展的存储解决方案使用直接挂接存储(DAS)给服务器也许是个恰当的选择。如果是这样的话，服务器硬件就需要配置以支持此种存储解决方案。</para>
+    <para>一些潜在的可能影响到存储型OpenStack云的特定的存储架构(及其相应的存储硬件):</para>
+    <variablelist>
+      <varlistentry>
+        <term>连通性</term>
+        <listitem>
+            <para>根据所选择的存储解决方案，要确保它的连接和存储解决方案的需求是匹配的。如果是选择了中心化的存储阵列，决定有多少台hypervisor会连接到此阵列中是很重要的。连接会影响到延迟以及它们的性能，所以监测网络因素以达到最小延迟，提升整体的性能。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>延迟</term>
+        <listitem>
+            <para>决定的是如果用例中拥有并行或高度变化的延迟。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>吞吐量</term>
+        <listitem>
+            <para>要确保存储解决方案是基于应用的需求整个被优化。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>服务器硬件</term>
+        <listitem>
+            <para>如果解决方案中使用了DAS，这会影响到但不限于，服务器硬件的选择会波及到主机密度、实例密度、电力密度、操作系统-hypervisor、以及管理工具。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <section xml:id="compute-server-hardware-selection">
+        <title>计算(服务器)硬件选择</title>
+    <para>模拟计算(服务器)硬件需要从以下四个不同的方面进行评估：</para>
+    <variablelist>
+      <varlistentry>
+        <term>服务器密度</term>
+        <listitem>
+            <para>关于多少台服务器能够放下到一个给定尺寸的物理空间的量度，比如一个机柜单位[U]。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>资源容量</term>
+        <listitem>
+            <para>CPU核数，多少内存，或者多少存储可以交付。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>延伸性</term>
+        <listitem>
+            <para>在达到容量之前用户可以增加服务器来增加资源的数量。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>成本</term>
+        <listitem>
+            <para>相对硬件的权重是体现构建系统的设计水准所需要的。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>为达到期望的目的而决定最佳设计需要对一些因素作出取舍和平衡。举例来说，增加服务器密度意味着牺牲资源的容量或扩展性。增加资源容量或扩展性又增加了开销但是降低了服务器密度。减少开销又意味着减低支持力度，服务器密度，资源容量和扩展性。</para>
+    <para>在选择服务器硬件时计算能力(CPU核和内存容量)是次要考虑的,服务器硬件必须能够提供更多的CPU插槽，更多的CPU核的数量，以及更多的内存，至于网络连接和存储容量就显得次要一些。硬件需要的配置以提供足够的网络连接和存储容量满足用户的最低需求即可，但是这不是主要需要考虑的。</para>
+    <para>一些服务器硬件的因素更加适合其他类型的，但是CPU和内存的能力拥有最高的优先级。</para>
+    <itemizedlist>
+        <listitem>
+            <para>大多数的刀片服务器都支持双插槽、多核的CPU的。要避免去选择“全宽”或“全高”的刀片，它们会损失服务器密度。举个例子，使用高密度的刀片服务器，如HP BladeSystem和Dell ,它们都使用半高的刀片，可支持16台服务器，且仅占用10个机柜单元，它相比于全高的刀片有效的减低了50%的密度，因为全高的刀片在每10个机柜单元仅可以放置8台服务器。</para>
+              <warning>
+                <para>它相比于全高的刀片有效的减低了50%的密度，因为全高的刀片在(每10个机柜单元仅可以放置8台服务器)。</para>
+              </warning>
+        </listitem>
+        <listitem>
+            <para>1U机架式服务器要比刀片服务解决方案提供更大的服务器密度。但是会有双CPU插槽、多核CPU配置的限制。</para>
+              <note>
+                <para>就在IceHouse版本发布时，无论是HP，IBM还是Dell都无法提供多于2个CPU插槽的1U机架式服务器。</para>
+              </note>
+            <para>要想使1U的服务器支持超过2个插槽，用户需要通过原始设计制造商(ODM)或二线制造商来购买。</para>
+              <warning>
+                <para>这会给企业带来额外的问题：重新评估供应商的政策，支持的力度是否够，非1线供应商的硬件质量保证等。</para>
+              </warning>
+        </listitem>
+        <listitem>
+            <para>2U机架式服务器提供四插槽、多核CPU的支持，但是它相应的降低了服务器密度(相当于1U机架式服务器的一半)。</para>
+        </listitem>
+        <listitem>
+            <para>大型机架式服务器，比如4U服务器，可提供更为强大的CPU容量。通常支持4个甚至8个CPU插槽。拥有很强的扩展性，但是这些服务器会带来低密度，以及更加昂贵的开销。</para>
+        </listitem>
+        <listitem>
+            <para>“雪撬服务器”,支持在单个2U或3U的空间放置多个独立的服务器,增加的密度超过典型的1U-2U机架服务器，</para>
+            <para>举例来说，很多雪撬服&gt;务器提供在2U的空间置放4个独立的双插槽CPU,即2U服务器拥有8颗CPU，尽管如此，分离节点的双插槽限制不足以抵消它们额外带来的开销和配置的复杂性。</para>
+        </listitem>
+    </itemizedlist>
+    <para>一些服务器硬件的因素更加适合其他类型的，但是CPU和内存的能力拥有最高的优先级。</para>
+    <variablelist>
+      <varlistentry>
+        <term>实例密度</term>
+        <listitem>
+            <para>在此架构中实例密度要被考虑为低，因此CPU和内存的超额认购比例也要低。为了支持实例低密度的预期扩展需要更多的主机，尤其是设计中使用了双插槽的硬件。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>主机密度</term>
+        <listitem>
+            <para>解决高主机计数的另外的办法是使用四路平台。这样的话降低了主机密度，也增加了机架数，这样的配置会影响到网络需求，电源连接数量，还有可能影响的制冷需求。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>电源和制冷密度</term>
+        <listitem>
+            <para>电力和制冷的密度需求要低于刀片、雪撬或1U服务器，因为(使用2U,3U甚至4U服务器)拥有更低的主机密度。对于数据中心内有旧的基础设施，这是非常有用的特性。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>存储型OpenStack架构设计的服务器硬件选择只有两种结果可决定：纵向扩展抑或横向扩展。在少而大的服务器主机和多而小的服务器主机选择更好的解决方案，取决于多种因素：预算、电力、制冷、物理机架和地板的空间、售后服务力度、以及可管理性。</para>
+    </section>
+
+    <section xml:id="networking-hardware-selections">
+        <title>网络硬件选择</title>
+    <para>选择网络硬件主要考虑应包括：</para>
+    <variablelist>
+      <varlistentry>
+        <term>端口数目</term>
+        <listitem>
+            <para>用户将会对网络设备有充足的端口数有需求。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>端口密度</term>
+        <listitem>
+            <para>The physical space required to provide the
+                requisite port count affects the network design.
+                A switch that provides 48 10 GbE
+                ports in 1U has a much higher port density than a
+                switch that provides 24 10 GbE ports in 2U. On a
+                general scale, a higher port density leaves more rack
+                space for compute or storage components which is
+                preferred. It is also important to consider fault
+                domains and power density. Finally, higher density
+                switches are more expensive, therefore it is important
+                not to over design the network.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>端口速度</term>
+        <listitem>
+            <para>The networking hardware must support the
+                proposed network speed, for example: 1 GbE, 10 GbE, or
+                40 GbE (or even 100 GbE).</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>冗余</term>
+        <listitem>
+            <para>网络硬件冗余级别需求会被用户对高可用和开销的考虑所影响。网络冗余可以是增加双电力供应也可以是结对的交换机。</para>
+              <note>
+                <para>如果这是必须的，那么对应的服务器硬件就需要配置以支持冗余的情况。用户的需求也是决定是否采用全冗余网络基础设施的关键。</para>
+              </note>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>电力要求</term>
+        <listitem>
+            <para>确保物理数据中心为所选择的网络硬件提供了必要的电力。对于机柜顶端型(ToR)交换机没有什么影响，但是spine交换机的叶和fabric以及排尾交换机(EoR)就可能发生问题，假如电力不足的话。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>协议支持</term>
+        <listitem>
+            <para>使用特定的网络技术如RDMA,SRP,iSER或SCST来提高单个存储系统的性能是可能，但是讨论这些技术已经超出了本书的范围。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    </section>
+
+    <section xml:id="software-selection-arch-storage">
+      <title>软件选择</title>
+    <para>对于存储型OpenStack架构设计来说，选择包含的软件有以下三个方面的考虑：</para>
+    <itemizedlist>
+        <listitem>
+            <para>操作系统(OS)和虚拟机管理软件</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack 组件</para>
+        </listitem>
+        <listitem>
+            <para>增强软件</para>
+        </listitem>
+    </itemizedlist>
+    <para>上述选择项的任何一个设计决定都会影响到其余两个的OpenStack架构设计。</para>
+    </section>
+
+    <section xml:id="operating-system-and-hypervisor-arch-storage">
+        <title>操作系统和虚拟机管理软件</title>
+    <para>操作系统和hypervisor对于整个设计有着深刻的影响。选择一个特定的操作系统和hypervisor能够直接影响到服务器硬件的选择。确保存储硬件和拓扑支持选择好的操作系统和Hypervisor组合。也得确保网络硬件的选择和拓扑可在选定的操作系统和Hypervisor组合下正常工作。例如，如果设计中使用了链路聚合控制协议(LACP)的话，操作系统和hypervisor都需要支持它才可正常工作。</para>
+    <para>操作系统和hypervisor的选择会影响到下列几个方面：</para>
+    <variablelist>
+      <varlistentry>
+        <term>成本</term>
+        <listitem>
+            <para>选择商业支持的hypervisor如微软的Hyper-V，和选择社区支持的开源hypervisor如kinstance或Xen，在开销模式上是完全不同的。甚至在开源解决方案也表现不同，如选择Ubuntu而不是RedHat(或类似)在支持上有着不同的开销。换句话说，业务和应用的需求主宰着选用特殊的或商业支持的hypervisor。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>受支持程度</term>
+        <listitem>
+            <para>无论选择那个hypervisor,相关的技术人员都要经过适当的培训和知识积累，才可以支持所选择的操作系统和hypervisor组合。如果这些维护人员没有培训过，那么就得提供，当然它会影响到设计中的之处。另外一个考虑的方面就是关于操作系统-hypervisor的支持问题，商业产品如Red Hat，SUSE或Windows等的支持是由操作系统供应商来支持的，如果选用了开源的平台，支持大部分得来自于内部资源。无论何种决定，都会影响到设计时的支出。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>管理工具</term>
+        <listitem>
+            <para>Ubuntu和Kinstance的管理工具和VMware vSphere的管理工具是不一样的。尽管OpenStack对它们都支持。这也会对其他的设计有着非常不同的影响，结果就是选择了一种组合，然后再据此做出后面的选择。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>规模和性能</term>
+        <listitem>
+            <para>确保所选择的操作系统和hypervisor组合能够满足扩展和性能的需求。所选择的架构需要满足目标实例-主机的比例。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>安全性</term>
+        <listitem>
+            <para>确保设计能够在维护负载需求时能够容纳正常的所安装的应用的安全补丁。为操作系统-hypervisor组合打安全补丁的频率会影响&gt;到性能，而且补丁的安装流程也会影响到维护工作。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>支持的特性</term>
+        <listitem>
+            <para>决定那些特性是需要OpenStack提供的。这通常也决定了操作系统-hypervisor组合的选择。一些特性仅在特定的操作系统和hypervisor中是可用的。举例，如果确认某些特性无法实现，设计也许需要修改代码去满足用户的需求。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>互操作性</term>
+        <listitem>
+            <para>用户需要考虑此操作系统和Hypervisor组合和另外的操作系统和hypervisor怎么互动，甚至包括和其它的软件。操作某一操作系统-hypervisor组合的故障排除工具，和操作其他的操作系统-hypervisor组合也许根本就不一样，那结果就是，设计时就需要交付此两种工具集的互操作性。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </section>
+
+    <section xml:id="openstack-components-arch-storage">
+      <title>OpenStack 组件</title>
+    <para>在设计和部署中选择包含什么OpenStack组件是着显著的影响。有一些组件是必选的，例如计算和镜像服务，还有一些组件是可选的，举例来说，一些设计中不需要Orchestration模块，忽略掉Heat组件对整个系统没啥影响。还有其他情况，如架构中使用的存储组件不是OpenStack 对象存储，这就会对设计中的其它组件有着很大的影响。</para>
+    <para>一个存储型设计也许需要使用Orchestration，能够启动带块设备卷的实例，以满足存储密集型任务处理。</para>
+    <para>在存储型OpenStack架构设计中，下列组件是典型使用的：</para>
+    <itemizedlist>
+        <listitem>
+            <para>OpenStack 认证(keystone)</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack GUI界面 (horizon)</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack 计算 (nova) (包括使用多hypervisor驱动)</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack 对象存储 (swift) (或者是另外的对象存储解决方案)</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack 块存储(cinder)</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack 镜像服务(glance)</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack 网络 (neutron) 或遗留网路服务 (nova-network)</para>
+        </listitem>
+    </itemizedlist>
+    <para>排除一些特定的OpenStack组件会让其他组件的功能受到限制。如果在一个设计中有Orchestration模块但是没有包括Telemetry模块，那么此设计就无法使用Orchestration带来自动伸缩功能的优点(Orchestration需要Telemetery提供监测数据)。用户使用Orchestration在计算密集型处理任务时可自动启动大量的实例，因此强烈建议在计算型架构设计中使用Orchestration。</para>
+    </section>
+
+    <section xml:id="supplemental-software-arch-storage">
+      <title>增强软件</title>
+    <para>OpenStack为了构建一个平台提供云服务，是完全公平的收集软件的项目。在任何给定的OpenStack设计中都需要考虑那些附加的软件。</para>
+    </section>
+
+    <section xml:id="networking-software-arch-storage">
+      <title>联网软件</title>
+    <para>OpenStack Networking (neutron) provides a wide variety of networking
+        services for instances. There are many additional networking
+        software packages that may be useful to manage the OpenStack
+        components themselves. Some examples include HAProxy,
+        keepalived, and various routing daemons (like Quagga). The
+        <citetitle>OpenStack High Availability Guide</citetitle> describes
+        some of these software packages, HAProxy in particular. See the <link xlink:href="http://docs.openstack.org/high-availability-guide/content/ch-network.html">Network
+        controller cluster stack chapter</link> of the OpenStack High
+        Availability Guide.</para>
+    </section>
+
+    <section xml:id="management-software-arch-storage">
+      <title>管理软件</title>
+    <para>管理软件所包含的能够提供的软件：</para>
+      <itemizedlist>
+        <listitem>
+          <para>集群</para>
+        </listitem>
+        <listitem>
+          <para>日志记录</para>
+        </listitem>
+        <listitem>
+          <para>监控</para>
+        </listitem>
+        <listitem>
+          <para>警告</para>
+        </listitem>
+      </itemizedlist>
+      <important>
+        <para>这包括能够提供集群、日志、监测及预警等的软件。在此目录什么因素决定选择什么软件包已经超出了本书的范围。</para>
+      </important>
+    <para>在集群软件中如 Corosync和Pacemaker在可用性需求中占主流。包含这些软件包是主要决定的，要使云基础设施具有高可用的话，当然在部署之后会带来复杂的配置。<citetitle>OpenStack 高可用指南</citetitle></para>
+    <para>对日志、监测以及报警的需求是由运维考虑决定的。它们的每个子类别都包含了大量的属性。举例，在日志子类别中，某些情况考虑使用Logstash,Splunk，instanceware Log Insight等，或者其他的日志聚合-合并工具。日志需要存放在中心地带，使分析数据变得更为简单。日志数据分析引擎亦得提供自动化和问题通知，通过提供一致的预警和自动修复某些常见的已知问题。</para>
+    <para>如果这些软件包都需要的话，设计必须计算额外的资源使用率(CPU，内存，存储以及网络带宽)。其他一些潜在影响设计的有：</para>
+    <itemizedlist>
+        <listitem>
+            <para>操作系统-Hypervisor组合：确保所选择的日志系统，监测系统，或预警工具都是被此组合所支持的。</para>
+        </listitem>
+        <listitem>
+            <para>网络硬件：网络硬件的选择，要看其支持日志系统、监测系统以及预警系统的情况。</para>
+        </listitem>
+    </itemizedlist>
+    </section>
+
+    <section xml:id="database-software-arch-storage">
+      <title>数据库软件</title>
+    <para>OpenStack组件通常需要访问后端的数据库服务以存放状态和配置信息。选择合适的后端数据库以满足可用性和容错的需求，这是OpenStack服务所要求的。</para>
+    <para>MySQL是OpenStack通常考虑的后端数据库，其它和MySQL兼容的数据也同样可以很好的工作。</para>
+      <note>
+        <para>Telemetry 使用MongoDB。</para>
+      </note>
+    <para>为数据库提供高可用的解决方案选择将改变基于何种数据库。如果是选择了MySQL,有几种方案可供选择，如果是主-主模式集群，则使用 Galera复制技术；如果是主-备模式则必须使用共享存储。每个潜在的方案都会影响到架构的设计：</para>
+    <itemizedlist>
+        <listitem>
+            <para>解决方案采用Galera/MariaDB，需要至少3个MySQL节点。</para>
+        </listitem>
+        <listitem>
+            <para>MongoDB尤其自身的设计考虑，回馈就是可让数据库高可用。</para>
+        </listitem>
+        <listitem>
+            <para>通常在OpenStack的设计中是不包括共享存储的，但是在高可用的设计中，为了特定的实现一些组件会用得到共享存储。</para>
+        </listitem>
+    </itemizedlist>
+  </section>
+</section>

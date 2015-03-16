@@ -1,0 +1,241 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="technical-considerations-network-focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>技术因素</title>
+    <para>当您设计 OpenStack 网络架构时，你必须考虑二层及三层网络相关的问题。二层网络上的决定包括在数据链路层所作出的那些，比如决定是使用以太网络还是令牌环网络。三层网络上则包括关于协议层所作出的决定以及使用 IP 的时间点。例如，一个完全内部使用的 OpenStack 网络能够完全在二层存在并忽略三层网络，然而，要让流量能从云中出去到另外一个网络或者因特网中，却需要一个三层的路由或者交换机。</para>
+    <para>过去几年间，网络架构出现了两种相互竞争的倾向。其中之一倾向于基于二层网络来构建数据中心的网络架构。另一种则倾向于认为云环境的网络本质上是一个缩小版的因特网。这一方式与用于开发及测试环境中的网络架构方式完全不同：因特网是完全基于三层路由而非二层交换的。</para>
+    <para>基于二层协议设计的网络相比基于三层协议设计的网络有一定优势。尽管使用桥接来扮演路由的网络角色有困难，很多厂商、客户以及服务提供商都选择尽可能多地在他们的网络中使用以太网。选择二层网络设计的好处在于：</para>
+    <itemizedlist>
+        <listitem>
+            <para>以太网帧包含了所有联网所需的要素。这些要素包括但不限于，全局唯一的源地址，全局唯一的目标地址，以及错误控制。</para>
+        </listitem>
+        <listitem>
+            <para>以太网帧能够承载任何类型的包。二层上的联网独立于三层协议之外。</para>
+        </listitem>
+        <listitem>
+            <para>往以太网帧中加入更多的层次只会使得联网过程变慢。这被称为节点处理延迟。</para>
+        </listitem>
+        <listitem>
+            <para>额外的网络特性，例如服务类别(CoS)控制或者多播，也能够与添加至 IP 网络中一样容易地添加至以太网中。</para>
+        </listitem>
+        <listitem>
+            <para>VLAN 是一个简单的用于网络隔离的机制。</para>
+        </listitem>
+    </itemizedlist>
+    <para>大多数信息开始并结束于以太网帧中。目前对于数据、语音(例如 VoIP)和视频(例如 web 摄像头)来说都是如此。一般认为，假如从源端到目标端的信息传输能更多地以以太网帧的形式完成，以太网就能够在网络中更加充分地发挥其优势。尽管不能作为一个 IP 联网的替代，二层联网能够作为 IP 联网的一个强大补充。</para>
+    <para>使用二层以太网相对于使用三层 IP 网络有如下优势：</para>
+    <itemizedlist>
+      <listitem>
+        <para>速度</para>
+      </listitem>
+      <listitem>
+          <para>减少了 IP 层的开销</para>
+      </listitem>
+      <listitem>
+        <para>系统进行迁移时不需要记录地址信息。尽管简单的二层协议可能在一个有几百台物理机器的数据中心中良好地进行工作，云数据中心中却有记录所有虚拟机地址及网络信息的额外负担。因为在这些数据中心中，一台物理节点支撑 30 到 40 台实例并不罕见。</para>
+      </listitem>
+    </itemizedlist>
+    <important>
+      <para>数据帧级别上的联网与数据包级别上的 IP 地址存在与否并没有关系。几乎所有端口、链路以及在 LAN 交换机构成的网络上的设备仍然有其 IP 地址，同样地，所有的源和目标主机也都有。有很多原因需要继续保留 IP 地址。其中最大的一个理由是网络管理上的需要。一个没有 IP 地址的设备或者连接通常对于大多数的管理程序来说是不可见的。包括远程接入的诊断工具、用于传输配置和软件的文件传输工具以及其它类似的应用程序都不能够在没有 IP 地址或者 MAC 地址的情况下运行。</para>
+    </important>
+    <section xml:id="layer-2-arch-limitations">
+      <title>二层架构的局限性</title>
+    <para>在传统数据中心之外，二层网络架构的局限性更加明显。</para>
+    <itemizedlist>
+        <listitem>
+            <para>VLAN 的数目被限制在 4096。</para>
+        </listitem>
+        <listitem>
+            <para>存储在交换表中的 MAC 地址数目是有限的。</para>
+        </listitem>
+        <listitem>
+            <para>维护一系列四层网络设备以完成流量控制的需求必须得到满足。</para>
+        </listitem>
+        <listitem>
+            <para>通常被用于实现交换机冗余的 MLAG 是私有的解决方案，不能扩展至两个设备以上，并且迫使得厂商的选择受到限制。</para>
+        </listitem>
+        <listitem>
+            <para>解决一个没有 IP 地址和 ICMP 的网络上的问题可能会很困难。</para>
+        </listitem>
+        <listitem>
+            <para>在大规模的二层网络上配置 <glossterm baseform="Address Resolution Protocol (ARP)">ARP</glossterm> 会很麻烦。</para>
+        </listitem>
+        <listitem>
+            <para>所有的网络设备必须知道所有的 MAC，甚至是实例的 MAC。因此随着实例的启动和停止，MAC 地址表以及网络状态都经常发生改变。</para>
+        </listitem>
+        <listitem>
+            <para>如果 ARP 表的超时没有被正确地设置，迁移 MAC(实例迁移)到另外的的物理位置可能引起问题。</para>
+        </listitem>
+    </itemizedlist>
+    <para>很重要的一点是，必须意识到二层网络上用于网络管理的工具非常有限。因此控制流量非常困难，由于二层网络没有管理网络或者对流量进行整形的机制，解决网络问题也非常困难。其中一个原因是网络设备没有 IP 地址。因此，在二层网络中没有合理的方式来检查网络延迟。</para>
+    <para>在大规模的二层网络上，配置 ARP 学习也可能很复杂。交换机上的 MAC 地址超时设置非常关键，并且，错误的设置可能引起严重的性能问题。例如 Cisco 交换机上的 MAC 地址的超时时间非常长。迁移 MAC 地址到另外的物理位置以实现实例的迁移就可能是一个显著的问题。这种情形下，交换机中维护的网络信息与实例的新位置信息就会不同步。</para>
+    <para>二层网络中，所有的设备都知道所有的 MAC 地址信息，甚至属于实例的设备也如此。主干网络上的网络状态信息随着实例的启动和停止在时刻发生着改变。结果是，主干交换机的 MAC 地址表的变动会远多于正常情况。</para></section>
+    <section xml:id="layer-3-arch-advantages">
+      <title>三层架构的优势</title>
+    <para>在三层架构的情况下，实例的启动和停止不会引起路由表的变动。路由状态的改变只会在柜顶(ToR)交换机发生错误或者在主干网络链接发生错误的情况下才会发生。其它使用三层网络架构的优势包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>三层网络提供了与因特网相同的弹性及可扩展性。</para>
+        </listitem>
+        <listitem>
+            <para>使用路由度量进行流量控制非常直观。</para>
+        </listitem>
+        <listitem>
+            <para>三层网络能够被配置成使用 <glossterm baseform="Border Gateway Protocol (BGP)">BGP</glossterm> 联合来实现可扩展性，因此核心路由所保存的状态信息是与机柜数目成比例增长的，而非与服务器或者实例的数量成比例。</para>
+        </listitem>
+        <listitem>
+            <para>路由功能保证了网络核心之外的实例 MAC 和 IP 地址减少了对网络状态造成的变动。路由状态的改变只发生在柜顶(ToR)交换机发生错误或者主干网络链接发生错误时。</para>
+        </listitem>
+        <listitem>
+            <para>有很多经过完善测试的工具，例如 ICMP，来监控和管理流量。</para>
+        </listitem>
+        <listitem>
+            <para>三层网络架构允许使用服务质量(QoS)机制来管理网络性能。</para>
+        </listitem>
+    </itemizedlist>
+    <section xml:id="layer-3-arch-limitations">
+      <title>三层架构的局限性</title>
+    <para>三层架构主要的局限在于没有类似于二层网络架构中的 VLAN 之类的内生的隔离机制。此外，IP 地址的层级性质也意味着实例将会位于与其所在的物理宿主机相同的子网中。这意味着迁移实例至子网之外并不容易。基于以上原因，网络虚拟化需要在终端宿主机上使用 IP <glossterm>封装</glossterm> 技术以及软件来实现网络隔离，以及物理层面和虚拟层面上的地址管理分离。其它三层网络架构的潜在缺点包括需要设计一个 IP 地址管理计划，而不是仅依靠交换机自动记录 MAC 地址信息，以及需要在交换机中配置内部网关路由协议。</para>
+    </section>
+    </section>
+    <section xml:id="network-recommendations-overview">
+        <title>网络建议的总结</title>
+    <para>OpenStack 由于各种原因对联网有着复杂的要求。很多组件在系统栈的不同级别上进行互动，这添加了复杂程度。数据流也一样复杂。OpenStack 中的数据可能在网络中的实例之间流动(东西向)，也可能是流出或者流入系统(南北向)。物理服务器节点有着独立于用于实例的节点的联网要求，必须被从核心网络中隔离出来以便实现可扩展性。同样的，出于安全目的，也建议根据用途划分网络，并且通过流量整形调整网络性能。</para>
+    <para>计划和设计一个 OpenStack 网络时有许多重要的普遍的技术和商业要素需要被考虑到。包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>对厂商独立性的需要。要避免硬件或者软件的厂商选择受到限制，设计不应该依赖于某个厂商的路由或者交换机的独特特性。</para>
+        </listitem>
+        <listitem>
+            <para>对于大规模地扩展生态系统以满足百万级别终端用户的需要。</para>
+        </listitem>
+        <listitem>
+            <para>对于支持不确定的平台和应用的要求。</para>
+        </listitem>
+        <listitem>
+            <para>对于实现低成本运营以便获益于大规模扩展的设计的需要。</para>
+        </listitem>
+        <listitem>
+            <para>对于保证整个云生态系统中没有单点故障的需要。</para>
+        </listitem>
+        <listitem>
+            <para>对于实现高可用架构以满足客户服务等级协议(SLA)需求的要求。</para>
+        </listitem>
+        <listitem>
+            <para>对于容忍机柜级别的故障的要求。</para>
+        </listitem>
+        <listitem>
+            <para>对于最大化灵活性以便构架出未来的生产环境的要求。</para>
+        </listitem>
+    </itemizedlist>
+    <para>在以上要求的前提下，可以作出下列关于网络设计的建议：</para>
+    <itemizedlist>
+        <listitem>
+            <para>应优于二层架构，先考虑三层网络架构的设计。</para>
+        </listitem>
+        <listitem>
+            <para>设计一个密集的多路径网络核心以支持多个方向的扩展和确保灵活性。</para>
+        </listitem>
+        <listitem>
+            <para>使用具有层次结构的地址分配机制，因为这是扩展网络生态环境的唯一可行选项。</para>
+        </listitem>
+        <listitem>
+            <para>使用虚拟联网将实例服务网络流量从管理及内部网络流量中隔离出来。</para>
+        </listitem>
+        <listitem>
+            <para>使用封装技术隔离虚拟网络。</para>
+        </listitem>
+        <listitem>
+            <para>使用流量整形工具调整网络性能。</para>
+        </listitem>
+        <listitem>
+            <para>使用 eBGP 连接至因特网上行链路。</para>
+        </listitem>
+        <listitem>
+            <para>在三层网络上使用 iBGP 将内部网络流量扁平化。</para>
+        </listitem>
+        <listitem>
+            <para>确定块存储网络的最高效配置。</para>
+        </listitem>
+    </itemizedlist></section>
+    <section xml:id="additional-considerations-network-focus">
+      <title>额外的考虑因素</title>
+    <para>设计一个网络型的 OpenStack 云有很多因素需要考虑。</para>
+    <section xml:id="openstack-networking-versus-nova-network">
+      <title>OpenStack 联网方式对传统联网(nova-network) 的考虑</title>
+    <para>对要实施的网络技术类型的选择依赖于很多要素。OpenStack 联网方式(neutron)和传统联网(nova-network)都有其各自的优势和劣势。他们都是有效的方式，各自所支持的用于满足不同使用场景的选项在下表中列出。</para>
+        <informaltable rules="all">
+                <col width="40%"/>
+                <col width="60%"/>
+                <thead>
+                    <tr><th>传统联网方式(nova-network)</th>
+                        <th>OpenStack 联网方式(neutron)</th></tr>
+                </thead>
+            <tbody>
+                <tr>
+                    <td>简单，单独一个代理程序</td>
+                    <td>复杂，多个代理程序</td>
+                </tr>
+                <tr>
+                    <td>更加成熟，稳定的</td>
+                    <td>更新，正在发展不断成熟中</td>
+                </tr>
+                <tr>
+                    <td>Flat 或者 VLAN</td>
+                    <td>Flat、VLAN、覆盖网络、二层到三层、软件定义网络(SDN)</td></tr>
+                <tr>
+                    <td>没有插件支持</td>
+                    <td>有第三方的插件支持</td>
+                </tr>
+                <tr>
+                    <td>能够很好地扩展</td>
+                    <td>需要第三方插件进行扩展</td>
+                </tr>
+                <tr>
+                    <td>没有多层拓扑</td>
+                    <td>具有多层拓扑</td>
+                </tr>
+            </tbody>
+        </informaltable>
+    </section>
+    <section xml:id="redundant-networking-tor-switch-ha">
+      <title>冗余网络：柜顶交换机高可用风险分析</title>
+    <para>联网的一个技术性考虑因素是数据中心的交换设备必须有备用的交换机以应对硬件故障的方案。</para>
+    <para>
+      Research into the mean time between failures (MTBF) on switches
+      is between 100,000 and 200,000 hours. This number is dependent
+      on the ambient temperature of the switch in the data
+      center. When properly cooled and maintained, this translates to
+      between 11 and 22 years before failure. Even in the worst case
+      of poor ventilation and high ambient temperatures in the data
+      center, the MTBF is still 2-3 years. This is based on published
+      research found at <link xlink:href="http://www.garrettcom.com/techsupport/papers/ethernet_switch_reliability.pdf">http://www.garrettcom.com/techsupport/papers/ethernet_switch_reliability.pdf</link>
+      and <link xlink:href="http://www.n-tron.com/pdf/network_availability.pdf">http://www.n-tron.com/pdf/network_availability.pdf</link>.
+    </para>
+    <para>大多数情况下，使用单独一台交换机的同时预留几台空闲的交换机以便替换坏了的设备，要比在整个数据中心中部署冗余的交换机的方式更加经济。相关的应用也应该能够在不影响正常运营的情况下，容忍机柜级别的故障，这是由于网络及计算资源是比较容易供应的也相对充足。</para></section>
+    <section xml:id="preparing-for-future-ipv6-support">
+      <title>为将来做准备：IPv6 支持</title>
+    <para>
+      One of the most important networking topics today is the
+      impending exhaustion of IPv4 addresses. In early 2014, ICANN
+      announced that they started allocating the final IPv4 address
+      blocks to the Regional Internet Registries (<link xlink:href="http://www.internetsociety.org/deploy360/blog/2014/05/goodbye-ipv4-iana-starts-allocating-final-address-blocks/">http://www.internetsociety.org/deploy360/blog/2014/05/goodbye-ipv4-iana-starts-allocating-final-address-blocks/</link>).
+      This means the IPv4 address space is close to being fully
+      allocated. As a result, it will soon become difficult to
+      allocate more IPv4 addresses to an application that has
+      experienced growth, or is expected to scale out, due to the lack
+      of unallocated IPv4 address blocks.</para>
+    <para>对于关注网络方面的应用来说，未来将是 IPv6 协议的天下。IPv6 显著地扩大了地址空间，解决了 IPv4 协议长久以来存在的问题，并且将会成为未来面向网络应用的重要乃至本质部分。</para>
+    <para>OpenStack 联网方式支持 IPv6，进行配置之后就可以享受到该特性带来的好处。要启用该特性，只需要简单地在网络模块中创建一个 IPv6 子网，并且在创建安全组时使用 IPv6 前缀即可。</para></section>
+    <section xml:id="asymmetric-links">
+      <title>非对称连接</title>
+    <para>当设计一个网络架构时，相关应用的网络流量特点将会在很大程度上影响总带宽的分配以及用以发送和接收流量的连接数目。为客户提供文件存储的应用将更偏向分配用于流入流量的带宽和连接，与此同时，视频流传输应用将更偏向分配用于流出数据的带宽和连接。</para></section>
+    <section xml:id="performance-network-focus">
+      <title>性能</title>
+    <para>当设计一个用以支持面向网络的应用的环境时，对应用对于网络延时及抖动的容忍程度的分析便很重要。特定类型的应用，例如 VoIP，对于网络延时及抖动的容忍性更低。当需要关注延时及抖动时，特定类型的应用可能需要对 QoS 参数和网络设备队列进行调整以保证它们的流量进入马上发送的队列之中，或者得到最小带宽的保证。由于目前 OpenStack 并不支持这些功能，所选的网络插件是否支持这些功能便也成为一个考虑因素了。</para>
+    <para>服务具体的物理位置可能影响该应用或者用户体验。假如一个应用的目标是对不同用户提供不同的内容，则它必须被设计为能够恰当地将连接指向那些特定的位置。在适当的情况下，使用多站点的部署方式。</para>
+    <para>联网可以通过两种不同的方式实现。传统的联网方式(nova-network)提供了一个平坦的 DHCP 网络以及一个单一的广播域。这种实现不支持租户隔离网络，也不支持高级的插件，但它却是当前唯一的能够使用多主机配置来实现分布式三层代理的方式。OpenStack 联网方式(neutron) 是正式的网络连接实现，提供了一个支持多种多样的网络连接方式的可插入架构。其中包括了只使用二层网络的提供商网络模型，外部设备插件，甚至是 OpenFlow 控制器。</para>
+    <para>大规模的联网将带来一系列的边界相关的问题。关于二层网络域大小具体需要多大的确定，必须基于该域中节点的数目以及域中实例之间的广播流量的大小来作出判断。打破二层网络的边界可能要求覆盖网络或者隧道的使用。该决定是在对更小的总开销的要求和对更小的域的要求之间所作出的平衡。</para>
+    <para>选择网络设备时，必须意识到基于最大的端口密度所做出的决定通常也有一个弊端。聚合交换以及路由并不能完全满足柜顶交换机的需要，这可能引起南北向流量上的瓶颈。其结果是，大量的下行网络使用可能影响上行网络设备，从而影响云中的服务。由于 OpenStack 目前并未提供流量整形或者速度限制的机制，有必要在网络硬件的级别上实现这些特性。</para>
+      </section>
+    </section>
+</section>

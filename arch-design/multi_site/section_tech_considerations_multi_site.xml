@@ -1,0 +1,46 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="technical-considerations-multi-site" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>技术因素</title>
+    <para>设计一个多区域OpenStack有许多的技术因素需要被纳入有关的账单。一个OpenStack云有很多中办法来设计，去掌控分离的应用需求，一个多区域的部署相比于单一站点的安装会带来额外的挑战，也因此将会是一个更加复杂的解决方案。</para>
+    <para>当决定容量要算计的不仅仅是技术问题，还要考虑经济和运营问题，这些都可能会带来更多麻烦。</para>
+    <para>Inter-site link capacity describes the capabilities of the
+        connectivity between the different OpenStack sites. This
+        includes parameters such as bandwidth, latency, whether or not
+        a link is dedicated, and any business policies applied to the
+        connection. The capability and number of the links between
+        sites will determine what kind of options may be available for
+        deployment. For example, if two sites have a pair of
+        high-bandwidth links available between them, it may be wise to
+        configure a separate storage replication network between the
+        two sites to support a single Swift endpoint and a shared
+        object storage capability between them. (An example of this
+        technique, as well as a configuration walk-through, is
+        available at <link xlink:href="http://docs.openstack.org/developer/swift/replication_network.html#dedicated-replication-network">http://docs.openstack.org/developer/swift/replication_network.html#dedicated-replication-network</link>).
+        Another option in this scenario is to build a dedicated set of
+        tenant private networks across the secondary link using
+        overlay networks with a third party mapping the site overlays
+        to each other.</para>
+    <para>应用的行为驱动着站点之间线路能力的需求，如果线路的延迟太高，某些应用使用大量的小包，比如RPC调用，就会遭遇彼此之间的通信问题和正确操作的问题。另外，OpenStack会遇到类似的问题，为了降低这些问题的发生几率，优化认证服务调用的超时时间就非常的有必要，这样可以防止认证在中心化身份服务的冲突。</para>
+    <para>另外关于容量的考虑因素，当它涉及到多站点部署网络的可用量时，以及对于租户网络的负载网络的性能。如果使用了跨zone的共享租户网络，那么将外部覆盖管理或控制器映射到一起就很迫切。非常有必要确保zone之间的ID量一致。记住，在Icehouse版本发布时，OpenStack网络还没有在安装时拥有管理隧道ID的能力，这意味着如果其中一个站点用完了ID，但是另外一个站点没有用完，租户网络将无法达到其它站点。</para>
+    <para>容量还有其它形式的表现，region增长的能力依赖于横向扩展更多可用的计算节点。此话题在章节计算型中会谈到更多的细节。总之，务必记得也许需要为各个region增加cell以超过一定的点，此点又依赖于集群的大小和每hypervisor对虚拟机的比例。</para>
+    <para>第三种形式的容量表现在multi-region-capable 的OpenStack组件，中心化的对象存储在跨多region通过单一的命名空间能够服务对象。此工作方式由swift代理来访问对象信息，因此是有可能代理过度负载。有两种方法可减低此问题，第一，部署大量的swift代理，此方法的缺陷在于代理没有负载均衡，大量的文件请求会访问同一个proxy。第二种降低负载的办法是在代理的前端使用HTTP代理缓存和负载均衡器。因此swift对象会通过HTTP来响应请求，此负载均衡器能缓和swift代理的负载请求。</para>
+    <section xml:id="utilization-multi-site"><title>量力而行</title>
+    <para>构建一个多区域OpenStack环境是本书的目的，但真正的考验来自于能否有一个应用能够利用好。</para>
+    <para>身份是多数OpenStack用户的第一道“门槛”，对于绝大多数OpenStack的主要操作都有和身份服务互动的需求，因此，确保你为用户提供身份认证服务单一的URL非常重要，同样重要的是身份服务的正确文档和配置region。在你安装时考虑好每个站点定义的region的身份命名空间，这对于系统管理很重要，当阅读身份文档时，它会要求当在API端点或GUI界面执行某些操作时所定义的region名称。</para>
+    <para>负载均衡是安装多站点OpenStack另外一个常见的问题，它可能运行着负载均衡即服务的HAproxy实例，这些可能是本地一个特定的region，一些应用也许通过内部机制来应对这种情况，另外，也许需要外部的系统来实现，诸如全局服务负载均衡器或者anycast-advertised DNS。</para>
+    <para>取决于在设计站点时的选择的存储模式，存储的复制和可用性也是最终用户所关心的。如果一个应用有理解region的能力，那么它可能会保持通过region分离的对象存储系统，在此种情形下，用户需要在多个region访问对象的话就需要去自己去跨站点复制，基于中心化的swift代理，用户也许需要后端对象存储的复制基准时间。测试基准允许运维人员提供给用户可以理解的存储需求的总计时间或者是更改对象使之在整个环境中可用。</para></section>
+    <section xml:id="performance"><title>性能</title>
+    <para>决定多区域安装的性能所包含的考虑因素和在单站点部署是不一样的，作为分布式部署，多区域部署在一些场景中会遭遇一些额外的性能瓶颈。</para>
+    <para>尽管多区域系统可以基于地理位置分离，它们会在跨region通信时遭遇糟糕的延迟和抖动。这种情况尤其影响系统的如OpenStack身份服务从region做认证尝试时没有实现中心化的身份服务。它也会影响到一些应用如远程过程调用(RPC)的正常操作，在高性能计算负载型中此类问题很常见。</para>
+    <para>在一个多区域部署中，存储可用性也会影响到架构。一个中心化的对象存储服务需要在region中为实例本地存取对象中频繁的使用，在对象没有建立的地方。一些应用也许为此而需要作出相应的调整。块存储目前还没有跨多个region的复制数据的方法，所以应用若依赖可用的块存储的话，需要手动的复制，由于这种限制导致在每个region都要创建重复的块存储。</para></section>
+    <section xml:id="security-multi-site"><title>安全性</title>
+    <para>多区域OpenStack安装的安全会来带额外的挑战，租户会为了安全会建立一个租户创建的网络。在多区域站点安装中也许没有需求去使用非私有网络来连接站点，这意味着流量对于第三方来说是可见的，假如应用对安全有需求，这就是个问题需要去解决，安全一VPN或者将连接加密在站点之间，在此情形下就非常有必要。</para>
+    <para>另外的多区域部署安全需要考虑的是身份，在多区域云中认证服务需要中心化，所谓的中心化就是在部署中为用户提供单一的认证点，以及管理这个点的创建、读取、更新和删除的原有操作。中心化的认证也对审计目的有用，因为所有的认证令牌都来自同一个源。</para>
+    <para>就像在单站点部署的租户需要彼此隔离，在多区域安装中的租户也一样，在多区域设计的额外挑战是围绕着如何确保跨region的租户网络功能，不幸的是，OpenStack网络所提供的功能还不支持此种机制，因为需要外部的系统来管理这些映射，租户网络包含的敏感信息需要这种映射的精准和一致，以确保在一个站点的租户不会联系到另外一个站点的不同租户。</para></section>
+    <section xml:id="openstack-components-multi-site">
+      <title>OpenStack 组件</title>
+    <para>大多数的OpenStack安装需要一个最小集合的功能，这些包括提供认证的OpenStack 认证(keystone)、OpenStack计算(nova)、提供镜像存储的OpenStack镜像服务(glance)、提供网络服务的OpenStack 网络(neutron)、以及可能的对象存储OpenStack对象存储(swift)。多站点的建设会带来额外的组件需求，如为了region之间的协同完成某任务，中心化的认证服务是提供单点认证的必要服务，中心化的GUI界面提供单点登录和API/CLI访问的统一入口。如果有必要，一个中心化的对象存储服务也大有用处，当然这会要求安装swift代理服务。</para>
+    <para>一些额外的选项安装会帮助改进一些场景，对于实例来说，安装Designate为每个region自动生成DNS域，为每个实例自动记录zone所有的资源信息，这种使用DNS机制会改进决策，为确定的应用选择那个region。</para>
+    <para>另外一个管理多区域安装的工具是Orchestration(heat)。Orchestration模块允许使用模板来定义一组实例，来一起启动或者是扩展已有的实例。它也可用于基于region的匹配设置或比较各组的不同。对于实例来说，如果一个应用要求在跨站点平均负载到多个节点，相同的heat模板可用于覆盖到每个站点，改动很小仅仅是一个region的名称。</para>
+    </section>
+</section>

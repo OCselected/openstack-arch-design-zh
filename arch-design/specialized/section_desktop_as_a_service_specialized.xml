@@ -1,0 +1,36 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="desktop-as-a-service" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <?dbhtml stop-chunking?>
+  <title>桌面即服务</title>
+  <para>虚拟桌面基础设施(VDI)是在远程服务器上提供用户桌面环境的服务。此类应用对于网络延迟非常敏感并且需要一个高性能的计算环境。传统上这类环境并未成放到云环境之中，因为极少的云环境会支持如此程度暴露给终端用户的高要求负载。近来，随着云环境的稳定性越来越高，云厂商们开始提供能够在云中运行虚拟桌面的服务。在不远的将来，OpenStack 便能够作为运行虚拟桌面基础设施的底层设施，不管是内部的，还是在云端。</para>
+  <section xml:id="challenges">
+    <title>挑战</title>
+    <para>设计一个适用于运行虚拟桌面的基础设施是一个与为其它大部分虚拟化任务进行设计大不相同的工作。该基础设施设计时必须考虑到各种因素，比如以下例子：</para>
+    <itemizedlist>
+      <listitem>
+        <para>启动风暴：当工作开始时成百成千的用户同时登录时发生的情况，影响存储的设计。</para>
+      </listitem>
+      <listitem>
+        <para>在提供的虚拟桌面中运行的应用的性能</para>
+      </listitem>
+      <listitem>
+        <para>操作系统以及和 OpenStack 宿主机的兼容性</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section xml:id="broker">
+    <title>代理</title>
+    <para>连接代理是架构中的核心组件，其决定了哪个虚拟桌面会被分配至或者连接至用户。这种代理程序一般都是比较成熟全面的管理产品，能够支持远程桌面的自动部署及准备工作。</para>
+  </section>
+  <section xml:id="possible-solutions">
+    <title>可能的解决方案</title>
+    <para>目前有多种商业产品能够提供这种代理的解决方案，但 OpenStack 项目中没有原生的支持。不提供这样一个代理也是一个选择，但是手动管理这些功能并不能够满足作为一个大规模的企业级解决方案的要求。</para>
+  </section>
+  <section xml:id="diagram">
+    <title>图示</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="../figures/Specialized_VDI1.png"/>
+      </imageobject>
+    </mediaobject>
+  </section>
+</section>

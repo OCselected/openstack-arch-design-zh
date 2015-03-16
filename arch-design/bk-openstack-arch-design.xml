@@ -1,0 +1,76 @@
+<?xml version="1.0" ?><book version="5.0" xml:id="openstack-arch-design" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>OpenStack 架构设计指南</title>
+    <?rax title.font.size="28px" subtitle.font.size="28px"?>
+    <titleabbrev>架构指南</titleabbrev>
+    <info>
+        <author>
+            <personname>
+                <firstname/>
+                <surname/>
+            </personname>
+            <affiliation>
+                <orgname>OpenStack基金会</orgname>
+            </affiliation>
+        </author>
+        <copyright>
+           <year>2014</year>
+           <year>2015</year>
+            <holder>OpenStack基金会</holder>
+        </copyright>
+        <releaseinfo>当前最新</releaseinfo>
+        <productname>OpenStack</productname>
+        <pubdate/>
+        <legalnotice role="apache2">
+            <annotation>
+                <remark>版权信息来自于模板</remark>
+            </annotation>
+        </legalnotice>
+        <legalnotice role="cc-by-sa">
+            <annotation>
+                <remark>其余的授权细节来自于模版</remark>
+            </annotation>
+        </legalnotice>
+        <abstract>
+            <para>欲充分利用OpenStack的优点，用户需要精心准备规划、设计及架构。认真纳入用户的需求、揣摩透一些用例。</para>
+        </abstract>
+        <revhistory>
+            <!-- ... continue adding more revisions here as you change this document using the markup shown below... -->
+            <revision>
+                <date>2014-10-15</date>
+                <revdescription>
+                    <itemizedlist>
+                        <listitem>
+                            <para>参与编辑请遵照OpenStack风格。</para>
+                        </listitem>
+                    </itemizedlist>
+                </revdescription>
+            </revision>
+            <revision>
+                <date>2014-07-21</date>
+                <revdescription>
+                    <itemizedlist>
+                        <listitem>
+                            <para>初始版</para>
+                        </listitem>
+                    </itemizedlist>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </info>
+    <!-- Chapters are referred from the book file through these
+         include statements. You can add additional chapters using
+         these types of statements. -->
+    <xi:include href="../common/ch_preface.xml"/>
+    <xi:include href="ch_introduction.xml"/>
+    <xi:include href="ch_generalpurpose.xml"/>
+    <xi:include href="ch_compute_focus.xml"/>
+    <xi:include href="ch_storage_focus.xml"/>
+    <xi:include href="ch_network_focus.xml"/>
+    <xi:include href="ch_multi_site.xml"/>
+    <xi:include href="ch_hybrid.xml"/>
+    <xi:include href="ch_massively_scalable.xml"/>
+    <xi:include href="ch_specialized.xml"/>
+    <xi:include href="ch_references.xml"/>
+    <xi:include href="../common/app_support.xml"/>
+  <glossary role="auto"/>
+</book>

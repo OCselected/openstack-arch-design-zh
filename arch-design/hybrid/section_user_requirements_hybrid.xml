@@ -1,0 +1,146 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="user-requirements-hybrid" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>用户需求</title>
+    <para>混合云架构引入额外的复杂性，特别是那些使用不同种类的云计算平台。结果就是，确保设计满足需求的同时不要增加额外的复杂性和风险显得很重要。</para>
+    <para>设计一个混合云的部署时对于商业作出的考虑包括：</para>
+    <variablelist>
+      <varlistentry>
+        <term>成本</term>
+        <listitem>
+            <para>混合云架构涉及到多个提供商和技术架构。这些架构也许为部署和维护付出高额的费用。运维花费更高的原因在于相比与其它架构需要更多复杂的编排以及额外的工具。相比之下，整体运营成本可能在最具成本效益的平台中使用云运营工具部署负载会降低。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>赢利空间</term>
+        <listitem>
+            <para>赢利空间着眼于将云用来干什么。如果构建为一个面向商业用户的产品，考虑到驱动构建它在多个平台和是否使用多个平台，使设计更具吸引力的目标客户，从而提高收入的机会。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>上线时间</term>
+        <listitem>
+            <para>使用云平台的一个常见的原因就是可以加速新产品或新应用的上市时间。一业务需求要使用多云平台，原因是他们已经在多个应用上投入了，且将此与云平台混合起来要比迁移和重构为单一平台节省很多时间。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>业务或技术的多样性</term>
+        <listitem>
+            <para>组织已经借用基于云的服务是希望拥抱更多的业务，且利用混合云设计来跨云提供商来解决负载问题，所以没有应用是托管在单个的云服务提供商那里的。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>应用增长</term>
+        <listitem>
+            <para>一家公司已经拥有在多云环境下的应用，且用于生产，那么也许在寻找更加省钱的集成方案，而不是迁移到单一的平台中。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <section xml:id="legal-requirements-hybrid">
+      <title>法律需求</title>
+    <para>很多辖区对于云环境中的数据的保管及管理都有相关的法律上或者监管上的要求。这些规章的常见领域包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>确保持久化数据的保管和记录管理以符合数据档案化需求的数据保留政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理数据的所有权和责任的数据所有权政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理位于外国或者其它辖区的数据存储问题的数据独立性政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理由于监管上的问题因而特定类型的数据必须存放在特定的地点或者更重要的，由于相同的原因，不能够存放在其它地点的数据管理政策。</para>
+        </listitem>
+    </itemizedlist>
+    <para>Examples of such legal frameworks include the data
+        protection framework of the European Union (<link xlink:href="http://ec.europa.eu/justice/data-protection/">http://ec.europa.eu/justice/data-protection/</link>)
+        and the requirements of the Financial Industry Regulatory
+        Authority (<link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules/">http://www.finra.org/Industry/Regulation/FINRARules/</link>)
+        in the United States. Consult a local regulatory body for more
+        information.</para>
+    </section>
+    <section xml:id="workload-considerations">
+      <title>负载考虑</title>
+    <para>准确定义“负载”这个词在混合云环境的上下文中的意思显得很重要。负载可以定义为利用系统专注于做某些事，这通常被称作“用例”。一个负载可以是单一的应用也可以是一组一起工作的应用。它也可以是需要运行在多个云环境中的一组应用的多个复制。在混合云部署中，同样的负载需要等同的功能适用不同的公有和私有云环境。那么架构就需要处理它们潜在的冲突，复杂性以及平台兼容性。</para>
+    <para>一些可能用到混合云架构的用例有：</para>
+    <itemizedlist>
+        <listitem>
+            <para>动态资源扩展或“突破&quot;:另外使用多云架构的通用原因是在某时”突破“应用需要额外的资源。举个案例，一个零售商在假期销售高峰季需要额外的资源，但是又不愿意构建昂贵的云资源来仅仅满足高峰需求，因为多数时候不需要。他们也许有个OpenStack私有云，为了高峰期负载期间需要突破到AWS或其他公有云。突破的周期可长可短，可以是小时、可以是月、也可以是年为单位。</para>
+        </listitem>
+        <listitem>
+            <para>容灾恢复及业务连续性：在第二个站点的云中使用廉价的存储和实例管理就是一个很好的案例。公有云通常就有为这样的场景服务。</para>
+        </listitem>
+        <listitem>
+            <para>统一管理hypervisor及其实例：增加自服务，费用回收和透明交付正确的资源，这些在一个混合hypervisor的池中是有成本效益的。在一个混合云环境中，这是特别重要的考虑因素。寻找一个可以提供跨平台管理hypervisor和健壮的实例管理工具的云。</para>
+        </listitem>
+        <listitem>
+            <para>应用组合集成：一个企业级云可以交付更好的应用组合管理，通过利用自服务特性可更高效的完成部署，基于类型使用的部署规则。通常构建一个混合云架构的驱动力是，将已经是产品化的云环境无缝组合共同工作。</para>
+        </listitem>
+        <listitem>
+            <para>迁移场景：建立一个混合云架构的通用原因是允许在不同的云之间迁移应用。这也许是因为应用将永久迁移到新的平台，或者是因为应用为了走的更远需要被多个平台所支持。</para>
+        </listitem>
+        <listitem>
+            <para>高可用：使用混合云架构的另外一个重要的原因是交付需要高可用。通过使用多地点和多平台的组合，此设计可以是很高的一个可用级别，是不可能在单一的平台下实现的。这种做法确实显著的增加了架构的复杂度。</para>
+        </listitem>
+    </itemizedlist>
+    <para>另外思考的内容是关于负载是如何在单一的云中工作的，设计必须纳入将负载运行在多个云平台时所增加的复杂度。跨云传递负载的复杂度需要遍历应用、实例、云平台、hypervisor以及网络层。</para></section>
+    <section xml:id="tools-considerations-hybrid">
+      <title>工具考量</title>
+    <para>当设计跨多个云时，设计必须包含那些跨多个云工作的工具。一些由用户需求所驱动的工具需要具备下面功能：</para>
+    <itemizedlist>
+        <listitem>
+            <para>云之间的代理: 在混合云架构中，由于至少包括两个不同的，还可能不兼容的平台，这就导致就有两种不同的成本，鉴于此，代理软件被设计为评估不同云平台之间的相对成本。这些解决方案有时可参考云管理平台(CMP)。这里举几个云管理平台的例子，Rightscale,Gravitent,Scalr,CloudForms以及ManageIQ.这些工具允许设计者根据预先定义的工作量以确定最佳位置。</para>
+        </listitem>
+        <listitem>
+            <para>跨云的轻松编排：CMP是用于将一切连在一起工作的工具。云编排工具是用于改进IT应用组合的管理，尤其是这些应用迁移到公有，私有或混合云平台。这些工具需要慎重考虑。云编排工具用于管理在跨多个云平台的已安装的系统中的多种组合应用。典型的企业级IT应用组合仍然是由散落在古老的硬件，虚拟化基础设施中的几千个应用，现在则由公有的基础设施即服务(IaaS)和软件即服务(SaaS)提供商来接管。</para>
+        </listitem>
+    </itemizedlist></section>
+    <section xml:id="network-considerations-hybrid">
+      <title>网络考虑</title>
+    <para>当选择一家CMP或云供应商时，网络服务的功能是一个重要的因素。考虑的有功能、安全、扩展性和高可用。验证和测试云端点的临界的特性，对于架构来说是很重要的任务。</para>
+    <itemizedlist>
+        <listitem>
+            <para>一旦网络功能框架决定了，最小的功能测试应该被提及。这将能够确保测试期间和升级后的功能仍然可用。</para>
+        </listitem>
+        <listitem>
+            <para>跨多个云供应商的可扩展性也许主导了用户选择哪个底层网络框架，拥有网络API功能和验证这些功能在跨所有的云端点的持久有效都是非常重要的。</para>
+        </listitem>
+        <listitem>
+            <para>高可用能实现不同的功能以及可以有不同的设计。一些通常使用的模式如主-热-备，主-备，及主-主。高可用及其测试框架需要被开发以确保功能和局限都能被理解。</para>
+        </listitem>
+        <listitem>
+            <para>安全考虑因素包括如何在客户端和端点之间保护数据，在多个云之间的任何流经之地，以及窃听，还有拒绝服务攻击。</para>
+        </listitem>
+    </itemizedlist></section>
+    <section xml:id="risk-mitigation-management-hybrid">
+      <title>风险规避和管理考虑</title>
+    <para>混合云架构接入额外的风险是因为引进了复杂性、潜在的冲突或不兼容的组件或工具。尽管如此，它也同样降低了风险，可以跨多个供应商分担负载，这意味着，如一个供应商业务挂了，不会影响到整体的业务。</para>
+    <para>使用混合云架构可能增加风险的因素包括：</para>
+    <variablelist>
+      <varlistentry>
+        <term>供应商可用性或实现细节</term>
+        <listitem>
+            <para>从公司不能提供业务到公司变动的情况下如何交付他们的服务。云架构集成设计的灵活性和可变性。矛盾的是，云不可能同时提供健壮性和灵活性。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>服务水平协议比较</term>
+        <listitem>
+            <para>混合云计算环境的用户通过服务级别协议的差异可能会遇到一些损失。混合云设计需要，以适应由参与设计的各种云提供的不同服务水平协议，并且必须解决供应商的服务水平协议的实际可执行性。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>安全级别</term>
+        <listitem>
+            <para>混合云环境的安全要比单个云环境的安全更加的复杂。以下内容需要关注，但也不仅仅限于这几项，它们有：应用、网络以及云平台级别。这里有一个问题，那就是不同的云平台实现安全的途径不同。而混合云的设计恰恰被言中，必须面对不同的安全实现途径。举例来说，AWS使用了一个简单模式，依赖于用户权限和防火墙混合。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>提供者 API 变化</term>
+        <listitem>
+            <para>API在混合云环境中的位置非常之关键。作为供应商云服务的消费者，一个组织需掌控供应商对API的变化。云服务也许是某种原因，依赖兼容的API不再支持了，这个问题尤其在AWS和OpenStack的AWS兼容API之间非常的明显。OpenStack最初计划维护AWS API的兼容性。但是，随着时间的推移，API在功能上越走越远。一个通用的解决此类问题的办法就是尽可能的使用通用的和基础的API去最小化的减少冲突。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </section>
+</section>

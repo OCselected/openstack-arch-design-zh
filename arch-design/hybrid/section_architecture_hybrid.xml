@@ -1,0 +1,67 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="arch-guide-architecture-hybrid" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>架构</title>
+    <para>一旦业务需求和应用需求都定义好了，设计混合云解决方案的第一步就是制定出预期的负载和多种云基础设施之间的依赖，以支持好业务和应用需求。将应用和目标云环境对应起来，用户需要一个解决方案架构，尽可能的是云平台之间的兼容性良好，最小化减少创建问题解决，以及填补空白的流程。记住：在每个可用的云平台都要评估监测和orchestration API,以及选择云管理平台对他们支持的相关级别。</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Multi-Cloud_Priv-AWS4.png"/>
+        </imageobject>
+    </mediaobject>
+    <section xml:id="image-portability">
+      <title>镜像移植</title>
+    <para>当前运行实例的云的主要负载均使用hypervisor技术实现，如KVM,Xen,或ESXi。挑战来自于这些hypervisor使用的镜像格式虽然大部分兼容于彼此，但不是完全兼容。在私有或混合云解决方案中，可强制指定标准使用同一种hypervisor或实例镜像格式，但是这不太现实。特别是如果在架构中存在一个云是公有云时，这就根本不在设计者的控制之内。</para>
+    <para>There are conversion tools such as virt-v2v
+
+        (<link xlink:href="http://libguestfs.org/virt-v2v">http://libguestfs.org/virt-v2v</link>)
+        and virt-edit (<link xlink:href="http://libguestfs.org/virt-edit.1.html">http://libguestfs.org/virt-edit.1.html</link>)
+        that can be used in those scenarios but they are often not
+        suitable beyond very basic cloud instance specifications. An
+        alternative is to build a thin operating system image as the
+        base for new instances. This facilitates rapid creation of
+        cloud instances using cloud orchestration or configuration
+        management tools, driven by the CMP, for more specific
+        templating. Another more expensive option is to use a
+        commercial image migration tool. The issue of image
+        portability is not just for a one time migration. If the
+        intention is to use the multiple cloud for disaster recovery,
+        application diversity or high availability, the images and
+        instances are likely to be moved between the different cloud
+        platforms regularly.</para></section>
+    <section xml:id="upper-layer-services">
+      <title>上层服务</title>
+    <para>很多云都在基本的计算、网络、存储组件之上提供补充的服务，这些额外的服务在云平台中通常用于简单的部署以及管理应用。</para>
+    <para>考虑到迁移负载的需求也许有上层服务的依赖，原有的云平台和目标云平台也许拥有完全不同的服务，换个角度讲，用户使用不同的方法实现或者使用了完全不同的技术。举例来说，原有云交付的服务是使用NoSQL数据库服务MongoDB，而目标云不提供此服务或者使用的是关系性数据库MySQL的服务，迁移此应用将不是很现实，有大部分的数据、应用需要维护。</para>
+    <para>也许较适合混合云用例的几点属性：</para>
+    <itemizedlist>
+        <listitem>
+            <para>创建跨所有云平台所实现上层服务的基准，对于平台来说不支持给定的服务，在平台的顶部创建一个这样的服务，且关注他们在云中所承载的负载。举例来说，OpenStack的<glossterm>数据库服务</glossterm>是 (<glossterm>trove</glossterm>)，OpenStack支持MySQL为服务，而在生产环境不支持NoSQL数据库，无论从AWS迁移过来还是在AWS时运行，一个NoSQL的应用必须使用自动化的工具，诸如Orchestration模块(heat)，在OpenStack的顶部重新创建NoSQL数据库。</para>
+        </listitem>
+        <listitem>
+            <para>部署诸如Cloud Foundry或OpenShift<glossterm>平台即服务 (PaaS)</glossterm>技术，是从底层云平台抽象上层服务。应用部署和迁移的单位是PaaS和利用了的PaaS的服务，并只消耗了云平台的基础设施服务。这样做的缺点的方法是，将PAAS本身则潜在地变成锁定的来源。</para>
+        </listitem>
+        <listitem>
+            <para>跨越所有云平台仅仅使用最基本的基础设施服务很平常，使用自动化工具来创建需要的可跨所有云平台移植的上层服务，举例来说，替代继承云平台内部的使用任何数据库服务的是，使用脚本或各种配置和应用部署工具来启动云实例以及将数据库部署到这些实例中。</para>
+        </listitem>
+    </itemizedlist></section>
+    <section xml:id="network-services">
+      <title>网络服务</title>
+    <para>网络服务功能在多云架构中是有巨大障碍的，当选择CMP和云提供商时此因素非常的重要，考虑因素：功能、安全、扩展以及<glossterm>高可用 (HA)</glossterm>。验证和不断的测试云端点的一些临界特性，用于架构设计是非常重要的任务。</para>
+    <itemizedlist>
+        <listitem>
+            <para>一旦网络功能框架已经决定，起码得设计一个功能测试确保功能的兼容性。此测试可以确保在组件升级前后的功能一致性。需要注意的是随着时间的推移，多样化的云平台如果不去用心去维护兼容性，会出现同步异常，这尤其在API上是常见的问题。</para>
+        </listitem>
+        <listitem>
+            <para>跨多个云提供商的可扩展性要求所选择的覆盖网络框架须满足不同云提供商。网络API功能很重要，而且需要验证其跨所有云端点的与预料中的功能一致。</para>
+        </listitem>
+        <listitem>
+            <para>高可用(HA)有不同的功能和设计实现，举几个常见的方法，活动的-热点-备用，活动-非活动，以及双活等。高可用和测试框架需要被开发，确保其功能和局限都很好理解。</para>
+        </listitem>
+        <listitem>
+            <para>安全考虑，诸如数据如何在客户端和端点之间保证安全，以及任何的流量在多个云之间的传送，从窃听到 <glossterm baseform="denial of service (DoS)">拒绝服务攻击</glossterm>行为等都得考虑到，业务和监管需要采取安全的方法。</para>
+        </listitem>
+    </itemizedlist></section>
+    <section xml:id="data"><title>数据</title>
+    <para>复制是实现保护对象存储的传统做法，在已经存在的存储架构中有许多种不同的实现，这方面的例子有同步或异步的镜像，多数的对象存储和后端存储系统都有在存储子系统中事项复制的方法。对象存储通常会实现复制技术，而这正是云的需求而量身定制的，一个组织必须找到正确的平衡，在数据完整性和数据可用性之间。复制策略也可能影响到灾难恢复的实现方法。</para>
+    <para>复制跨不同的机架，不同的数据中心，甚至是不同地理位置的region，目的是增加确定和确保数据局部性。保证从最近或最快的存储获取数据的能力对于应用的性能表现良好是有必要的，举例来说Hadoop运行在云中，用户不仅运行着HDFS，还使用了并行文件系统，类似的提供商有日立和IBM。一个需要特别考虑的情况是，当运行嵌入式的对象存储方法毋须额外的数据复制，那样的话会带来不必要的性能问题。另外一个确保数据局部性的例子是使用Ceph,Ceph拥有一个数据容器抽象，叫做池，池可以被复制的创建，基于复制的池有些规则，用来定义数据写入本地硬件集合，那可能是主要的访问和修改点。</para>
+    </section>
+</section>

@@ -1,0 +1,26 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="software-defined-networking-sdn" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <?dbhtml stop-chunking?>
+  <title>软件定义网络</title>
+  <para>软件定义网络(SDN)指的是网络数据转发平面以及控制平面的隔离。SDN 已经成为在网络中管理及控制网络包流的流行方案。SDN 使用覆盖网络或者直接控制的二层网络设备来监测网络流的路径，这对云环境提出了一些挑战。有些设计者可能希望在 OpenStack 环境中运行他们的控制器。另外一些则可能希望将他们的 OpenStack 环境加入到一个 由 SDN 方式进行控制的网络之中。</para>
+  <section xml:id="challenges-sdn">
+    <title>挑战</title>
+    <para>相对来说，SDN 是一个比较新的，仍未被标准化的概念，所以 SDN 系统可能来自很多不同的具体实现。因此，一个真正意义上示范性架构是目前无法给出的。相反的，我们只能够分析当前或者目标 OpenStack 设计中的各种不同，并确定哪些地方将会出现潜在的冲突或者还存在差距。</para>
+  </section>
+  <section xml:id="possible-solutions-sdn">
+    <title>可能的解决方案</title>
+    <para>如果一个 SDN 的实现由于它需要直接管理和操作交换机因而要求二层网络的连接，那么就不建议运行覆盖网络或者三层网络的代理程序。假如 SDN 控制器运行在 OpenStack 环境之中，则可能需要创建一个 ML2 插件并且将该控制器实例调度到能够连接至能够直接与交换机硬件进行通信的租户 VLAN。另一个可能的方式是，基于外部硬件设备的支持情况，使用一端终结在交换机硬件之上的网络隧道。</para>
+  </section>
+  <section xml:id="diagram-sdn">
+    <title>图示</title>
+    <para>OpenStack 上运行 SDN 控制器：<mediaobject>
+        <imageobject>
+          <imagedata fileref="../figures/Special_case_SDN_hosted.png"/>
+        </imageobject>
+      </mediaobject></para>
+    <para>OpenStack 加入到 SDN 控制器所控制的网络中：<mediaobject>
+        <imageobject>
+          <imagedata fileref="../figures/Special_case_SDN_external.png"/>
+        </imageobject>
+      </mediaobject></para>
+  </section>
+</section>

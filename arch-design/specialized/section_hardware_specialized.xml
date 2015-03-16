@@ -1,0 +1,35 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="specialized-hardware" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <?dbhtml stop-chunking?>
+  <title>专门的硬件</title>
+  <para>有些特定的负载需要难以虚拟化或者无法共享的特殊的硬件设备。例如负载均衡器、高并行暴力运算以及与网线直接相连的联网等应用，都可能需要基本 OpenStack 组件不提供的功能。</para>
+  <section xml:id="challenges-specialized-hardware">
+    <title>挑战</title>
+    <para>一些应用需要使用硬件设备以提高性能或者提供非虚拟 CPU、内存、网络或者存储等的功能。这些可以是共享的资源，例如加密处理器，或者专用的资源，例如图形处理器。对于其中一些设备，OpenStack 有办法能够直接使用它们，而对于另外一些设备，则可能需要完成额外的工作。</para>
+  </section>
+  <section xml:id="solutions-specialized-hardware">
+    <title>解决方案</title>
+    <para>In order to provide cryptography offloading to a set of
+      instances, it is possible to use Image Service configuration
+      options to assign the cryptography chip to a device node in
+      the guest. The <citetitle>OpenStack Command Line
+      Reference</citetitle> contains further information on
+      configuring this solution in the chapter <link xlink:href="http://docs.openstack.org/cli-reference/content/chapter_cli-glance-property.html">Image
+      Service property keys</link> , but it allows all guests using
+      the configured images to access the hypervisor cryptography
+      device.</para>
+    <para>If direct access to a specific device is required, it can be
+      dedicated to a single instance per hypervisor through the use
+      of PCI pass-through. The OpenStack administrator needs to
+      define a flavor that specifically has the PCI device in order
+      to properly schedule instances. More information regarding PCI
+      pass-through, including instructions for implementing and
+      using it, is available at <link xlink:href="https://wiki.openstack.org/wiki/Pci_passthrough#How_to_check_PCI_status_with_PCI_api_patches">
+      https://wiki.openstack.org/wiki/Pci_passthrough</link>.
+    </para>
+    <mediaobject>
+      <imageobject>
+        <imagedata contentwidth="4in" fileref="../figures/Specialized_Hardware2.png"/>
+      </imageobject>
+    </mediaobject>
+  </section>
+</section>

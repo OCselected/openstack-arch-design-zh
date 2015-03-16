@@ -1,0 +1,32 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="arch-design-architecture-multiple-site" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>架构</title>
+    <para>此图一个多区域OpenStack架构的高度抽象示意图。每个站点都是一个OpenStack云，但是根据架构的需要可能是不同的版本。例如，如果第二个站点的使命就是替代第一个站点，他们就可以不同。另为通用的设计是一个私有的OpenStack云是完全复制的站点将用来做高可用或灾难恢复。最重要的设计决定是如何配置存储，既可以配置为单个共享池也可以是分离的池，这取决于用户和技术的需求。</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Multi-Site_shared_keystone_horizon_swift1.png"/>
+        </imageobject>
+    </mediaobject>
+    <section xml:id="openstack-services-architecture">
+        <title>OpenStack服务架构</title>
+        <para>OpenStack认证服务，用于所有其他OpenStack组件的验证，服务端点的目录，支持所有region。一个region是用于一组OpenStack彼此接近的服务的逻辑构造。region的概念颇为灵活，它可以包含地理位置很远的OpenStack服务端点，也可以是很小的范围，region甚至可以是一个数据中心的机柜，或是一个刀片中心，甚至在同一个数据相邻的机柜都拥有多个region。</para>
+        <para>多数的OpenStack组件被设计为运行在单个region上下文中。OpenStack计算服务被设计为在一个region中管理计算资源，支持使用可用区域和单元来往下拆分。OpenStack网络服务可用于在同一广播域中或者说相互连接的交换机来管理网路资源。OpenStack块存储服务控制单一region中的存储资源，且这些资源须在统一存储网络中。和OpenStack计算服务一样，OpenStack块存储服务同样支持可用区域的构造，用于往下拆分存储资源。</para>
+        <para>OpenStack GUI，OpenStack认证，以及OpenStack对象存储等服务为了服务于多区域，这些组件需要部署在中心化位置。</para>
+    </section>
+    <section xml:id="arch-multi-storage">
+        <title>存储</title>
+        <para>在多个OpenStack region，实现单一的OpenStack对象存储服务端点的话，就需要实现所有的region共享文件存储。对象存储服务内部复制文件到多个节点。这样有一个优点，那就是如果一个文件存放在对象存储服务对于所有region都可见，那么它就可以在任何的或全部的region里的应用和负载所使用。这是简单的高可用失效恢复和灾难恢复回滚。</para>
+        <para>为满足多region的负载理应扩展对象存储服务，那么多个代理运行，且拥有负载均衡，在每个region都安装存储节点，对象存储服务的入口前端配置HTTP缓存层都是必要的。这样的话，客户端请求对象时会访问缓存而不是直接到存储模块，可有效较少存储网络的负载。另外在HTTP缓存层，在代理和存储节点之间使用诸如Memcache可缓存对象。</para>
+        <para>如果在多个region的云被设计为不是单一的对象存储服务端点，而是在每个region中都有独立的对象存储服务端点的话，应用就需要掌控同步(如果必要)而且管理操作须确保跨节点的一致性。对于一些应用，在同样的region里访问多个对象存储服务端点意味着希望能够减少延迟，跨region带宽利用以及轻松的部署。</para>
+        <para>对于块存储服务来说，最重要的决定就是选择存储技术和是否使用专用网络用于从存储服务到计算节点的存储流量传输。</para>
+    </section>
+    <section xml:id="arch-networking-multiple">
+        <title>网络</title>
+        <para>当连接多个region到一起时需要考虑很多设计因素。覆盖网络技术的选择决定了网络包如何在region之间传输，以及如何给应用赋予逻辑网络和地址。如果有安全或监管需求，还得使用加密技术实现region之间的安全传输。在region内部网络，租户网络的覆盖网络技术亦同等重要，网络覆盖技术和应用生成或接受的网络流量可以是互补的或者交叉目的。例如，使用覆盖技术为一个应用，而中间传输使用了大量的小网络包，如果配置不当会引起大量的延迟或增大每个包的开销。</para>
+    </section>
+    <section xml:id="arch-dependencies-multiple">
+        <title>依赖</title>
+        <para>对于一个多区域OpenStack安装架构来说，依赖于很多的因素，其中一个主要的依赖需要考虑的就是存储。当设计存储系统时，存储的机制需要决定。一旦存储的类型决定了，如何访问就成了重点。例如，我们建议存储使用专用网络。另外一个需要考虑的是如果配置存储来保护数据。例如恢复点目标(RPO)和恢复时间目标(RTO),如何快速的从完全失效中恢复，将决定复制数据如何频繁的需求。确保有足够的存储来分配，以支持数据保护策略。</para>
+        <para>网络决定包括用于租户网络的封装机制，广播域有多大，以及内部联通的服务水平协议。</para>
+    </section>
+</section>

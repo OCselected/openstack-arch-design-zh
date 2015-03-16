@@ -1,0 +1,196 @@
+<?xml version="1.0" ?><!DOCTYPE section [
+<!ENTITY % openstack SYSTEM "../../common/entities/openstack.ent"> %openstack;
+<!-- The master of this file is in openstack-manuals repository, file
+     doc/common/entities/openstack.ent.
+     Any changes to the master file will override changes in other
+     repositories. --><!-- Some useful entities borrowed from HTML --><!ENTITY ndash "&#x2013;">
+<!ENTITY mdash "&#x2014;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY times "&#215;">
+<!ENTITY hellip "&#133;">
+<!-- Useful for describing APIs in the User Guide --><!ENTITY COPY '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+<!ENTITY CHECK '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="../common/figures/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]><section version="5.0" xml:id="technical-considerations-compute-focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>技术因素</title>
+    <para>在一个计算型OpenStack云中，已经部署的实例负载类型直接影响到技术的决策。举例，一个要求多个短时间运行的任务和一个要求长时间运行的任务是有着不同的需求的，尽管它们被认为都是“专注于计算“的。</para>
+    <para>无论是公有云还是私有云，都对确定的容量规划有需求，以支持动态的成长，这都是为满足用户预期的服务水平协议。确定容量规划是给定流程保持一贯的高性能的预测和费用的途径。此流程之所以重要是因为，当服务成为用户基础设施的不可或缺的一部分时，衡量一个服务的性能不再是其平均的速度，而是速度的一贯如此。</para>
+    <para>容量规划有两个方面的考虑因素：规划初始部署，规划扩张一定要保持领先用户的需求。</para>
+    <para>规划OpenStack初始化部署的典型做法是基于现有的基础设施负载和基于预期的占用。</para>
+    <para>其出发点是云计算的核心数量。通过相关的比例，用户可以收集有关信息：</para>
+    <itemizedlist>
+        <listitem>
+            <para>期望同时在线的实例数量：(超分配比例 x 核数)/每实例的虚拟核数</para>
+        </listitem>
+        <listitem>
+            <para>需要多大的存储：flavor 磁盘大小 x 实例数</para>
+        </listitem>
+    </itemizedlist>
+    <para>这些比例可用于计算支撑云需要增加的基础设施量，例如，考虑一个场景是，用户需要1600个实例，每个实例有2 vCPU和50GB存储，假设其使用默认的超分配比例 16:1，结果就可以利用如下数学公司计算出来：</para>
+    <itemizedlist>
+        <listitem>
+            <para>1600 = (16 × (number of physical cores)) / 2</para>
+        </listitem>
+        <listitem>
+            <para>storage required = 50 GB × 1600</para>
+        </listitem>
+    </itemizedlist>
+    <para>On the surface, the equations reveal the need for 200
+        physical cores and 80 TB of storage for
+        <filename>/var/lib/nova/instances/</filename>. However,
+        it is also important to
+        look at patterns of usage to estimate the load that the API
+        services, database servers, and queue servers are likely to
+        encounter.</para>
+    <para>举例，想一下下面二者之间的区别，一个是支持web托管平台的管理，另外一个是运行集成测试的，会在每次提交代码就会去创建一个实例。前者创建实例的大量工作仅在隔几个月才会发生，而后者会将大的负载不断的给云控制器。实例的生命周期必须被考虑，也就是说有充足的理由不要给云控制器那么大的工作负载。</para>
+    <para>除了创建和销毁实例之外，用户还需要考虑什么时候访问服务，特别是访问nova-api和其关联的数据库。列出实例亦需要处理大量的信息，以及有那些用户在指定的频率下运行此操作，一个云用户大量的用户会显著的增加负载。有时候，这些都在无意之下就发生了。例如，OpenStaclk GUI界面中的实例列表会在每30秒刷新一次，所以浏览器如果一直保持打开状态，就会产生意料之外的负载。</para>
+    <para>考虑这些因素可以帮助决定云控制器需要多少个核。一台拥有8CPU核和8GB内存的服务器，满足于上述的计算节点就绰绰有余。</para>
+    <para>关键的硬件规格也是确保用户实例的性能的指标。请确保考虑好预算和性能需求，包括存储性能 (spindles/core), 内存可用性 (RAM/core), 网络带宽 (Gbps/core), 以及整个的CPU性能 (CPU/core).</para>
+    <para>The cloud resource calculator is a useful tool in examining
+        the impacts of different hardware and instance load outs. It
+        is available at: <link xlink:href="https://github.com/noslzzp/cloud-resource-calculator/blob/master/cloud-resource-calculator.ods">https://github.com/noslzzp/cloud-resource-calculator/blob/master/cloud-resource-calculator.ods</link>
+    </para>
+    <section xml:id="expansion-planning-compute-focus">
+        <title>扩展计划</title>
+    <para>当规划扩展云的计算服务时面临一个关键的挑战，那就是云基础设施要求的弹性。在过去，新的用户或客户被强制计划，而且必须提前提出对基础设施的需求，然后进入采购流程。云计算时代的用户，按照他们所需要的，及时的获得资源。所以，这也意味着规划只能交付典型常规的使用，但是更为重要的是，能够经受的住突然来临的突破性的使用。</para>
+    <para>扩展规划是一个颇为微妙的平衡行为。规划过于保守会导致想不到的超额认购，还会导致用户很不满。规划过去激进又会导致没有有效利用云，以及资金花在了一个未被有效使用的运营基础设施上。</para>
+    <para>关键是认真的监测云运行时的使用量的高峰和低谷。目的是测量那些服务可以被无障碍的交付，并非什么平均速度或云的容量。基于此信息来模拟容量结果，确保用户更加准确的决定当前和未来的云的容量。</para></section>
+    <section xml:id="cpu-and-ram-compute-focus"><title>CPU 和内存</title>
+    <para>(Adapted from:
+        <link xlink:href="http://docs.openstack.org/openstack-ops/content/compute_nodes.html#cpu_choice">http://docs.openstack.org/openstack-ops/content/compute_nodes.html#cpu_choice</link>)</para>
+    <para>在当前的一代CPU,可以达到12个核，如果是英特尔CPU支持超线程的话，核还翻倍到24个。如果购买的服务器支持多CPU的话，核的数量则是再乘以CPU的个数。超线程技术是英特尔模拟多线程的实现，用于改善CPU的并行处理能力。打开超线程可以改善多线程程序的性能。</para>
+    <para>用户是否打开CPU的超线程取决于用户实际情况。举例来说，关闭超线程有利于密集型的计算环境。分别在打开和关闭超线程的情况下运行本地负载，对之做性能测试，可以有助于对任何的情况作出更加恰当的决定。</para>
+    <para>如果用例中使用的驱动是 Libvirt/KVM hypervisor的话，计算节点中的CPU必须支持虚拟化才能提供完整的性能表现，在英特尔的CPU芯片中是 VT-x扩展，在AMD的CPU芯片中是AMD-v扩展。</para>
+    <para>OpenStack支持在计算节点中使用CPU和内存超分配。这将允许在云中运行更多的实例，可在某种程度上降低成本。OpenStack计算默认使用下面的超分配比例：</para>
+    <itemizedlist>
+        <listitem>
+            <para>CPU 超分配比例: 16:1</para>
+        </listitem>
+        <listitem>
+            <para>RAM 超分配比例: 1.5:1</para>
+        </listitem>
+    </itemizedlist>
+    <para>默认的CPU超分配比例是16:1,这意味着调度器可以为每个物理核分配16个虚拟核。举例来说，如果物理节点有12个核，调度器就拥有192个虚拟核。在典型的flavor定义中，每实例4个虚拟核，那么此超分配比例可以在此物理节点上提供48个实例。</para>
+    <para>同样的，默认的内存超分配比例是1.5:1，这意味着调度器为实例分配的内存总量要少于物理节点内存的1.5倍。</para>
+    <para>举例来说，如果一台物理节点有48GB的内存，调度器为实例分配的内存总量要少于72GB(如果每个实例分配了8GB内存的话，此节点可建立9个实例)。</para>
+    <para>基于特定的用例必须选择合适的CPU和内存分配比例。</para></section>
+    <section xml:id="additional-hardware-compute-focus">
+      <title>额外的硬件</title>
+    <para>在计算节点中使用一些额外的设备对于某些用例有着显著的益处。举几个常见的例子：</para>
+    <itemizedlist>
+        <listitem>
+            <para>使用图形处理单元(GPU)，可大大有益于高性能计算任务。</para>
+        </listitem>
+    </itemizedlist>
+    <itemizedlist>
+        <listitem>
+            <para>Cryptographic routines 受益于硬件随机数生成器，以避免entropy starvation。</para>
+        </listitem>
+        <listitem>
+            <para>给临时存储使用SSD硬盘，可大大有益于数据库管理系统，可加速其读写速度。</para>
+        </listitem>
+    </itemizedlist>
+    <para>主机聚合是用于一组共享相似特性的主机，其中包括硬件的相似性。在一个云部署中增加特殊的硬件，其实会给每个节点增加开销。所以仔细的考虑好是否给所有的硬件都增加，或者是为那些有需要的创建单独的flavor，使用这些flavor的实例运行在定制过的计算主机中。</para></section>
+    <section xml:id="utilization"><title>量力而行</title>
+    <para>基础设施即服务所提供的，包括OpenStack，使用类型来提供标准的虚拟机资源需求视图，为分配实例时能够充分利用可用的物理资源提供了简单的解决办法。</para>
+    <para>为了便利的填充虚拟机到物理主机中，默认的类型选择的结构是，在每一个尺寸中最大的类型比次之的类型大一倍。一倍的vCPU,一倍的内存，以及一倍的临时磁盘空间。次大的再比再次大的大一倍，以此类推。为通用型计算填充一个服务器的概念看起来结果就是类似这个示意图 ：<mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Compute_Tech_Bin_Packing_General1.png"/>
+        </imageobject>
+    </mediaobject> </para>
+    <para>另一方面，为CPU优化的填充的服务器看起来如下图所示：<mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Compute_Tech_Bin_Packing_CPU_optimized1.png"/>
+        </imageobject>
+    </mediaobject></para>
+    <para>这些默认的类型非常适合于典型的为商业服务器硬件负载。欲最大化的利用，就有必要定制类型或者干脆建议一个新的，为可用的硬件更好的调整实例的大小。</para>
+    <para>负载的特点常会影响到硬件的选择和实例类型的配置，尤其是他们有不同的CPU、内存、硬盘的比例需求。</para>
+    <para>For more information on Flavors refer to:
+        <link xlink:href="http://docs.openstack.org/openstack-ops/content/flavors.html">http://docs.openstack.org/openstack-ops/content/flavors.html</link></para>
+    </section>
+    <section xml:id="performance-compute-focus"><title>性能</title>
+    <para>云的基础设施不应该被共享，因为有可能发生资源不足的情形，所以要保证资源的可用并能用于负载，而且备用于提供有朝一日的大规模扩展。</para>
+    <para>批处理的持续时间取决于启动的分离任务。时间限制区间可以是秒，可以是分钟，也可以是小时，这样的结果就是增加了考虑的难度，比如预测什么时候资源会被使用？使用多久？那些资源会被用到？</para>
+    </section>
+    <section xml:id="security-compute-focus"><title>安全性</title>
+    <para>此场景下的安全因素需求和本书中其它场景所探讨的是类似的。</para>
+    <para>一个安全域在一个系统下包括让用户、应用、服务器和网络共享通用的信任需求和预期。典型情况是他们有相同的认证和授权的需求和用户。</para>
+    <para>这些安全域有：</para>
+    <orderedlist>
+        <listitem>
+            <para>公有</para>
+        </listitem>
+        <listitem>
+            <para>客户机</para>
+        </listitem>
+        <listitem>
+            <para>管理</para>
+        </listitem>
+        <listitem>
+            <para>数据</para>
+        </listitem>
+    </orderedlist>
+    <para>这些安全域可以映射给分开的OpenStack部署，也可以是合并的。例如，一些部署的拓扑合并了客户机和数据域在同一物理网络，其他一些情况的网络是物理分离的。无论那种情况，云运维人员必须意识到适当的安全问题。安全域须制定出针对特定的OpenStack部署拓扑。所谓的域和其信任的需求取决于云的实例是公有的，私有的，还是混合的。</para>
+    <para>公有安全域对于云基础设施是完全不可信任的区域。正如将内部暴露给整个互联网，或者是没有认证的简单网络。此域一定不可以
+被信任。</para>
+    <para>典型的用户计算服务中的实例对实际的互联互通，客户安全域，在云中掌握着由实例生成的计算机数据，但是不可以通过云来访问，包括应用程序接口调用。公有云或私有云提供商不会严格的控制实例的使用，以及谁受限访问互联网，所以应指定此域是不可信任的。或许私有云提供商可以稍宽松点，因为是内部网络，还有就是它可以控制所有的实例和租户。</para>
+    <para>管理安全域即是服务交互的集中地，想一下“控制面板”，在此域中网络传输的都是机密的数据，比如配置参数、用户名称、密码等。多数部署此域为信任的。</para>
+    <para>数据安全域主要关心的是OpenStack存储服务相关的信息。多数通过此网络的数据具有高度机密的要求，甚至在某些类型的部署中&gt;，还有高可用的需求。此网络的信任级别高度依赖于其他部署的决定。</para>
+    <para>在一个企业部署OpenStack为私有云，通常是安置在防火墙之后，和原来的系统一并认为是可信任网络。云的用户即是原来的员工，由公司本来的安全需求所约束。这导致推动大部分的安全域趋向信任模式。但是，当部署OpenStack为面向公用的角色时，不要心存侥幸，它被攻击的几率大大增加。例如，应用程序接口端点，以及其背后的软件，很容易成为一些坏人下手的地方，获得未经授权的访问服务或者阻止其他人访问正常的服务，这可能会导致丢失数据、程序失效，乃至名声。这些服务必须被保护，通过审计以及适当的过滤来实现。</para>
+    <para>无论是公有云还是私有云，管理用户的系统必须认真的考虑。身份认证服务允许LDAP作为认证流程的一部分。包括将LDAP在部署时整合用户原有系统的话，可减少管理用户的压力。</para>
+    <para>理解用户的认证需要一些敏感信息如用户名、密码和认证令牌是非常重要的。基于这个原因，强烈建议将认证的API服务隐藏在基&gt;于硬件的SSL终端之后。</para>
+    <para>More information on OpenStack Security can be found
+        at <link xlink:href="http://docs.openstack.org/security-guide/">http://docs.openstack.org/security-guide/</link></para>
+    </section>
+    <section xml:id="openstack-components-compute-focus">
+      <title>OpenStack 组件</title>
+    <para>由于在计算型云场景中使用的负载的性质，很多组件都会用的到。下面是典型的OpenStack组件：</para>
+    <itemizedlist>
+        <listitem>
+            <para>OpenStack 计算(nova)</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack 镜像服务(glance)</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack 认证(keystone)</para>
+        </listitem>
+    </itemizedlist>
+    <para>也会考虑一些特别的组件：</para>
+    <itemizedlist>
+        <listitem>
+            <para><glossterm>Orchestration</glossterm> 模块 (<glossterm>heat</glossterm>)</para>
+        </listitem>
+    </itemizedlist>
+    <para>可以很安全的假定，在此场景中给定应用的性质，这些将是非常高度自动化的部署。在此类用例中Orchestration可以大显身手。批量部署实例、自动化运行测试单元脚本化，都可以使用Orchestration来掌控。</para>
+    <itemizedlist>
+        <listitem>
+            <para>Telemetry 模块 (ceilometer)</para>
+        </listitem>
+    </itemizedlist>
+    <para>使用Orchestration支持自动扩展实例离不开Telemetry和预警系统。用户不部署Telemetry模块就无法使用Orchestration模块，也许选择使用其他的解决方案来满足计费和监测的需求。</para>
+    <para>See also:
+        <link xlink:href="http://docs.openstack.org/openstack-ops/content/logging_monitoring.html">http://docs.openstack.org/openstack-ops/content/logging_monitoring.html</link></para>
+    <itemizedlist>
+        <listitem>
+            <para>OpenStack 块存储(cinder)</para>
+        </listitem>
+    </itemizedlist>
+    <para>在计算型云中主要使用的是内存和CPU，因为其面向批处理等服务，其负载、应用、实例都是围绕此而存在，所以为每个实例增加存储并非是强制的。但这并不意味着OpenStack 块存储(cinder)不会在基础设施中使用，只是不会当作核心组件罢了。</para>
+    <itemizedlist>
+        <listitem>
+            <para>网络</para>
+        </listitem>
+    </itemizedlist>
+    <para>当选择网络平台时，要确保其可正常工作在所有的hypervisor和容器技术下，以及OpenStack的driver,后者ML2机制driver的实现。网络平台可以提供ML2机制driver的混合。</para></section>
+</section>

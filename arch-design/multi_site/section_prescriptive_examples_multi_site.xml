@@ -1,0 +1,127 @@
+<?xml version="1.0" ?><!DOCTYPE section [
+<!ENTITY % openstack SYSTEM "../../common/entities/openstack.ent"> %openstack;
+<!-- The master of this file is in openstack-manuals repository, file
+     doc/common/entities/openstack.ent.
+     Any changes to the master file will override changes in other
+     repositories. --><!-- Some useful entities borrowed from HTML --><!ENTITY ndash "&#x2013;">
+<!ENTITY mdash "&#x2014;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY times "&#215;">
+<!ENTITY hellip "&#133;">
+<!-- Useful for describing APIs in the User Guide --><!ENTITY COPY '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+<!ENTITY CHECK '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="../common/figures/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]><section version="5.0" xml:id="prescriptive-example-multisite" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>示例</title>
+    <para>基于所需要专注的负载，构建多区域OpenStack安装有好几种办法。下面的架构例子基于不同的需求，这些例子仅仅用作参考，对于部署不是硬性和快速的规则。使用前面本章前几节来帮助基于特殊的需求选择特定的组件和实现。</para>
+    <para>一个大型的内容提供商需要为分散在不同地理位置的客户交付内容，此负载对延迟极为敏感，而且还得快速响应最终用户。经过用户的回顾，技术和运营的考虑，最后决定构建有利于本地客户边缘的几个region，在此用例中，没有选择构建几个大型的、中心化的数据中心，而是架构的意图很明确，在接近最终用户的地方提供几个小型的数据中心，在此用例中，取代传统计算负载扩展的方式，而使用不同的横向扩展快速扩充应用，为了确保用户需求的快速响应时间，为贴近用户最迫切的需求，专注于通过创建更多应用的复制的扩展。此供应商会在每4个所选择的region部署两个数据中心，此设计的实现是围绕这每个远端的region复制资源的方法。Swift对象存储服务，Glance镜像服务，以及块存储在每个region都需要手动的复制，这也许有利于一些系统，比如内容服务的用例，他们的一些内容仅出现在部分而不是全部的region。建议建立一个中心化的Keystone，确保认证服务和API端点访问可轻松管理。</para>
+    <para>强烈建议安装一个自动的DNS系统，比如Designate。除非有外部的动态DNS系统可用，应用管理员会需要一个管理办法，在每个region中映射那个应用复制出现以及如何访问它们。Desginate将会将这些流程自动化，而且会填充记录到每个region的区。</para>
+    <para>Telemetry也会部署到每个region中，虽然每个region的增长可能不一样或者使用的频率也不同。Ceilometer将运行在每个region中的监测数据，然后回报到中心地点。这在OpenStack环境中对于最终用户也好，对于系统管理员也好，都有很大的用处，使最终用户根据某些局部的负载高于其他地方做出决定而成为可能，然后采取相应的措施。使系统管理员在每个region预测增长成为可能，而不是去盲目的同等看待所有region而去扩展它们，因此对于多区域设计是最大化的节省资源。</para>
+    <para>运行此类基础设施的一个关键决定是是否提供冗余模式。在此配置中有两类冗余和高可用模式需要被实现。第一类围绕中心化OpenStack组件的可用性，Keystone会基于三个中心化的数据中心而形成高可用，而成为中心化的OpenStack组件。这会防止任何的region失效而导致服务不可用。这也会为在每个region运行着中央存储仓库作为主要缓存，用于分发内容，带来额外的好处。</para>
+    <para>第二类容易是边缘数据中心本身。在每个边缘region地带的第二个数据中心会在靠近第一个region边上承载起第二个region的功用。这确保应用不会遭受延迟和可用性方面的性能下降。</para>
+    <para>此示意图描述所设计的解决方案，同时拥有一个为OpenStack服务的中心化的核心数据中心和两个边缘化的数据中心：</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Multi-Site_Customer_Edge.png"/>
+        </imageobject>
+    </mediaobject>
+    <section xml:id="geo-redundant-load-balancing">
+      <title>地理冗余负载均衡</title>
+    <para>在脑子里想着一个大型扩展的web应用被设计为遵循云的原则。应用被设计为在应用商店中7*24的提供服务，公司拥有典型的2层架构，前端是用户需求的web服务，后端是用NoSQL数据库存放信息。</para>
+    <para>As of late there has been several outages in number of major
+        public cloud providers—usually due to the fact these
+        applications were running out of a single geographical
+        location. The design therefore should mitigate the chance of a
+        single site causing an outage for their business.</para>
+    <para>解决方案将由下列OpenStack组件组成：</para>
+    <itemizedlist>
+        <listitem>
+            <para>防火墙、交换机、以及负载均衡设备在公网中直接面向全网的连接。</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack Controller services running, Networking,
+                dashboard, Block Storage and Compute running locally in
+                each of the three regions. The other services,
+                Identity, Orchestration, Telemetry, Image Service and
+                Object Storage will be
+                installed centrally—with nodes in each of the region
+                providing a redundant OpenStack Controller plane
+                throughout the globe.</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack计算节点运行着KVM的hypervisor。</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack对象存储为静态内容提供服务，例如图片，确保所有的图片都通过标准化的存于所有的region，且使用定期复制。</para>
+        </listitem>
+        <listitem>
+            <para>A Distributed DNS service available to all
+                regions—that allows for dynamic update of DNS records of
+                deployed instances.</para>
+        </listitem>
+        <listitem>
+            <para>基于地理位置的负载均衡服务用于顾客过去使用的需求。</para>
+        </listitem>
+    </itemizedlist>
+    <para>在三个region中都使用自动伸缩heat模板来部署应用。此模板包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>Web服务，运行 Apache。</para>
+        </listitem>
+        <listitem>
+            <para>当实例启动时，中心DNS服务器会填写合适的<literal>user_data</literal>。</para>
+        </listitem>
+        <listitem>
+            <para>正确的Telemetry警告，维护着应用的状态且允许掌控region或实例失效。</para>
+        </listitem>
+    </itemizedlist>
+    <para>Another autoscaling Heat template will be used to deploy a
+        distributed MongoDB shard over the three locations—with the
+        option of storing required data on a globally available swift
+        container. according to the usage and load on the database
+        server—additional shards will be provisioned according to
+        the thresholds defined in Telemetry.</para>
+    <para>这里选择三个region的原因是由于担心偶然的异常负载在单个region会引发失效。两个数据中心足够可以满足需求。</para>
+    <para>Orchestration is used because of the built-in functionality of
+        autoscaling and auto healing in the event of increased load.
+        Additional configuration management tools, such as Puppet or
+        Chef could also have been used in this scenario, but were not
+        chosen due to the fact that Orchestration had the appropriate built-in
+        hooks into the OpenStack cloud—whereas the other tools were
+        external and not native to OpenStack. In addition—since this
+        deployment scenario was relatively straight forward—the
+        external tools were not needed.</para>
+    <para>
+        OpenStack Object Storage is used here to serve as a back end for
+        the Image Service since was the most suitable solution for a
+        globally distributed storage solution—with its own
+        replication mechanism. Home grown solutions could also have
+        been used including the handling of replication—but were not
+        chosen, because Object Storage is already an intricate part of the
+        infrastructure—and proven solution.</para>
+    <para>一个额外的负载均衡服务将被使用，而不是OpenStack的LBaaS,因为OpenStack的LBaaS在OpenStack中不是冗余的解决方案而且不具有地理位置的任何特征。</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Multi-site_Geo_Redundant_LB.png"/>
+        </imageobject>
+    </mediaobject></section>
+    <section xml:id="location-local-services"><title>本地服务</title>
+    <para>多区域OpenStack部署常见的一个场景是创建内容分发网络CDN，一个应用使用本地架构会有低网络延迟和接近用户的需求，为了提供给用户极致的体验，为了减少带宽和传送的费用，因此将内容输送到更加接近客户，而替代中心化的内容存储这种需要跨国连接的高额费用。</para>
+    <para>此架构通常包括一个放置在最接近节点的用户需求的地理位置组件。在此场景下，目标是跨所有站点的100%冗余，已经不是一个需求，意图是为任何指定的最终用户有最大化内容可用，最小的网络hop跳数。尽管他们不一样，存储冗余配置和地理位置冗余负载均衡用例有明显的重叠。</para>
+    <para>在此例中，应用利用此多区域OpenStack基于位置敏感的安装，在每个站点的计算集群中启动web服务和内容服务的实例，来自客户的请求会第一时间发送到全局服务负载均衡器，然后负载均衡器会决定客户的位置，当应用完成请求，路由会将请求发给最近的OpenStack站点。</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Multi-Site_shared_keystone1.png"/>
+        </imageobject>
+    </mediaobject></section>
+</section>

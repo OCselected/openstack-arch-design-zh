@@ -1,0 +1,116 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="prescriptive-example-storage-focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>示例</title>
+    <para>存储型的架构十分依赖于明确的应用场景。本节讨论了三种不同使用场景的例子</para>
+      <itemizedlist>
+        <listitem>
+          <para>一个带有 RESTful 接口的对象存储</para>
+        </listitem>
+        <listitem>
+          <para>使用并行文件系统的计算分析</para>
+        </listitem>
+        <listitem>
+          <para>高性能数据库</para>
+        </listitem>
+      </itemizedlist>
+    <para>本例描绘了没有高性能需求的 REST 接口。</para>
+    <para>Swift 是一个高度可扩展的对象存储，同时它也是 OpenStack 项目中的一部分。以下是说明示例架构的一幅图示：<mediaobject>
+          <imageobject>
+              <imagedata contentwidth="4in" fileref="../figures/Storage_Object.png"/>
+          </imageobject>
+      </mediaobject></para>
+    <para>所展现的 REST 接口不需要一个高性能的缓存层，并且被作为一个运行在传统设备
+上的传统的对象存储抛出。</para>
+    <para>此例使用了如下组件：</para>
+    <para>网络：</para>
+    <itemizedlist>
+        <listitem>
+            <para>10 GbE 可水平扩展的分布式核心后端存储及前端网络。</para>
+        </listitem>
+    </itemizedlist>
+    <para>存储硬件：</para>
+    <itemizedlist>
+        <listitem>
+            <para>10 台存储服务器，每台拥有 12x4 TB 磁盘，一共 480 TB 的总空间，使用复制的配置之后，大约为 160 TB 的可用空间。</para>
+        </listitem>
+    </itemizedlist>
+    <para>代理：</para>
+    <itemizedlist>
+        <listitem>
+            <para>3x 代理</para>
+        </listitem>
+        <listitem>
+            <para>2x10 GbE 绑定的前端</para>
+        </listitem>
+        <listitem>
+            <para>2x10 GbE 后端绑定</para>
+        </listitem>
+        <listitem>
+            <para>到后端存储集群大约 60 Gb 的总带宽</para>
+        </listitem>
+    </itemizedlist>
+      <note>
+        <para>对于一些应用来说，可能需要引入第3方的缓存层以实现合意的性能。</para>
+      </note>
+
+  <section xml:id="compute-analytics-with-sahara">
+    <title>带数据处理服务的计算分析</title>
+  <para>对大规模数据集的分析十分依赖于存储系统的性能。有些云使用类似Hadoop分布式文件系统 (HDFS) 的低效存储系统，可能会引起性能问题。</para>
+  <para>这个问题的一个解决方案是部署一个设计时便将性能考虑在内的存储系统。传统上来说，并行文件系统填补了 HPC 空间里的这个需要，在适用的时候，可以作为大规模面向性能的系统的一个备份的方案考虑。</para>
+  <para>OpenStack 通过数据处理项目Sahara与 Hadoop 集成。该项目被用以在云中管理 Hadoop 集群。此示意图展示了OpenStack作为高性能存储的需求：<mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Storage_Hadoop3.png"/>
+        </imageobject>
+    </mediaobject></para>
+  <para>实际的硬件需求以及配置与下面的高性能数据库例子相似。在这个场景中，采用的架构使用了 Ceph 的 Swift 兼容 REST 接口，以及允许连接至一个缓存池以加速展现出来的池的特性。</para>
+  </section>
+
+  <section xml:id="high-performance-database-with-trove">
+    <title>带数据库服务的高性能数据库</title>
+  <para>数据库是一种常见的能够从高性能数据后端中获益的负载。尽管企业级的存储并不在需求中，很多环境都已经拥有能够被用作 OpenStack 云后端的存储。如下图中所示，可以划分出一个存储池出来，使用 OpenStack 块存储向实例提供块设备，同样也可以提供对象存储
+接口。在这个例子中，数据库的 I-O 需求非常高，所需的存储是从一个高速的 SSD 池中抛出来的。</para>
+  <para>一个存储系统被用以抛出 LUN，其后端由通过使用传统的存储阵列与 OpenStack 块存储集成的一系列的 SSD 所支撑，或者是一个类似于 Ceph 或者 Gluster 之类的存储平台。</para>
+  <para>这种类型的系统也能够在其他场景下提供额外的性能。比如说，在下面的数据库例子中，SSD 池中的一部分可以作为数据库服务器的块设备。在高性能分析的例子中，REST 接口将会被内联的 SSD 缓存层所加速。</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Storage_Database_+_Object5.png"/>
+        </imageobject>
+    </mediaobject>
+    <para>选用 Ceph 以抛出 Swift 兼容的 REST 接口，同样的也从一个分布式的存储集群中提供了块级别的存储。Ceph 非常的灵活，并且具有能够降低运营成本的许多特性，比如说自动修复以及自动平衡。Ceph 中的 erasure coded 池被用以最大化可用空间的量。</para>
+      <note>
+        <para>请注意关于 erasure coded 池的使用有特殊的考虑因素，比如说，更高的计算要求以及对象上所允许的操作限制。另外，部分写入在 erasure coded 的池中也不被支持。</para>
+      </note>
+    <para>跟上面的例子相关的 Ceph 的一个可能架构需要如下组件：</para>
+    <para>网络：</para>
+    <itemizedlist>
+        <listitem>
+            <para>10 GbE 可水平扩展的分布式核心后端存储及前端网络。</para>
+        </listitem>
+    </itemizedlist>
+    <para>存储硬件：</para>
+    <itemizedlist>
+        <listitem>
+            <para>5 台作为缓存池的存储服务器，每台 24x1 TB SSD</para>
+        </listitem>
+        <listitem>
+            <para>10 台存储服务器，每台拥有 12x4 TB 磁盘，一共 480 TB 的总空间，使用 3 份复制的配置之后，大约为 160 TB 的可用空间。</para>
+        </listitem>
+    </itemizedlist>
+    <para>REST 代理：</para>
+    <itemizedlist>
+        <listitem>
+            <para>3x 代理</para>
+        </listitem>
+        <listitem>
+            <para>2x10 GbE 绑定的前端</para>
+        </listitem>
+        <listitem>
+            <para>2x10 GbE 后端绑定</para>
+        </listitem>
+        <listitem>
+            <para>到后端存储集群大约 60 Gb 的总带宽</para>
+        </listitem>
+    </itemizedlist>
+    <para>SSD 缓存层被用以直接向宿主机或者实例抛出块设备。SSD 缓存系统也能够被用作 REST 接口的内联缓存。</para>
+  </section>
+</section>

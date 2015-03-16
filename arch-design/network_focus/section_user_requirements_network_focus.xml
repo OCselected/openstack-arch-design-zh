@@ -1,0 +1,94 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="user-requirements-network-focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>用户需求</title>
+    <para>网络型的架构不同于通用设计。这种架构在很大程度上受到特定的受网络影响较大的应用子集所影响。一些可能影响此种设计的商业需求包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>用户体验：缓慢的网页载入、低速的视频流传输以及低质量的 VoIP 会话，这些都是网络延迟影响用户体验的方式。而通常用户并不知道网络的设计和架构究竟是如何影响到他们的体验的。企业客户和终端用户都依赖于使用网络来使用他们的应用。网络的性能问题可能造成终端用户的不良体验，同样的，也会造成生产力和经济上的损失。</para>
+        </listitem>
+        <listitem>
+            <para>监管上的需求：网络设计需要考虑对于在网络上传输的数据的具体物理位置的管理需求。举个例子，加拿大的医疗记录是不能够传输到加拿大主权领土范围之外的。另一个值得考虑的因素是维护私有数据流的网络隔离和确保在有必要的情况下云端之间的网络是加密的。由于数据会经过各种各样的网络进行传输，对这些传输数据的加密和保护这一类的监管需求将会影响网络架构的设计。</para>
+        </listitem>
+    </itemizedlist>
+    <para>很多辖区对于云环境中的数据的保管及管理都有相关的法律上或者监管上的要求。这些规章的常见领域包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>确保持久化数据的保管和记录管理以符合数据档案化需求的数据保留政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理数据的所有权和责任的数据所有权政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理位于外国或者其它辖区的数据存储问题的数据独立性政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理由于监管上的问题因而数据必须存放在特定的地点或者更重要的，由于相同的原因，数据不能够存放在其它地点的数据管理政策。</para>
+        </listitem>
+    </itemizedlist>
+    <para>Examples of such legal frameworks include the data
+        protection framework of the European Union (<link xlink:href="http://ec.europa.eu/justice/data-protection/">http://ec.europa.eu/justice/data-protection/</link>)
+        and the requirements of the Financial Industry Regulatory
+        Authority (<link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules">http://www.finra.org/Industry/Regulation/FINRARules</link>)
+        in the United States. Consult a local regulatory body for more
+        information.</para>
+    <section xml:id="high-availability-issues-network-focus">
+      <title>高可用问题</title>
+    <para>对于网络有着高需求的 OpenStack 部署，也可能有着由具体应用和使用场景所确定的对高可用的需求。金融交易系统相对于用于进行开发的应用来说，对高可用有着更高的要求。网络可用性的状态，例如服务质量(QoS)机制，能够被用于提高诸如 VoIP 和视频流传输这一类敏感应用的网络性能。</para>
+    <para>通常来说，高性能系统有对能够保证启动时间、延迟以及带宽的最小服务质量的 SLA 要求。SLA 的级别会在很大程度上影响网络架构以及对整个系统中冗余的要求。</para></section>
+    <section xml:id="risks-network-focus">
+      <title>风险</title>
+      <variablelist>
+        <varlistentry>
+          <term>错误的网络配置</term>
+          <listitem>
+            <para>配置了错误的 IP 地址、VLAN 或者路由可能引起网络中的某个区域，或者，在最坏的情况下，整个网络无法正常工作。错误的配置可能引起破坏性的问题，因此配置应该被自动化以使得发生操作错误的机会最小化。</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>容量计划</term>
+          <listitem>
+            <para>必须对云网络的容量和随着时间的增长进行管理，这其中存在一个风险是网络的增长可能不足以支持负载的增长。关于容量的计划，包括购买新的网络线路和硬件，可能需要几个月甚至更多地时间。</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>网络调优</term>
+          <listitem>
+            <para>必须对云网络进行相应的配置以最小化链路失效、丢包、封包风暴、广播风暴以及环路等发生的可能。</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>单点故障(SPOF)</term>
+          <listitem>
+            <para>甚至在物理层面以及环境层面上也需要考虑高可用。假如由于只有一条上行链路或者只有一个电源而发生单点故障，系统故障将无法避免。</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>复杂性</term>
+          <listitem>
+            <para>一个过于复杂的网络设计将使得维护和解决问题变得困难。虽然使用能够处理覆盖网络级别或者设备级别的配置的自动化工具可以减轻这个困难，在功能之间以及专门的设备之间的非传统连接需要被很好的文档化或者直接避免使用这些连接以防止故障发生。</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>非标准特性</term>
+          <listitem>
+            <para>对网络进行配置使得能够获益于某厂商提供的非标准特性可能带来额外的风险。一个例子是用以在网络的聚合交换机层面上提供冗余的多链路聚合(MLAG)技术。MLAG 并非一个标准，因此，每家厂商都有其专利的对该特性的实现。MLAG 架构在不同交换机厂商之间无法彼此协作，这使得对厂商的选择受到限制，也可能在升级零件时引起延迟或者无法工作。</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+    <section xml:id="security-network-focus"><title>安全性</title>
+    <para>安全性因素常被忽略，或者在设计被具体实施之后才添加到其中去。必须在设计物理的和逻辑的网络拓扑之前就考虑安全性相关的因素和要求。需要解决的问题包括确定网络被适当地进行隔离，以及流量能够发送到正确的目的地而不用穿过不必要的地方。需要考虑的因素的一些例子如下：</para>
+    <itemizedlist>
+        <listitem>
+            <para>防火墙</para>
+        </listitem>
+        <listitem>
+            <para>覆盖网络之间的相互连接以连接分离的租户网络</para>
+        </listitem>
+        <listitem>
+            <para>使路由通过或者避免通过某个特定网络</para>
+        </listitem>
+    </itemizedlist>
+    <para>另一个需要考虑的安全性弱点是网络应该如何被附加到宿主机之上。假如一个网络无论如何都需要与其他的系统隔离开来，那么就有可能需要调度该网络上的实例至专用的计算节点之上。这也可能用以避免从中转实例利用宿主机进行突破从而使得攻击者能够进入其它网络。</para>
+    </section>
+</section>

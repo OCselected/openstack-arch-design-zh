@@ -1,0 +1,71 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="prescriptive-example-large-scale-web-app" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>示例</title>
+    <para>一个大型的 web 应用被以能够在云中运行的想法设计出来。该应用被设计为能够以爆炸性的速度横向扩展并且会产生大量的实例。该应用要求一个 SSL 连接以保护数据安全并且要求不能够丢失到单独服务器的连接状态。</para>
+    <para>这类型负载的示例设计如下图所示。在这个例子中，硬件负载均衡器被配置成为提供 SSL 功能并且连接至租户网络以减少地址的消耗。由于其将为应用提供虚拟 IP，负载均衡器被连接至路由架构。路由器和负载均衡器都以应用的租户网络的 GRE 隧道 ID 进行配置并且都配置有属于租户子网之中但是在地址池之外的 IP 地址。这确保了负载均衡器能够在不需要使用公有 IP 地址的情况下，与应用的 HTTP 服务器进行通信。</para>
+    <para>由于在会话关闭之前其将一直存在，路由和交换架构必须面向高可用进行设计。交换机和宿主机以及交换机之间组成网状结构，并且使用了 MLAG 以确保二层网络连接不会发生故障。路由器使用 VRRP 进行配置并且与交换机充分地组成网状结构以保证三层网络的连接。由于 GRE 技术作为一个覆盖网络被使用，联网方式被部署并配置成使用选择 GRE 隧道模式的 Open vSwitch 代理程序。这保证了所有的设备都能够连接到其它设备上，并且能够为使用私有地址到负载均衡器的连接创建租户网络。<mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Network_Web_Services1.png"/>
+        </imageobject>
+    </mediaobject></para>
+    <para>web 服务的架构有很多选择，也有很多可选的组件。因此，这种架构也能够符合其它大量的 OpenStack 设计。然而，一些关键的组件还是需要存在以处理与大多数 web 类型应用具有相类似特点的工作。用户需要以下的组件：</para>
+    <itemizedlist>
+        <listitem>
+            <para>OpenStack 控制服务(镜像服务、认证服务、网络服务以及例如 MariaDB 和 RabbitMQ 之类的支撑服务)</para>
+        </listitem>
+        <listitem>
+            <para>运行着 KVM 宿主机的 OpenStack 计算服务</para>
+        </listitem>
+        <listitem>
+            <para>OpenStack 对象存储</para>
+        </listitem>
+        <listitem>
+            <para>编排模块</para>
+        </listitem>
+        <listitem>
+            <para>计量模块</para>
+        </listitem>
+    </itemizedlist>
+    <para>在通常的认证、计算、镜像服务以及对象存储组件之外，还推荐使用编排模块以正确处理将系统根据需求进行扩展的操作。由于有自动调节规模大小的需要，此设计也使用了计量模块。web 服务在负载上通常都是不连续的，并且有着非常明确的峰值和谷值的用量特征，因此能够获益于根据网络用量自动调节实例数目大小。在网络层面上，分离的网络的结构能很好地应对位于私有租户网络上的数据库，因为这些不会引起大量的广播流量，而且可能需要连接至一些数据库获取内容。</para>
+    <section xml:id="load-balancing">
+      <title>负载均衡</title>
+    <para>在这个设计中，使用了负载均衡技术来使请求分布至多个实例。这能够很好的横向扩展至大量的实例。这使得实例不需要能够公开路由到的地址便可以运行，并且仅仅依赖于负载均衡器来使得服务在任何地方都可用。很多这类型的服务都不要求服务器直接返回。这同时简化了地址的计划以及在调节规模时对地址的利用，因为只有虚拟 IP (VIP)需要在公网上。</para></section>
+
+    <section xml:id="overlay-networks">
+      <title>覆盖网络</title>
+      <para>覆盖网络功能的设计包括了使用 Open vSwitch GRE 隧道模式的 OpenStack 联网方式。在这个例子中，三层网络通往外部的路由器使用 VRRP 结对，交换机也应该使用一个具体的 MLAG 实现进行结对，从而保证了到上游路由设施的连接不会丢失。</para>
+    </section>
+    <section xml:id="performance-tuning">
+      <title>性能调优</title>
+    <para>这类型负载在网络层面上的调整是很小的。服务质量将根据已经确定的策略被应用于此类型的负载之上形成一个中性的类别选择器，高于尽力而为型的队列但低于加速转发或者保证转发型的队列。由于这类型的应用将产生更大的包和存在时间更长的连接，对于带宽的利用可以针对持续时间较长的 TCP 连接进行优化。常用的带宽计划，即通过测定一个会话的使用量乘以预期将同时进行的会话数目并加上其他开销来进行判断的方式，在这里可以派上用场。</para></section>
+    <section xml:id="network-functions">
+      <title>网络功能</title>
+    <para>网络功能的话题比较宽泛，但通常是指围绕在为系统的其他部分的网络提供支持的目的的工作。这类网络负载通常都是由大量的存活期比较短的小网络包组成的，例如 DNS 请求或者 SNMP 陷阱等。这类消息需要很快地到达并且由于可能非常大量而不关注丢包的问题。这类型的负载还有一些额外的考虑因素需要顾及，并且可能改变直到宿主机级别的网络配置。假设一个应用为每个用户生成 10 个 TCP 会话，每个数据流的速度平均是 512 Kbps，而预期用户的数量是 1 万个用户同时使用，预期总计的带宽计划将达到大约 4.88 Gbps。</para>
+    <para>此类型配置的支撑网络需要具备低延迟和均匀分布流量的能力。在使用这些服务的用户本地部署这些服务是较好的。通过部署相当多的应用副本来尽可能在更加靠近客户的地方处理客户的需求的多站点部署方法也常被使用。由于此类型的应用可以独立工作，它们并不需要使用覆盖网络去连接租户网络。在这种情况下使用覆盖网络也有其缺点，即是由于频繁的进行流规则的设置而引起的性能不加，另外在很大量的小网络包传输的情况下也会造成太多的额外开销，因此并不推荐使用。</para>
+    <para>对于一些情形来说，QoS 是有必要的，以保证数据的发送。DNS 查询对于其他服务的加载时间有比较大的影响，因此必须可靠并且能够提供快速的响应。因此需要在上游的网络设备上配置规则将 DNS 查询数据通过类型选择器设置为更高的优先级以保证快速转发，或者使其在队列算法中占据更佳的位置。</para></section>
+    <section xml:id="cloud-storage">
+      <title>云存储</title>
+    <para>另一个常见的 OpenStack 环境的应用场景是提供云端的文件存储和共享服务。您可能认为这是一个存储型的场景，但是其在网络方面的需求确实使得其成为一个网络型的场景。</para>
+    <para>举个例子，想象一下一个云备份应用。这种类型的负载有两个明确的行为将对网络产生影响。由于这种类型的负载包括一个面向外部的服务，以及一个在内部进行复制的应用，对<glossterm baseform="north-south traffic">南北向</glossterm>的流量以及<glossterm>东西向的流量</glossterm>都有相关的考虑因素，如下：</para>
+    <variablelist>
+      <varlistentry>
+        <term>南北向流量</term>
+        <listitem>
+          <para>当用户上传并存储内容，该内容就进入 OpenStack 环境中。当用户下载该内容，该内容就从 OpenStack 环境中发送出去。由于这个服务主要是作为备份服务使用，大多数流量就都是南向的流入环境之中。在这种情况下，配置一个非对称的主要用于下行的网络将较有好处，因为进入 OpenStack 环境的流量要比从环境中出去的流量更大。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>东西向流量</term>
+        <listitem>
+          <para>很可能是完全对称的网络。因为根据算法来说，复制行为可能从任何节点发起并指向多个其他节点，某个特定方向的流量更大的情况不大可能发生。然而，这些流量也可能干扰到南北向的流量。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Network_Cloud_Storage2.png"/>
+        </imageobject>
+    </mediaobject>
+    <para>此应用将南北向的流量的优先级设置得比东西向的流量的优先级更高：南北向的流量与面向客户的数据相关。</para>
+    <para>这种情况下的网络设计对可用性的依赖程度较低，而对处理高带宽的能力依赖程度较高。显然的结果是，放弃链路冗余而把链路进行绑定的效果会更好。因为这提高了可用带宽。将路径上的所有设备，以及 OpenStack 在内，配置成为能够产生并允许巨型帧通过也是有好处的。</para></section>
+</section>

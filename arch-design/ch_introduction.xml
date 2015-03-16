@@ -1,0 +1,14 @@
+<?xml version="1.0" ?><chapter version="5.0" xml:id="introduction" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>介绍</title>
+
+    <para>在云计算技术的“淘金热”中，OpenStack无疑是作为领导者出现的，在云自助服务和基础设施即服务(IaaS)的市场，为形形色色的&gt;组织发现更大的灵活性，并加速这个市场。当然，要想知道它的全部好处，云必须要有正确的架构设计。</para>
+    <para>一个完美的云架构可以提供一个稳定的IT环境，可轻松访问需要的资源、基于使用的付费、按需扩充容量、灾难恢复、安全等。但是一个完美的云架构不会拥有魔法般的自己构建。它需要对多种因素进行精心思考，无论是技术的还是非技术的。</para>
+    <para>对于OpenStack云部署来说，还没有所谓的那个架构是“正确”的。OpenStack可用于多种目的和场景，而每一种都有着自己独特的需求和架构特点。</para>
+    <para>本书的初衷是着眼于使用OpenStack云的通用用例(即使不那么通用，至少是作为好的案例)以及解释什么问题是应该去考虑的，以及为什么这么考虑，提供丰富的知识和建议，以帮助一些组织设计和构建一个完美架构的、满足独特需求的OpenStack云。</para>
+
+  <xi:include href="introduction/section_intended_audience.xml"/>
+  <xi:include href="introduction/section_how_this_book_is_organized.xml"/>
+  <xi:include href="introduction/section_how_this_book_was_written.xml"/>
+  <xi:include href="introduction/section_methodology.xml"/>
+
+</chapter>

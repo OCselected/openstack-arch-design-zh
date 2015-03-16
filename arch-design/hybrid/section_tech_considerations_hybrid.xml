@@ -1,0 +1,125 @@
+<?xml version="1.0" ?><!DOCTYPE section [
+<!ENTITY % openstack SYSTEM "../../common/entities/openstack.ent"> %openstack;
+<!-- The master of this file is in openstack-manuals repository, file
+     doc/common/entities/openstack.ent.
+     Any changes to the master file will override changes in other
+     repositories. --><!-- Some useful entities borrowed from HTML --><!ENTITY ndash "&#x2013;">
+<!ENTITY mdash "&#x2014;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY times "&#215;">
+<!ENTITY hellip "&#133;">
+<!-- Useful for describing APIs in the User Guide --><!ENTITY COPY '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+<!ENTITY CHECK '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="../common/figures/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]><section version="5.0" xml:id="technical-considerations-hybrid" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>技术因素</title>
+    <para>一个混合云环境需要仔细的诊断，且要理解技术问题不仅是它不在企业组织的数据中心内，而且可能都不在企业组织的控制范围，在多数场景下，有必要确保架构和CMP的选择是适合的，不仅是不同的环境，还有可能的变化。在此情形下，应用均是跨不同平台且可能被定位到不同的位置。所有这些因素会影响和增加混合云架构设计的复杂性。</para>
+    <para>基于同个版本或者同个发行版的OpenStack不会因为云平台的兼容性而引发问题，这是唯一的情况，否则不兼容的情形必然会发生。</para>
+    <para>应该为云尽可能的较少不兼容的问题，其中一个办法就是完全使用同一个版本的OpenStack,哪怕是使用不同的发行吧。越新的发行版，不同版本的不兼容性越少。这得归功于OpenStack社区所建立的主动定义了核心功能需要在支持的版本中向后兼容。DefCore定义了基本功能，每个发行版必须支持，否则的话那还叫什么&quot;OpenStack“。</para>
+    <para>一些供应商，在他们的发行版中增加了商业的定制，如果应用或架构中用到了这些特性，就会导致迁移到或使用其他类型的环境很困难。任何人考虑旧版本OpenStack互操作性，在Havana时代尤其是，在版本之间的互操作性功能确认之前要仔细的考虑。旧的版本之间的内部差异要远远好于不同平台，比如OpenStack与亚马逊web 服务或者是OpenStack与微软的Azure。</para>
+    <para>如果从一开始就纳入使用不同的云平台情况就会更好的预测。如果另外的云不是基于OpenStack的话，就几乎没有什么兼容性可言，CMP工具就需要计入掌控无数不同操作和服务的实现。一些情况会增加他们的不兼容性，包括在云中使用不同的方法：</para>
+    <itemizedlist>
+        <listitem>
+            <para>部署实例</para>
+        </listitem>
+        <listitem>
+            <para>管理网络</para>
+        </listitem>
+        <listitem>
+            <para>Treats 应用</para>
+        </listitem>
+        <listitem>
+            <para>实现服务</para>
+        </listitem>
+    </itemizedlist>
+    <section xml:id="capacity-planning-hybrid">
+      <title>容量计划</title>
+    <para>许多组织切换到混合云系统的一个主要原因是为了扩容但是又不想投入太多钱。尽管如此，容量计划在设计一个OpenStack安装时仍然有必要，即使是已经有了外部的云。</para>
+    <para>特别地，当为一个有偶尔爆发能力的内部操作云设计时，整个的容量和负载的置放都需要计入考虑。一个长期的容量规划，诸如设计一个随时间推移而逐步增长，以放置被外部昂贵的云吞噬并占据。为避免此种情形，请认证思考将来的应用、容量需求以及进行合适的增长规划。</para>
+    <para>容量规划的一个缺点就是不可预测。很难预测特定应用的负载可能承载的量，例如用户数量的波动或者是应用遇到的意外的增加。使用术语vCPU,RAM，带宽或其他资源来定义应用需求和进行合适的规划是可能的，但是其他的云未必有相同的元素或者相同的超额认购率。</para>
+    <para>Oversubscription is a method to emulate more capacity than
+        they may physically be present. For example, a physical
+        hypervisor node with 32 GB RAM may host 24
+        instances, each provisioned with 2 GB RAM. As long
+        as all 24 of them are not concurrently utilizing 2 full
+        gigabytes, this arrangement is a non-issue. However, some
+        hosts take oversubscription to extremes and, as a result,
+        performance can frequently be inconsistent. If at all
+        possible, determine what the oversubscription rates of each
+        host are and plan capacity accordingly.</para></section>
+    <section xml:id="security-hybrid">
+      <title>安全性</title>
+    <para>一个混合云环境的本身特性就是对整个基础设施没有完全的控制权。安全就成了一个强烈的需求，因为在云中的数据或应用超越了企业组织的控制范围。当规划一个混合云环境以及它的容量时，安全域就成了一个重要的范畴。一个安全域包括用户，应用程序，服务器或网络共享公共信任需求，且满足系统的期望。</para>
+    <para>安全域有：</para>
+    <orderedlist>
+        <listitem>
+            <para>公有</para>
+        </listitem>
+        <listitem>
+            <para>客户机</para>
+        </listitem>
+        <listitem>
+            <para>管理</para>
+        </listitem>
+        <listitem>
+            <para>数据</para>
+        </listitem>
+    </orderedlist>
+    <para>这些安全域既可以单独的映射到企业组织的安装也可以合并，举例说明，一些部署拓扑将客户和数据域混合到一个物理网络，另外一些拓扑会将他俩分开不同的物理网络。无论那种情景，云运维人员需要意识到合适的安全关注。安全域需要映射特别的OpenStack部署拓扑，域以及他的信任需求依赖于云实例是否是公有？私有？还是混合？</para>
+    <para>公共安全域是一个完全不可信任的区域，对于云基础设施来说。可参考的对象就是整个互联网，或者是说企业组织对这个网络没有任何权力。此域须永远认为是不可被信任的。当考虑混合云部署时，任何流量经由多个云之间的，都被认为是在此安全域，因此不可信。</para>
+    <para>典型的在单一数据中心用于实例对实例的流量，客户机安全域掌控的是在云中的实例所生成的计算数据，而不是操作云的诸如API调用所支持的服务。公有云提供商用于混合云配置是企业组织无法控制的，私有云提供商对实例的使用或什么人被容许访问某实例没有绝对的控制，所以认为此域是不被信任的。私有云提供商可认为此网络作为内网而因此可信任，也仅强调可控制的地方，实例和租户是可信任的。</para>
+    <para>管理安全域是位于服务的内部操作，通常可被称做“控制面板”，在此域的网络传输有私密数据诸如配置参数、用户名、密码等。部署在企业组织的防火墙后面，此域被认为是可信任的。在一个公有云模式是属于架构的一部分，这需要评估公有云提供者理解控制的程度。</para>
+    <para>数据安全域是主要涉及有关的信息的OpenStack存储服务，通过此网络的多数数据具有高完整性和保密性需求，且依赖于部署的类型它们还有高可用的需求。此网络的信任级别非常依赖于部署的决定且类似的是不会赋予默认的信任级别的。</para>
+    <para>务必仔细考虑好管理用户的系统，无论是操作或采用公有/私有云。身份服务允许LDAP是认证流程的一部分，若包含了此系统，则可以将OpenStack的用户管理去掉了。请注意当采用了第3方云来浏览认证的属性，适用于安装，以帮助管理和保持用户认证的一致性。</para>
+    <para>介于在客户机器和API端点之间传输的是用户名称、密码以及生成的令牌，强烈建议在API服务后端放置SSL硬件终端。</para>
+    <para>往内看云组件自身，另外需要安全审查的是hypervisor，在公有云中，企业组织是无法控制选择Hypervisor的。(例如，亚马逊使用其自身开发的Xen变种。)在一些案例中，hypervisor经常会成为典型的攻击对象，称之为&quot;hypervisor爆发”，假如没有预防的话，这将会发生！Hypervisor爆发形容的是破坏或恶意升级到hypervisor资源控制之外且获得裸金属操作系统的操作权限以及硬件资源的事件。</para>
+    <para>如果实例的安全不被认为是重要的，就没有那么多问题了。大多数情况下，企业级需要避免这种脆弱性，且避免此种情形唯一的做法就是将实例运行在公有云中。这并不意味着一个OpenStack安装操作就需要拥有所有的基础设施，建议避免的情形是硬件可共享给其他人。</para>
+    <para>其他值得考虑的就是能够提供裸金属实例，在一些场景中，有可能是通过集成私有的云即服务部署来复制一个私有云，这样企业还无须购买硬件，且不需要分享给另外的租户。也有可能是使用这样的供应商：仅为一个用户提供专用的硬件，提供裸金属公有云实例；或者是提供私有云即服务的提供商。</para>
+    <para>千万要意识到每一个云实现的服务是不同的，这点很重要！在这个云里可以保证数据的安全，在另外一个就不一定安全。一定要知道，每个云处理其组织的数据或负载对于安全的需求是不一样的。</para>
+    <para>More information on OpenStack Security can be found in the
+        <link xlink:href="http://docs.openstack.org/security-guide"><citetitle>OpenStack
+        Security Guide</citetitle></link>.
+        </para>
+      </section>
+    <section xml:id="utilization-hybrid">
+      <title>量力而行</title>
+    <para>当到了采用这个环节时，能够让CMP理解是什么负载运行，在哪里运行，以及他们优先采用什么，就显得重要起来。例如，大多数的场景都希望尽可能在内部运行大多数的负载，采用其他资源则是在需要的时候才考虑。另一方面，实际情形与此确正好相反，内部云仅仅用于开发且着重强调不被使用。大多数情况是，多种场景的开销模式帮助作出决定，尽管这些分析会严重影响到内部的优先级。 最重要的是一个编程能力基础上有效地做出这些决策的能力。</para>
+    <para>Telemetry模块(ceilometer)被设计为提供多个OpenStack组件的使用信息。有两个局限性因素需要考虑：第一，如果使用的是非常大的数据(例如，监测一个巨型的云，或者是非常活跃的),Ceilometer需要在后端使用NoSQL数据库，例如MongoDB。第二，当连接到非OpenStack云时，Ceilometer有必要监测它的使用，且要为CMP的后端提供监测数据。</para></section>
+    <section xml:id="performance-hybrid">
+      <title>性能</title>
+    <para>在设计云时，性能是主要的因素。当在混合云部署考虑此时，会遇到和多区域部署同样的很多问题，例如在站点之间的网络延迟问题。另外需要重点考虑是一个应用在另外的云中启动的速度，以及完成必要的任务所能节省的时间。这也就意味着将数据迁移到离应用最近的地方，或者相反，将应用移到离数据近来处理。也可以将应用分组来分配到单一的云中而不是多个云，这样对于那些有低延迟需求的应用有好处。这同样意味着CMP的集成能够知道那个云适合那种类型负载的应用。</para>
+    <para>对于采用组件来说，OpenStack本身的工具即可提供帮助。Ceilometer可以衡量性能，如果有必要，Orchestration模块可以用于应对需求的变动，自动配生更多的资源。记住下面这点很重要，Orchestration需要在客户端进行特殊的配置，以便由Amazon Web Services所提供的功能才能被使用。当处理其他类型的云时，有必要先考察下CMP是否支持某些特性。</para></section>
+    <section xml:id="components">
+      <title>组件</title>
+    <para>使用多少或什么类型的OpenStack组件取决于是不是部署专门的OpenStack云。如果是的话，所有的OpenStack组件都配得上用场，且和多站点部署一样需要考虑多个方面的问题。</para>
+    <para>也就是说，在多余一个云的使用的任何情况下，至少四个OpenStack组件是需要考虑的：</para>
+    <itemizedlist>
+        <listitem>
+            <para>OpenStack计算(nova):先不说部署地点，hypervisor的选择会直接影响到集成一个或多个云的难度。举例，集成基于Hyper-V的OpenStack和Azure，相比使用KVM来说要省很多事。</para>
+        </listitem>
+        <listitem>
+            <para>网络：无论是OpenStack网络(neutron)还是遗留网络(nova-network)一旦使用了，该网络需要在云之间连接并可相互理解的整合在一起的能力。</para>
+        </listitem>
+        <listitem>
+            <para>Telemetry 模块 (ceilometer):在大部分依赖使用Telemetry，可用于云的其他组件。</para>
+        </listitem>
+        <listitem>
+            <para>Orchestration 模块 (heat): 同样的，Orchestration在编排任务中是一个非常有价值的工具，在基于OpenStack云的云管理平台所需要。 </para>
+        </listitem>
+    </itemizedlist></section>
+    <section xml:id="special-considerations-hybrid">
+      <title>特殊因素</title>
+    <para>混合云部署经常会遇到的两个在其他云环境的不会发生的问题：</para>
+    <para>镜像移植：记住，在Icehouse发布后，就没有一个通用的镜像格式用于所有的云。这意味着当在云之间运行时镜像需要被转换或重新创建。为了使事情变得更为简单，启动最小且最精简的镜像，使用部署管理工具诸如Chef或Puppet安装必须的组件，这也意味着不要使用重量级镜像去加速流程，如果同样的镜像需要重复部署，使用此技术会更有意义，而不是每次都为一个镜像部署应用。</para>
+    <para>不同的API：当使用混合云部署了不止是OpenStack(或OpenStack的不同版本)时，多数早发现的问题是无法避免的，因为API的不同。云管理平台需要知道如何掌握所有必须的版本。为解决此类问题，一些实现者构建了门户，以实现混合云环境，但是大型的专注于开发的组织会使用混合云管理SDK，如jClouds。</para></section>
+</section>

@@ -1,0 +1,24 @@
+<?xml version="1.0" ?><chapter version="5.0" xml:id="multi_site" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>多区域</title>
+
+    <para>一个多区域openstack环境是指它的服务分布在多个数据中心来提供整体的服务.不同的多区域云可能在使用要求上区别会很大,然而它们还是有一些共同点的.openstack可以运行在多区域环境下,允许某部分服务有效地像管理一个单区域的云一样来管理着由多个区域组成的群组.通过在设计阶段仔细计划,面对不同的需求,openstack可以是一个多区域云的完美解决方案</para>
+    <para>一些应该使用多区域布署的案例可能会有以下特征:</para>
+    <itemizedlist>
+        <listitem>
+            <para>一个有不同地域认证的组织</para>
+        </listitem>
+        <listitem>
+            <para>地理位置敏感数据</para>
+        </listitem>
+        <listitem>
+            <para>数据所在地应该接近用户,特别是一些特殊数据或者功能</para>
+        </listitem>
+    </itemizedlist>
+
+    <xi:include href="multi_site/section_user_requirements_multi_site.xml"/>
+    <xi:include href="multi_site/section_tech_considerations_multi_site.xml"/>
+    <xi:include href="multi_site/section_operational_considerations_multi_site.xml"/>
+    <xi:include href="multi_site/section_architecture_multi_site.xml"/>
+    <xi:include href="multi_site/section_prescriptive_examples_multi_site.xml"/>
+
+</chapter>

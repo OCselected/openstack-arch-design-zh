@@ -1,0 +1,42 @@
+<?xml version="1.0" ?><chapter version="5.0" xml:id="massively_scalable" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>可大规模扩展的类型</title>
+
+    <para>一个可大规模扩展的架构被定义为如下形式的云架构实现：其要么是一个非常大规模的部署，例如商业性的服务提供商所建造的那种云架构；要么是一个拥有能够支持用户对大量云资源进行请求的能力的云架构。比如说一个在其中，即使是同时请求对 500 个或者以上数目的实例进行服务也并不罕见的基础设施，就是这样的一个例子。在一个可大规模扩展的基础设施中，这样子的请求甚至都不用完全消耗所有可用的云资源便可以被满足。虽然部署这样一个云架构的资金成本可能高到令人望而却步，因而只有少数的组织能够冲在最前面进行尝试，很多其他的组织也都在为未来做部署这种类型云架构的计划。</para>
+    <para>可大规模扩展的 OpenStack 云的设计提出了一系列独特的挑战以及相关的考虑因素。这样一个云是用以服务不确定范围的潜在使用场景或者功能的，因此大多部分的考虑因素都与通用类型的云架构设计相类似。通常情况下，可大规模扩展的云为专门的负载工作进行设计和定制的情况是很少见的。一般来说，可大规模扩展的 OpenStack 云是作为商业性质的公有云服务产品构建的，因为单个私有组织很难得有这样多的资源或者如此规模的需求。</para>
+    <para>可大规模扩展类型的 OpenStack 云提供的服务包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>虚拟机磁盘镜像库</para>
+        </listitem>
+        <listitem>
+            <para>Raw 块存储</para>
+        </listitem>
+        <listitem>
+            <para>文件或对象存储</para>
+        </listitem>
+        <listitem>
+            <para>防火墙功能</para>
+        </listitem>
+        <listitem>
+            <para>负载均衡功能</para>
+        </listitem>
+        <listitem>
+            <para>私有(不可路由到达)及公有(浮动) IP 地址</para>
+        </listitem>
+        <listitem>
+            <para>虚拟化网络拓扑</para>
+        </listitem>
+        <listitem>
+            <para>软件集合</para>
+        </listitem>
+        <listitem>
+            <para>虚拟计算资源</para>
+        </listitem>
+    </itemizedlist>
+    <para>如同通用型的云，在可大规模扩展的 OpenStack 云中部署的实例并不一定使用云服务的特定某一个方面的资源(计算、网络或者存储)。随着云规模的扩大，云上所支撑的负载的增长可能对所有的云组件都造成一定压力。额外的压力还可能来自需要对诸如数据库和消息代理这类型的基础设施进行支持。为这样一种云进行的架构设计必须考虑如何到如何处理这些性能压力，并且不对用户体验造成负面的影响。</para>
+
+    <xi:include href="massively_scalable/section_user_requirements_massively_scalable.xml"/>
+    <xi:include href="massively_scalable/section_tech_considerations_massively_scalable.xml"/>
+    <xi:include href="massively_scalable/section_operational_considerations_massively_scalable.xml"/>
+
+</chapter>

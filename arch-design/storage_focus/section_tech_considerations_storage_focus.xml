@@ -1,0 +1,70 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="technical-considerations-storage-focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>技术因素</title>
+    <para>Some of the key technical considerations that are critical
+        to a storage focused OpenStack design architecture
+        include:</para>
+    <variablelist>
+      <varlistentry>
+        <term>输入-输出需求</term>
+        <listitem>
+            <para>在对最终的存储框架做出决定之前，需要对输入-输出的性能需求进行研究并将其模型化。为输入-输出性能运行一些检测能够提供一个大致的预期中性能水平的基准。假如测试能够包含详细信息，比如说，在对象存储系统中的对象大小，或者对象存储以及块存储的不同
+容量级别，那么测试得出来的数据就能够帮助对不同的负载之下的行为和结果进行模型化。在架构的生命周期中运行小规模脚本化的测试能够帮助在不同时间点及时记录系统的健康状态。这些脚本化测试得出的数据，能够在以后对整个组织的需要进行研究和深入了解的时候提供帮助。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>规模</term>
+        <listitem>
+            <para>Scaling storage solutions in a storage focused
+                OpenStack architecture design is driven by initial
+                requirements, including <glossterm>IOPS</glossterm>,
+                capacity, and bandwidth, and future needs. Planning
+                capacity based on projected needs over the
+                course of a budget cycle is important for a design.
+                The architecture should balance cost
+                and capacity, while also allowing flexibility to
+                implement new technologies and methods as
+                they become available.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>安全性</term>
+        <listitem>
+            <para>关于数据的安全性设计，基于 SLA、法律要求、行业规章以及系统或者用户所需要的认证等方面的不同，有着不同的关注点。根据数据的类型，需要考虑遵从 HIPPA、ISO9000 以及 SOX 等。对有些组织来说，访问控制的等级也是很重要的。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>OpenStack 兼容性</term>
+        <listitem>
+            <para>与 OpenStack 系统的互动性和集成情况，在决定存储硬件和存储管理平台的选择上，可能是最为重要的。这里所说的互动性和集成度，包括比如与 OpenStack 块存储的互操作性、与 OpenStack 对象存储的兼容性，以及与虚拟机管理程序的兼容性(影响为临时的实例使用存储的能力)等因素。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>存储管理</term>
+        <listitem>
+            <para>You must address a range of storage
+                management-related considerations in
+                the design of a storage focused OpenStack cloud. These
+                considerations include, but are not limited to, backup
+                strategy (and restore strategy, since a backup that
+                can not be restored is useless), data
+                valuation-hierarchical storage management, retention
+                strategy, data placement, and workflow
+                automation.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>数据网格</term>
+        <listitem>
+            <para>数据网格在准确解答关于数据评估的问题方面非常有帮助。当前的信息科学方面的一个根本的挑战就是确定哪些数据值得保存，数据应该在哪个级别的访问和性能上存在，以及数据保留在存储系统当中的时间应该多长。数据网格，通过研究访问模式、所有权、商业单位
+收益以及其它的元数据的值等的相关性，帮助做出相关的决定，提供关于数据的可行信息。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>When building a storage focused OpenStack architecture,
+        strive to build a flexible design based on an
+        industry standard core. One way of accomplishing this might be
+        through the use of different back ends serving different use
+        cases.</para>
+<!--I feel like this last para just 'ends'. Is there more information to be put here? A.S -->
+</section>

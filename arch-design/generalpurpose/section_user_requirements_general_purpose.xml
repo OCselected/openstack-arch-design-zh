@@ -1,0 +1,99 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="user-requirements-general-purpose" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>用户需求</title>
+    <para>当构建通用型云时，用户需要遵循 <glossterm baseform="IaaS">Infrastructure-as-a-Service (IaaS)</glossterm>模式，基于简单的需求为用户寻求最合适的平台。通用型云的用户需求并不复杂。尽管如此，也要谨慎对待，即使项目是较小的业务，或者诸如概念验证、小型实验平台等技术需求。</para>
+      <note>
+        <para>以下用户考量的内容来自于云构建者的记录，并非最终用户。</para>
+      </note>
+    <variablelist>
+      <varlistentry>
+        <term>成本</term>
+        <listitem>
+            <para>财务问题对任何组织来说都是头等大事。开销是一个重要的标准，通用型云以此作为基本，其它云架构环境以此作为参考。通用型云一般不会为特殊的应用或情况提供较划算的环境，除非是不赚钱或者成本已经定了，当选择或设计一个通用架构时开销才不是唯一考虑的。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>上线时间</term>
+        <listitem>
+            <para>当构建一个通用型云时，有能力在灵活的时间内交付服务或产品，是业务普遍的一个情形。在今天高速发展的商务世界里，拥有在6个月内交付一款产品去替代2年完成的能力，这驱动着背后的决策者们决定构建通用型云。通用型云实现用户自服务，按需求获得访问计算、网络、存储资源，这将大大节省上线时间。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>赢利空间</term>
+        <listitem>
+            <para>赢利空间对于云来说是个最基本的义务。一些通用型云为商业客户构建产品，但也有替代品，可能使通用云的正确选择。例如，一个小型的云服务提供商(CSP)会构建一个通用云而放弃大规模的扩展云，也许是因为没有足够的财力支撑，有或许是因为无法得知客户使用云的目的是什么。对于一些用户来说，高级云本身就意味着赢利。但是另外一些用户，通用型云所提供的基本功能会阻碍使用，导致潜在的收入机会的停滞。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <section xml:id="legal-requirements-general-purpose">
+      <title>法律需求</title>
+    <para>很多辖区对于云环境中的数据的保管及管理都有相关的法律上或者监管上的要求。这些规章的常见领域包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>确保持久化数据的保管和记录管理以符合数据档案化需求的数据保留政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理数据的所有权和责任的数据所有权政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理位于外国或者其它辖区的数据存储问题的数据独立性政策。</para>
+        </listitem>
+        <listitem>
+            <para>数据合规性-基于常规某些类型的数据需要放在某些位置，同样的原因，不能放在其他位置更加的重要。</para>
+        </listitem>
+    </itemizedlist>
+    <para>
+      Examples of such legal frameworks include the <link xlink:href="http://ec.europa.eu/justice/data-protection/">data
+      protection framework</link> of the European Union and the
+      requirements of the <link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules/">Financial
+      Industry Regulatory Authority</link> in the United
+      States. Consult a local regulatory body for more information.
+    </para>
+    </section>
+    <section xml:id="technical-requirements">
+      <title>技术需求</title>
+    <para>技术云架构需求相比业务需求，比重占得更多一些。</para>
+    <variablelist>
+      <varlistentry>
+        <term>性能</term>
+        <listitem>
+            <para>作为基础产品，通用型云并不对任何特定的功能提供优化性能。虽然通用型云希望能够提供足够的性能以满足所以用户的考虑，但是性能本身并不是通用型云所关注的。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>非预先定义的使用模型</term>
+        <listitem>
+            <para>由于缺少预先定义的使用模型，导致用户在根本不知道应用需求的情况运行各式各样的应用。这里（OpenStack 通用型云，译者注）提供的独立性和灵活性的深度，也就只能是这么多了，不能提供更多的云场景。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>按需或自服务应用</term>
+        <listitem>
+            <para>根据定义，云提供给最终用户通过简单灵活的方式自适应的计算能力、存储、网络和软件的能力。用户必须能够在不破坏底层主机操作的情况下扩展资源到满足自身。使用通用型云架构的一个优点就是，在有限的资源下启动，随着时间的增加和用户的需求增长而轻松扩张的能力。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>公有云</term>
+        <listitem>
+            <para>对于一家公司对基于OpenStack构建一个商业公有云有兴趣的话，通用型架构模式也许是最好的选择。设计者毋须知道最终用户使用云的目的和具体负载。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>内部消费(私有)云</term>
+        <listitem>
+            <para>组织需要决定在内部建立自己的云的逻辑。私有云的使用，组织需要维护整个架构中的控制点以及组件。</para>
+              <note>
+                <para>用户打算既使用内部云又可访问外部云的组合。假如遇到类似的用例，也许值得一试的就是基于多个云的途径，考虑至少多个架构要点。</para>
+              </note>
+            <para>设计使用多个云，例如提供一个私有云和公有云的混合，有关“多云”的描述场景，请参考<xref linkend="multi_site"/>。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>安全性</term>
+        <listitem>
+            <para>安全应根据资产，威胁和脆弱性风险评估矩阵来实现。对于云领域来说，更加增加了计算安全、网络安全和信息安全等的需求。通用型云不被认为是恰当的选择。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </section>
+</section>

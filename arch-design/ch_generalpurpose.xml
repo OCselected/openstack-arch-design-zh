@@ -1,0 +1,58 @@
+<?xml version="1.0" ?><chapter version="5.0" xml:id="generalpurpose" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>通用型</title>
+    <para>OpenStack通用型云通常被认为是构建一个云的起点。它们被设计为平衡的组件以及在整体的计算环境中不强调某个特定的领域。云的设计必须对计算、网络、存储等组件作必要的公平权衡。通用型云可以是私有云，也可以是公有云，当然也可以混合的环境，自身可以适用于各种用例。</para>
+      <note>
+        <para>通用型云基于很普通的部署，不适用于特殊的环境或边缘案例的情况。</para>
+      </note>
+    <para>通常使用通用性的云包括：</para>
+      <itemizedlist>
+        <listitem>
+          <para>提供一简单的数据库</para>
+        </listitem>
+        <listitem>
+          <para>一个web应用程序运行时环境</para>
+        </listitem>
+        <listitem>
+          <para>共享的应用开发平台</para>
+        </listitem>
+        <listitem>
+          <para>测试实验平台</para>
+        </listitem>
+      </itemizedlist>
+    <para>在通用型云架构中，用例能够明确感受到横向扩展带来好处远远大于纵向扩展。</para>
+    <para>通用型云被设计为有一系列潜在用途或功能，不是为特殊的用例特殊设计。通用型架构是为满足80%用例而设计的。基础设施其本身就是一非常特别的用例，在设计过程将之用于基本模型未尝不可。通用型云被设计为适合通用应用的平台。</para>
+    <para>通用型云被限制在了大部分的基本组件，但是可以包含下面增加的资源，例如：</para>
+    <itemizedlist>
+        <listitem>
+            <para>虚拟机磁盘镜像库</para>
+        </listitem>
+        <listitem>
+            <para>Raw 块存储</para>
+        </listitem>
+        <listitem>
+            <para>文件或对象存储</para>
+        </listitem>
+        <listitem>
+            <para>防火墙</para>
+        </listitem>
+        <listitem>
+            <para>负载均衡器</para>
+        </listitem>
+        <listitem>
+            <para>IP 地址</para>
+        </listitem>
+        <listitem>
+            <para>网络覆盖或者(VLANs)</para>
+        </listitem>
+        <listitem>
+            <para>软件集合</para>
+        </listitem>
+    </itemizedlist>
+
+    <xi:include href="generalpurpose/section_user_requirements_general_purpose.xml"/>
+    <xi:include href="generalpurpose/section_tech_considerations_general_purpose.xml"/>
+    <xi:include href="generalpurpose/section_operational_considerations_general_purpose.xml"/>
+    <xi:include href="generalpurpose/section_architecture_general_purpose.xml"/>
+    <xi:include href="generalpurpose/section_prescriptive_example_general_purpose.xml"/>
+
+</chapter>

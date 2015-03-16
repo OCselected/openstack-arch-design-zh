@@ -1,0 +1,76 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="user-requirements-massive-scale-overview" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>用户需求</title>
+    <para>比起其它的场景，为可大规模扩展的 OpenStack 设计架构定义用户需求更是意味着需要从不同的，有时候甚至是相反的两个方面来审视我们的设计：云用户的方面，以及云运营者的方面。对于可大规模扩展的 OpenStack 云中的资源的消耗和管理等这些问题，从用户角度来看与从管理者角度来看，其期望和观念都大不相同。</para>
+    <para>很多辖区对于云环境中的数据的保管及管理都有相关的法律上或者监管上的要求。这些规章的常见领域包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>确保持久化数据的保管和记录管理以符合数据档案化需求的数据保留政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理数据的所有权和责任的数据所有权政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理位于外国或者其它辖区的数据存储问题的数据独立性政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理由于监管上的问题因而特定类型的数据必须存放在特定的地点或者更重要的，由于相同的原因，不能够存放在其它地点的数据管理政策。</para>
+        </listitem>
+    </itemizedlist>
+    <para>
+      Examples of such legal frameworks include the <link xlink:href="http://ec.europa.eu/justice/data-protection/">data
+      protection framework</link> of the European Union and the
+      requirements of the <link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules/">Financial
+      Industry Regulatory Authority</link> in the United
+      States. Consult a local regulatory body for more information.
+    </para>
+    <section xml:id="user-requirements-massive-scale">
+      <title>用户需求</title>
+    <para>可大规模扩展的 OpenStack 云有如下的一些用户需求：</para>
+    <itemizedlist>
+        <listitem>
+            <para>云用户希望对云资源进行启动和部署有可重复的、可靠的以及可确定的操作过程。这些功能可以通过基于 web 的接口或者公开可用的 API 入口抛出。对云资源进行请求的所有相应选项应该通过某种类型的用户接口展现给用户，比如命令行接口(CLI)或者API 入口。</para>
+        </listitem>
+        <listitem>
+            <para>云用户同样希望拥有一个完全自服务的和按需消费的模型。当一个 OpenStack 云达到“可大规模扩展”的大小时，意味着它也是被希望以每一方面都“作为服务”来进行消费的。</para>
+        </listitem>
+        <listitem>
+            <para>对于一个可大规模扩展的 OpenStack 公有云的用户来说，对于安全性、性能以及可用性的控制需求并没有那么强烈。只有与 API 服务的正常运行时间相关的 SLA，以及所提供的服务非常基本的 SLA，是所需要的。用户明白解决这些问题是他们自己的责任。这种期望的例外是一个非常罕见的场景：该可大规模扩展的云是为了一个有特别需求的私有或者政府组织而构建的。</para>
+        </listitem>
+    </itemizedlist>
+    <para>可能与想像中一致，用以确定设计方案的云用户的需求以及期望，都是关注于消费模型之上的。用户希望能够以一种自动化的和确定的方式来使用云中的资源，而不需要以任何对容量、可扩展性或者其它关于该云的底层基础设施的属性的了解作为前提。</para></section>
+    <section xml:id="operator-requirements-massive-scale">
+      <title>运营者的需求</title>
+    <para>用户对于云的底层基础设施以及属性应该是完全不清楚的，然而，运营者却必须能够构建并且支持该基础设施，也应该了解在大规模的情况下如何操作它。这从运营者的角度提出了关于构建这样一个云的一系列相当强烈的需求：</para>
+    <itemizedlist>
+        <listitem>
+            <para>首要的问题是，所有东西都必须能够自动化，从新硬件，包括计算硬件、存储硬件以及网络硬件的部署，到支撑软件的安装及配置，所有的这些都需要能够被自动化完成。手动操作的过程在一个可大规模扩展的 OpenStack 设计架构中是完全无法满足需要的。</para>
+        </listitem>
+        <listitem>
+            <para>The cloud operator requires that capital expenditure
+                (CapEx) is minimized at all layers of the stack.
+                Operators of massively scalable OpenStack clouds
+                require the use of dependable commodity hardware and
+                freely available open source software components to
+                reduce deployment costs and operational expenses.
+                Initiatives like OpenCompute (more information
+                available at <link xlink:href="http://www.opencompute.org">http://www.opencompute.org</link>)
+                provide additional information and pointers. To cut
+                costs, many operators sacrifice redundancy. For
+                example, redundant power supplies, redundant network
+                connections, and redundant rack switches.</para>
+        </listitem>
+        <listitem>
+            <para>运营可大规模扩展云的公司，同样也要求业务费用(OpEx)尽可能最小化。需要对运营开销进行管理的时候，我们则建议使用为云场景进行过优化的硬件。还有一些需要考虑的因素包括电源、冷却系统，以及甚至是底架的物理设计。由于这类实现的规模之大，定制硬件和系统以确保它们是优化过的适合完成相关类型的工作，是非常可能的一件事情。</para>
+        </listitem>
+        <listitem>
+            <para>可大规模扩展的 OpenStack 云需要全面的测量及监控功能，通过保持运营人员能够清楚知悉基础设施的状态，以达到最大化业务效率的目的。这包括对硬件和软件状态的全面测度。同样的也需要一个相应的日志和警报框架，用以保存由测量和监控解决方案所提供的数据，并允许针对测量得出的数据采取相应的动作。云运营商还需要一个能够使用测量和监控方案所提供的数据进行容量计划以及容量趋势分析的解决方案。</para>
+        </listitem>
+        <listitem>
+            <para>一个可大规模扩展的 OpenStack 云应该是一个多点的云。因此，对于多点 OpenStack 架构设计的用户和运营者需求，在这里也适用。这还包括一系列的关于数据存储、数据存放的地点，以及数据保管等法律上的要求；其它的行政法规和监管的要求；镜像的一致性和可用性；存储的复制和可用性(块存储以及文件/对象存储)；以及认证、授权和审计(AAA)等等；还有很多很多。参考<xref linkend="multi_site"/>以了解更多关于多点类型的 OpenStack 云的需求和设计考虑因素。</para>
+        </listitem>
+        <listitem>
+            <para>关于诸如空间、底部负重、机柜高度及类型、环境性因素、电源使用及其使用效率(PUE)，以及物理上的安全性等等相关的物理设施的考虑因素，也应该在可大规模扩展的 OpenStack 云的设计架构中一并进行考虑并解决。</para>
+        </listitem>
+    </itemizedlist></section>
+</section>

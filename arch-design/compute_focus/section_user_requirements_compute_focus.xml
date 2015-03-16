@@ -1,0 +1,114 @@
+<?xml version="1.0" ?><!DOCTYPE section [
+<!ENTITY % openstack SYSTEM "../../common/entities/openstack.ent"> %openstack;
+<!-- The master of this file is in openstack-manuals repository, file
+     doc/common/entities/openstack.ent.
+     Any changes to the master file will override changes in other
+     repositories. --><!-- Some useful entities borrowed from HTML --><!ENTITY ndash "&#x2013;">
+<!ENTITY mdash "&#x2014;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY times "&#215;">
+<!ENTITY hellip "&#133;">
+<!-- Useful for describing APIs in the User Guide --><!ENTITY COPY '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+<!ENTITY CHECK '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="../common/figures/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]><section version="5.0" xml:id="user-requirements-compute-focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>用户需求</title>
+    <para>计算密集性负载是由他们对CPU，内存，或二者的高利用率所定义。用户的需求将决定一个计算型云须要构建成为满足预期的性能要求。</para>
+    <variablelist>
+      <varlistentry>
+        <term>成本</term>
+        <listitem>
+            <para>开销对于计算型云来书通常不是主要担忧的因素，尽管一些组织也许会想着如何减少成本。理由现有资源来处理计算密集型任务，而不是获取更多的资源，可以有效的降低成本。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>上线时间</term>
+        <listitem>
+            <para>计算型云可用于更加快速的交付产品，举例，通过构建产品和应用以加速一家公司的软件开发生命周期(SDLC)。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>赢利空间</term>
+        <listitem>
+            <para>企业从计算型云获利就得构建加强计算资源的服务或产品。例如包括大数据分析(通过Hadoop或Cassandra)，或者是完成计算密集型的任务诸如渲染、科学计算、模拟现实等。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <section xml:id="legal-requirements-compute-focus">
+      <title>法律需求</title>
+    <para>很多辖区对于云环境中的数据的保管及管理都有相关的法律上或者监管上的要求。这些规章的常见领域包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>确保持久化数据的保管和记录管理以符合数据档案化需求的数据保留政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理数据的所有权和责任的数据所有权政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理位于外国或者其它辖区的数据存储问题的数据独立性政策。</para>
+        </listitem>
+        <listitem>
+            <para>Data compliance—certain types of information needs
+                to reside in certain locations due to regular issues—and
+                more important cannot reside in other locations
+                for the same reason.</para>
+        </listitem>
+    </itemizedlist>
+    <para>
+      Examples of such legal frameworks include the <link xlink:href="http://ec.europa.eu/justice/data-protection/">data
+      protection framework</link> of the European Union and the
+      requirements of the <link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules/">Financial
+      Industry Regulatory Authority</link> in the United
+      States. Consult a local regulatory body for more
+      information.</para></section>
+    <section xml:id="technical-considerations-compute-focus-user">
+      <title>技术因素</title>
+    <para>下列一些技术需求需要被设计架构时纳入。</para>
+    <variablelist>
+      <varlistentry>
+        <term>性能</term>
+        <listitem>
+            <para>如果云环境的主要技术是用于交付高性能计算的能力，那么一个计算型云的设计显然会被选择，因为它本身就被设计为主机计算密集型。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>持久负载</term>
+        <listitem>
+            <para>负载可以是短时间的，也可以是长久运行的。短时间的负载比如持续集成和持续部署(CI-CD)任务，大量的计算实例被并行创建以处理计算密集型任务。结果会在实例销毁之前被拷贝出来存放到可长时间保存的存储中。长久运行的负载，例如Hadoop或高性能计算(HPC)集群，通常摄取大量的数据集，然后计算处理这些数据集，最后将结果存放到长时间保存的存储中。和短时间负载不一样的是，当计算工作结束时，它会保持空闲知道下一个任务推给它们。长时间运行的负载通常规模大而且复杂性高，所以尽力保持它们在任务之间的活跃，可以缓减构建的压力。另外一个长时间负载的例子是旧的应用通常都会持续一段时间。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>存储</term>
+        <listitem>
+            <para>目标为负载的计算型OpenStack云通常不需要任何的持久性块存储(虽然一些使用Hadoop的应用，用HDFS来作为持久性的块存储)。一个共享文件系统或对象存储就可以担当起初始化数据集(s)以及服务于保存计算结果。 通过避免输入 - 输出(IO)的开销，工作负载性能被显著增强。取决于数据集()的大小，也许扩展对象存储或共享文件系统以满足存储需求是必要的。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>用户界面</term>
+        <listitem>
+            <para>和其他类型的云架构一样，计算型OpenStack云需要按需服务和自助服务的用户界面。最终用户必须可以简单而又灵活的部署计算资源的诸如电力、存储、网络和软件。这也包括扩展基础设施到大规模级别而无须中断主机的操作。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>安全性</term>
+        <listitem>
+            <para>安全在业务的需求下将成为高度依赖的服务。举例，一个需要密集计算的药物发现应用相比于为处理市场零售数据所设计的云有着更高的安全需求。作为云的一般入门，关于安全建议和向导，我们在《OpenStack安全指南》这本书有更加详尽的描述。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </section>
+    <section xml:id="operational-considerations-compute-focus-user">
+      <title>运营因素</title>
+    <para>从运营的角度讲计算型云和通用型有着同样的需求，更多关于运营的需求可在通用型设计的章节中找到。</para>
+    </section>
+</section>

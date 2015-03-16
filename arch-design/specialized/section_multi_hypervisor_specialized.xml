@@ -1,0 +1,18 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="multi-hypervisor-example" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <?dbhtml stop-chunking?>
+  <title>多种类型宿主机的例子</title>
+  <para>一个金融公司需要将其应用从一个传统的虚拟化环境中迁移到一个新的由 API 驱动的合理组织的环境中。该公司的一些应用有着严格的支持需求，这限制了在哪些宿主机上它们能够被支持。然而另外的一些应用没有这些限制也不需要相同的特性。根据这些需求，整个目标环境就需要多种类型的宿主机。</para>
+  <para>当前的环境是一个有 20 台 VMware ESXi 宿主机，支撑着 300 个不同大小的实例的 vSphere 环境。大约有 50 个实例必须在 ESXi 上运行，剩余的则有着更为灵活的需求。</para>
+  <para>该公司决定将对整个系统的管理迁移到一个由 OpenStack 提供的普通平台中。</para>
+  <mediaobject>
+    <imageobject>
+      <imagedata contentwidth="4in" fileref="../figures/Compute_NSX.png"/>
+    </imageobject>
+  </mediaobject>
+  <para>解决方法是为一般用途的实例运行由一个 KVM 宿主机组成的主机集群，同时为需要 ESXi 的实例运行一个单独的主机集群。这种方式下，必须运行在 ESXi 之上的负载可以调度到那些宿主机上，同时其它的那些可以调度到 KVM 宿主机之上。</para>
+  <para>OpenStack 镜像服务中的镜像随附着特别的宿主机元数据，因此当用户请求特定的镜像时，该实例将会在相应的集群中启动。ESXi 中的镜像以 VMDK 格式储存。QEMU 磁盘镜像能够转换至 VMDK 格式，包括精简置备、厚置备、厚置备延迟置零以及厚置备置零等 VMFS 平坦磁盘。请注意，一个 VMFS 精简置备的磁盘一旦从 VMFS 导出到一个非 VMFS 的位置，例如 OpenStack 镜像服务时，它就会变成一个预分配的平坦磁盘。这将影响从 OpenStack 镜像服务到数据存储的传输时间，因为完全预分配的磁盘而不是一个精简置备的磁盘需要被传输。</para>
+  <para>此例子中有个额外的复杂之处在于，VMware 主机集群的计算节点需要与 vCenter 通信，然后 vCenter 才请求将实例调度到在一个 ESXi 宿主机上运行，而并非通过简单地使用镜像的元数据调用特定的主机集群从而让实例在宿主机上直接启动。在 Icehouse 版本中，这个功能需要 VMware 分布式资源调度器(DRS)在集群中被启用并且设置为“全自动”。</para>
+  <para>由于 DRS 的需求，请注意 vSphere 需要共享存储(DRS 使用需要共享存储的 vMotion)。整个解决方案使用共享存储为 KVM 实例提供块存储功能，同时为 vSphere 提供存储。环境中使用一个专用的数据网络来支持这个存储功能，因此计算主机上需要有专用的网卡设备来承载这些流量。vSphere 支持使用 OpenStack 块存储将 VMFS 存储展现给实例作为存储，因此在这个架构中对块存储的使用同时支持两种类型的宿主机。</para>
+  <para>在这个场景中，网络连接由配置了 VMware NSX 插件驱动的 OpenStack 联网提供。系统还可以采用传统的联网方式(nova-network)，也同样被这个设计中的两种类型的宿主机所支持，但是有一些局限性。具体说来，采用传统联网方式时，安全组在 vSphere 上是不被支持的。既然设计中包含了 Vmware NSX 作为其中的一部分，当用户在任何一个主机集群中启动实例时，该实例将会被连接至由用户定义的相应的覆盖逻辑网络之中。</para>
+  <para>请注意这个解决方案部署时需要小心进行，因为有一些 OpenStack 计算集成相关的设计因素。当在 OpenStack 中使用 vSphere 时，nova-compute 服务将会被配置为与 vCenter 进行通信并将整个 ESXi 集群显示为单台巨大的宿主机(可以运行多个 nova-compute 实例以表示多个 ESXi 集群或者连接至多个 vCenter 服务器)。如果运行 nova-compute 服务的进程崩溃，到 vCenter 服务器以及在该服务器后端的 ESXi 集群的连接将会被切断，并且将不能够在该 vCenter 上产生更多的实例，尽管 vSphere 本身可以被配置为具有高可用功能。因此，监控连接至 vSphere 的 nova-compute 服务的中断就显得尤为重要。</para>
+</section>

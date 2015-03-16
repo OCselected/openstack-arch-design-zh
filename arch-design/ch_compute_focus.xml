@@ -1,0 +1,30 @@
+<?xml version="1.0" ?><chapter version="5.0" xml:id="compute_focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>计算型</title>
+
+  <para>计算型是通用型openstack架构的一个特定子集。通用型架构需要应对各种各样的工作负载和应用而不特别着意于任一计算方向，而计算型则需要被设计和构建以专门应对计算密集型的工作负载。基于此，该架构必须专门设计以支撑计算密集型的工作负载。计算密集型特指ＣＰＵ密集型，ＲＡＭ密集型亦或两者亦有。但通常不是存储密集型或网络密集型。计算密集型的工作负载可能包含下面这些用例：</para>
+  <itemizedlist>
+    <listitem>
+      <para>高性能计算(HPC)</para>
+    </listitem>
+    <listitem>
+      <para>使用Hadoop或其他分布式数据处理程序来分析大数据</para>
+    </listitem>
+    <listitem>
+      <para>持续集成/持续部署(CI/CD)</para>
+    </listitem>
+    <listitem>
+      <para>平台即服务(PaaS)</para>
+    </listitem>
+    <listitem>
+      <para>专门处理网络功能虚拟化(NFV)</para>
+    </listitem>
+  </itemizedlist>
+  <para>根据用例的需求，此类云也许需要提供额外的服务，诸如虚拟机磁盘库，文件或对象存储，防火墙，负载均衡，IP地址以及虚拟本地局域网(VLAN)。计算型的OpenStack云一般不会使用raw块存储服务，因为托管在计算型OpenStack云的应用通常不需要持久性块存储。</para>
+
+    <xi:include href="compute_focus/section_user_requirements_compute_focus.xml"/>
+    <xi:include href="compute_focus/section_tech_considerations_compute_focus.xml"/>
+    <xi:include href="compute_focus/section_operational_considerations_compute_focus.xml"/>
+    <xi:include href="compute_focus/section_architecture_compute_focus.xml"/>
+    <xi:include href="compute_focus/section_prescriptive_examples_compute_focus.xml"/>
+
+</chapter>

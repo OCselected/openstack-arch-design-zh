@@ -1,0 +1,74 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="operational-considerations-general-purpose" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>运营因素</title>
+    <para>在构建过程中的规划和设计阶段，能够考虑到运维的内容显得异常的重要。对通用型云来说，运维因素影响着设计的选择，而且运维人员担任着维护云环境的任务，以及最初大规模的安装、部署。</para>
+    <para>服务水平协议(SLA)的设定，就是知道何时以及何地实现冗余和高可用会直接影响到预期。SLA是提供保证服务可用性合同义务。他们定义的可用性级别驱动着技术的设计，若不能实现合同义务，则会得到相应的惩罚。</para>
+    <para>影响设计的SLA术语包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>由多基础设施服务和高可用负载均衡实现API可用性保证。</para>
+        </listitem>
+        <listitem>
+            <para>网络运行时间保证影响这交换机的设计，需要交换机的冗余，以及其电源的冗余。</para>
+        </listitem>
+        <listitem>
+            <para>网络安全规则的需求需要在部署时被处理。</para>
+        </listitem>
+    </itemizedlist>
+    <section xml:id="support-and-maintainability-general-purpose">
+      <title>支持和维护</title>
+    <para>为了能够在安装之后能够支持和维护，OpenStack云管理需要运维人员理解设计架构内容。运维人员和工程师人员的技能级别，以及他们之间的界限，依赖于安装的规模大小和目的。大型的云服务提供商或者电信运营商，会有针对性的培训，专门的运维部门，小型的实现的话，支持人员通常是工程师、设计师、和运维人员的合体。</para>
+    <para>维护OpenStack安装需要大量的技术技能。例如，如果用户既做架构有设计试图减轻运维的负担，那一定建议运维自动化。或许用第三方管理公司的专长去管理OpenStack部署也是不错的选择。</para>
+    </section>
+    <section xml:id="monitoring-general-purpose">
+      <title>监控</title>
+    <para>OpenStack云需要合适的检测平台来确保错误可以及时捕获，能够更好的管理。一些特别的计量值需要重点监测的有：</para>
+      <itemizedlist>
+        <listitem>
+          <para>镜像磁盘使用</para>
+        </listitem>
+        <listitem>
+          <para>计算API的响应时间</para>
+        </listitem>
+      </itemizedlist>
+    <para>借助已有的监测系统是一种有效的检查，确保OpenStack环境可以被监测。</para>
+    </section>
+
+    <section xml:id="downtime-general-purpose">
+      <title>宕机时间</title>
+    <para>为有效的运行云，开始计划宕机包括建立流程和支持的架构有下列内容：</para>
+      <itemizedlist>
+        <listitem>
+          <para>计划内(维护)</para>
+        </listitem>
+        <listitem>
+          <para>计划外(系统出错)</para>
+        </listitem>
+      </itemizedlist>
+    <para>保持弹性的系统，松耦合的组件，都是SLA的需求，这也意味着设计高可用(HA)需要花费更多。</para>
+    <para>举例来说，如果计算主机失效，这就是运维要考虑的；需要将之前运行在其上的实例从快照中恢复或者重新建一个一模一样的实例。整个应用程序的设计都会被影响，通用型云不强求有提供将一个实例从一台主机迁移到另外一台主机的能力。假如用户期望其应用是被设计为容错的，那么就要额外考虑支持实例的迁移，也需要额外的支持服务，包括共享存储挂载到计算主机，就需要被部署。</para>
+    </section>
+    <section xml:id="capacity-planning">
+      <title>容量计划</title>
+    <para>在通用型云环境中的容量限制包括：</para>
+      <itemizedlist>
+       <listitem>
+         <para>计算限制</para>
+       </listitem>
+       <listitem>
+         <para>存储限制</para>
+       </listitem>
+     </itemizedlist>
+   <para>计算环境的规模和支撑它的OpenStack基础设施控制器节点之间的关系是确定的。</para>
+   <para>增加支持计算环境的规模，会增加网络流量、消息，也会增加控制器和网络节点的负载。有效的监测整个环境，对决定扩展容量很有帮助。</para>
+   <para>计算节点自动挂接到OpenStack云，结果就是为OpenStack云添加更多的计算容量，亦即是横向扩展。此流程需要节点是安置在合适的可用区域并且是支持主机聚合。当添加额外的计算节点到环境中时，要确保CPU类型的兼容性，否则可能会使活迁移的功能失效。扩展计算节点直接的结果会影响到网络及数据中心的其他资源，因为需要增加机柜容量以及交换机。</para>
+   <para>通过评估平均负载，在计算环境中调整超分配比例来增加运行实例的数量是另外一个办法。重要的是记住，改变CPU超分配比例有负面影响以及引起其它实例故障。加大超分配的比例另外的风险是当计算节点失效后会引发更多的实例失效。</para>
+    <para>计算主机可以按需求来进行相应的组件升级，这就是传说中的纵向扩展。升级更多核的CPU,增加整台服务器的内存，要视运行的应用是需要CPU更紧张，还是需要内存更急切，以及需要多少。</para>
+    <para>磁盘容量不足会给整个性能带来负面影响，会波及到CPU和内存的使用。这取决于后端架构的OpenStack块存储层，可以是为企业级存储系统增加磁盘，也可以是安装新的块存储节点，也可以是为计算主机直接挂接存储，也可以为实例从共享存储中添加临时空间。都有可能。</para>
+    <para>
+      For a deeper discussion on many of these topics, refer to the
+      <link xlink:href="http://docs.openstack.org/ops"><citetitle>OpenStack
+      Operations Guide</citetitle></link>.
+    </para>
+    </section>
+</section>

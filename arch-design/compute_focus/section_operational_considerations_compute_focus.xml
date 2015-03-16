@@ -1,0 +1,39 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="operational-considerations-compute-focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <?dbhtml stop-chunking?>
+  <title>运营因素</title>
+  <para>从运营的角度讲，有许多考虑的因素会影响到计算型OpenStack云的设计。例如对API可用有强制严格的需求，理解和处理失效的场景，又或者是管理主机维护计划等。</para>
+  <para>服务水平协议(SLA)是一种合同义务，它给服务的可用性提供一个保证。因此，当设计一个OpenStack云时，兑现合同上的承诺就是实现可用性，确保冗余和弹性的水平。</para>
+  <itemizedlist>
+    <listitem>
+      <para>保证API的可用性，暗示着多个基础设施服务是由高可用、负载均衡支撑着的。</para>
+    </listitem>
+    <listitem>
+      <para>网络运行时间的保证会影响到交换机的设计，或许要求冗余的交换机及电力供应。</para>
+    </listitem>
+    <listitem>
+      <para>网络安全规则的要求需要被考虑到部署流程。</para>
+    </listitem>
+  </itemizedlist>
+  <para>如果存在SLA的话，它其中的条款必定包含，知道何时何地实现冗余和高可用(HA)。</para>
+  <section xml:id="support-and-maintainability-compute-focus">
+    <title>支持和维护</title>
+    <para>为了较好的支持和维护、安装，OpenStack云管理需求运维人员理解和搞懂架构设计的内容。运维人员和工程师人员的技能级别，区分他们，取决于安装的规模和目的。大型云服务提供商，或者电信级提供商，拥有特别的培训计划，有专门的运维队伍。对于小型组织来说，就要求支持团队要精，即是工程师、设计师、运维一起做。</para>
+    <para>维护OpenStack安装需要大量的技术技能。其中一些技能也许需要调试Python日志输出的能力，这还仅仅是最基本的，另外拥有网络相关方面的理解也很重要。</para>
+    <para>考虑一下结合架构和设计的内部功能将有助于减少运维的负担。比如一些包含自动化方面的运维功能，又或者是在管理OpenStack部署中使用了第三方的管理工具的一些特别的技巧，能够前期探索一番。</para>
+  </section>
+  <section xml:id="montioring-compute-focus">
+    <title>监控</title>
+    <para>和其它的基础设施部署一样，OpenStack云需要一个合适的监测平台，来确保错误能够及时捕获以及正确的响应。考虑充分利用已有的监控系统，看它是否能够有效地监视OpenStack环境。OpenStack云的方方面面都需要被监测，一些特别的指标的捕获异常的重要，比如镜像磁盘使用率，访问计算API的响应时间等。</para>
+  </section>
+  <section xml:id="expected-unexpected-server-downtime">
+    <title>计划内和计划外服务器宕机时间</title>
+    <para>天有不测风云，服务器也会宕机，且一定会宕机。保证SLA的情况下，如何设计缩短恢复时间才是应该考虑的。恢复一个失效的主机，或者是从快照中重載实例，又或者是从另外可用的主机重新启动一个实例。这些后果都得考虑到，然后设计运行在OpenStack云中的所有应用。</para>
+    <para>设计一个计算型云时，是可以接受实例没有从一台主机迁移到另外主机的能力的。因为应用程序的开发者们希望能够在应用程序内部掌控失效状况。相反的，一个计算型云应根据业务需求部署可提供外加的弹性，在此场景下，希望外加的支撑服务已经部署，诸如给主机挂接共享存储以提供紧急恢复和弹性服务，来满足服务水平协议。</para>
+  </section>
+  <section xml:id="capacity-planning-operational">
+    <title>容量计划</title>
+    <para>为OpenStack云增加额外的容量是很轻松横向扩展的过程，像其它配置好的节点一样会自动挂接到OpenStack云。请记住，尽管如此，但也请在必要的时候才去增加节点到合适的可用域和主机聚合。在增加额外的节点到现有的环境中时，我们建议尽可能的使用相同(或类似)的CPU型号的主机，否则原来支持的在线迁移就可能失效。横向扩展hypervisor主机也会直接影响到网络和其它数据中心的资源，所以得考虑这种增长，例如当达到机架容量上限或需要额外的网络交换机时。</para>
+    <para>计算主机有时也需要根据需求来增加内部组件，这一过程通常叫做纵向扩展。换一个更多核的CPU，或者给服务器增加内存，可以帮助增加额外需要的容量，当然具体得看所运行的应用程序是需要多少CPU和内存(正如计算型云所期望的)。</para>
+    <para>另外一个属性是评估平均负载和增加运行在计算环境中的实例数量，即通过调整超分配比例。但这仅适合于某些环境，更改CPU超分配比例会带来负面影响而且会增加影响到其他组件的风险，记住这点很重要。增加超分配比例带来的风险有，当一个计算主机宕机会引发除其本机运行的实例之外更多的实例会失效。在计算型OpenStack设计架构中，增加CPU超分配比例会增加破坏系统的风险，这是我们不建议的。</para>
+  </section>
+</section>

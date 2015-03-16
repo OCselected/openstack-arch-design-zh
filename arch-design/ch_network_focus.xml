@@ -1,0 +1,81 @@
+<?xml version="1.0" ?><chapter version="5.0" xml:id="network_focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>网络型</title>
+
+    <para>由于其基于服务的本质，所有的 OpenStack 部署，在一定程度上都依赖于网络通信才能够正常工作。然而，在某些情况下，用例方案决定了网络服务比其它初级的基础设施更为重要。本章讨论了更依赖或者更关注网络服务的架构设计。这类型架构十分依赖于网络基础设施，并且需要被仔细架构以使得网络服务正常工作且可靠，从而满足用户和应用的要求。</para>
+    <para>可能的用例方案包括：</para>
+    <variablelist>
+      <varlistentry>
+        <term>内容分发网络</term>
+        <listitem>
+            <para>这包括分发至大数量终端用户的流视频、相片以及其它任何云数据仓库。影响延迟、带宽以及实例分布的网络配置将在很大程度上影响大规模的流视频传输。并非所有的视频流都是关注用户的。例如多播视频（用于媒体、记者招待会、集团演讲、web 会议服务等等）也能够使用内容分发网络。内容分发受视频仓库的物理位置以及其与终端用户的关系所影响。性能也受后端系统的网络吞吐量，以及 WAN 架构和缓存方法的影响。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>网络管理功能</term>
+        <listitem>
+            <para>用户建立起一个提供网络服务功能的云以支持诸如 DNS、NTP 或者 SNMP 等的后端网络服务的提供，用于公司内部的网络管理。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>网络服务提供</term>
+        <listitem>
+            <para>云能够被用以运行面向客户的网络工具以实现对客户的服务。例如 VPN、MPLS 私有网络、GRE 隧道等等。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>web 门户或 web 服务</term>
+        <listitem>
+            <para>web 服务器对于云服务来说是一个常见的应用，我们建议对于网络需求要有一定的理解。网络必须能够横向扩展以满足用户需求并以最小延迟分发网页。必须根据门户架构的细节，对内部东西向和南北向的网络带宽进行考虑。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>高速及大量数据的事务性系统</term>
+        <listitem>
+            <para>此类型应用对于网络配置非常敏感。相关的例子包括很多金融系统、信用卡交易应用、交易系统以及其它需要传输非常大量数据的系统。这些系统对于网络的抖动及延迟都很敏感。同时这些系统也都有很大量的东西向及南北向网络流量，需要在这些流量中取得一个平衡使得数据传输的效率最大化。很多这类型的系统都需要连接至一个大型高性能的数据库后端。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>高可用</term>
+        <listitem>
+            <para>此类应用十分依赖于恰当地改变网络大小以维护站点之间的数据复制，从而实现高可用。如果一个站点转变为不可用状态，其它的站点便能够取代该站点进行服务直到原先的站点恢复正常。恰当改变网络的大小使得能够处理所需要的负载就显得尤为重要了。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>大数据</term>
+        <listitem>
+            <para>用于管理以及收集大数据(数据获取)的云对网络资源有着显著的需求。大数据应用经常使用数据的部分副本以在大规模分布式云中维护数据完整性。其它需要大量的网络资源的大数据应用包括 Hadoop、Cassandra、NuoDB、RIAK 以及其它 No-SQL 和分布式的数据库。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>虚拟桌面基础设施(VDI)</term>
+        <listitem>
+            <para>此类应用对于网络拥挤、延迟、抖动以及其他网络特性都非常敏感。与视频流传输相似的是用户体验非常重要，然而，不同之处在于使用缓存不再是一个能够抵消网络问题的选项。VDI 同时需要上行与下行的网络流量并且不能够依靠缓存来让该应用给终端用户使用。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>IP 语音(VoIP)</term>
+        <listitem>
+            <para>此类应用对于网络拥挤、延迟、抖动以及其他网络特性都非常敏感。VoIP 具有上下行流量对称的特点，需要网络服务质量(QoS)保证最优表现。它也可能需要一个有效的队列管理实现来保证发送。用户对延迟和抖动都非常敏感，并且能在极其轻微的情况下发现它们。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>视频会议和 web 会议</term>
+        <listitem>
+            <para>此类应用同样对于网络拥挤、延迟、抖动以及其他网络缺陷都非常敏感。视频会议同样具有上下行流量对称的特点，但是除非网络是在一个 MPLS 私有网络之上，其无法使用网络服务质量(QoS)机制来提高性能。与 VoIP 一样，用户对于即使是非常轻微的网络性能问题也很敏感。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>高性能计算(HPC)</term>
+        <listitem>
+            <para>此类应用较为复杂，需要对网络数据流和使用特点进行仔细考虑以处理云集群的需要。分布式计算具有东西向流量比较大的特点，但是针对特定应用，也存在南北向的流量很大的可能。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <xi:include href="network_focus/section_user_requirements_network_focus.xml"/>
+    <xi:include href="network_focus/section_tech_considerations_network_focus.xml"/>
+    <xi:include href="network_focus/section_operational_considerations_network_focus.xml"/>
+    <xi:include href="network_focus/section_architecture_network_focus.xml"/>
+    <xi:include href="network_focus/section_prescriptive_examples_network_focus.xml"/>
+
+</chapter>

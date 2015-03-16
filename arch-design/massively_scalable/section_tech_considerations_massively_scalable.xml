@@ -1,0 +1,57 @@
+<?xml version="1.0" ?><!DOCTYPE section [
+<!ENTITY % openstack SYSTEM "../../common/entities/openstack.ent"> %openstack;
+<!-- The master of this file is in openstack-manuals repository, file
+     doc/common/entities/openstack.ent.
+     Any changes to the master file will override changes in other
+     repositories. --><!-- Some useful entities borrowed from HTML --><!ENTITY ndash "&#x2013;">
+<!ENTITY mdash "&#x2014;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY times "&#215;">
+<!ENTITY hellip "&#133;">
+<!-- Useful for describing APIs in the User Guide --><!ENTITY COPY '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+<!ENTITY CHECK '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="../common/figures/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]><section version="5.0" xml:id="technical-considerations-massive-scale" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>技术因素</title>
+    <para>将一个现存的为其他目的而设计的 OpenStack 环境改造成为可大规模扩展的类型，是一项艰巨的任务。当从头建造一个可大规模扩展的环境时，需要确保初始的部署也是依据不管环境如何增长依然能够适用的原则和选择而建造的。举例来说，在只在第一个地点进行部署的时候，就将整个环境当作是一个多点环境进行部署，就是一个比较好的方式，因为这使得相同的部署及隔离方法，随着环境的扩展，也能够在其它不同的地点被使用，这些地点之间通过专门的线路或者广域网进行连接。在超大规模的环境中，扩展胜过冗余。这种场景下的应用必须依据这个原则进行修改，依赖于整个环境的规模和扩展性和同质性以提供可靠性，而不是使用非商品的硬件解决方案提供的冗余基础设施。</para>
+    <section xml:id="infrastructure-segregation-massive-scale">
+      <title>基础设施隔离</title>
+    <para>幸运的是，OpenStack 的服务是被设计为能够支持水平上大规模的环境的。需要清楚的是这并不是整个支撑基础设施的问题。准确的说，这只是好些 OpenStack 的服务进行数据存储以及远程过程调用通信所用到的数据库管理系统和消息队列的问题。</para>
+    <para>传统的集群化技术这种环境中也通常被用以提供高可用性和一些额外的扩展性。然而，在大规模的环境下，要对这些组件采取一些额外的配置步骤，以减轻它们所面对的性能压力，避免它们对整个环境的整体性能造成负面的影响。很重要的一点是需要确保所有的组件上的负载是相对平均的，这样子万一在整个可大规模扩展的环境出现问题时，所有的组件都在，或者至少接近它们的最大负载容量上工作。</para>
+    <para>OpenStack 中的区域(Region)用以隔离完全独立但只由认证模块和面板模块(可选)连接起来的的部署环境。服务在每个区域之中都以独立的 API 入口进行安装，与独立的数据库和消息队列的部署共同组成一套完整的环境。这让用户能够知道环境中发生故障的域，并给予他们一些能力以保证某种程度上的应用弹性，同时又强制要求他们必须选择操作应该应用到哪个区域中去。</para>
+    <para>在大规模场景下运行的环境需要更加细分其区域和站点，同时又不能要求用户指定故障域。者提供了将整个部署更加细分到故障域的能力，同时也为维护和新硬件的添加提供了逻辑上的单元。在超大规模的环境中，管理员可能一次性添加整个机柜或者甚至是一组机柜上的机器，而不是添加单台计算节点。这样子的节点添加过程，将会用到这里所提到的隔离概念。</para>
+    <para><glossterm baseform="cell">单元</glossterm>提供了对一个 OpenStack 环境，也包括区域中的计算部分进行细分的功能，同时保持对外的展现仍然为单个入口点。在每个区域中将会为一系列实际承担负载的计算单元创建一个 API 单元。每个单元拥有其自己的数据库和消息队列(理想情况下是集群化的)，并提供将负载细分到这些子系统中的功能，以提高整体性能。</para>
+    <para>每个计算单元提供一整个完整的计算环境，包括完整的数据库及消息队列部署、调度器，管理器以及多个计算主机。单元调度器将会把从单个 API 入口点上收到的用户请求，安排到从可用的单元中选出的一个特定单元上。单元内部常规的过滤调度器将负责其内部的这种安排。</para>
+    <para>使用单元的缺点是这种解决方案在 OpenStack 的服务中，只有计算服务支持得比较好。并且，这种方案也不能够支持一些相对基础的 OpenStack 功能，例如安全组和主机聚合。由于这种方案比较新，并且用途相对特别，在 OpenStack 之中对这种方案的测试也相对比较有限。即使存在种种的这些问题，单元还是在一些著名的大规模 OpenStack 环境中被使用了，包括 CERN 和 Rackspace 中的那些。</para></section>
+    <section xml:id="host-aggregates">
+      <title>主机聚合</title>
+    <para>主机聚合使得能够将 OpenStack 计算部署划分成逻辑上的分组以实现负载均衡和实例的分布。主机聚合也可以被用于对一个可用域进行更进一步的划分，想象一下一个云环境可能使用主机聚合将可用域中的主机进行分组，分组依据的规则可能是主机共享资源，比如存储和网络，或者主机有特别的属性，比如可信计算硬件。主机聚合并不是明显面向用户的，相反，是通过选择实例类型来实现的，这些实例的类型都带有额外的规格信息，映射到主机聚合的元数据上。</para></section>
+    <section xml:id="availability-zones">
+      <title>可用域</title>
+    <para>可用域为细分一个 OpenStack 部署或者区域提供了另外一种机制。实际上，这是明确展现给用户(可选项)的主机聚合。</para>
+    <para>不同于单元，主机聚合并没有自己的数据库服务器以及消息队列代理，它只是简单地代表一个抽象的计算节点组。通常说来，将计算节点分到同一个可用域中依据的是它们可能处于同一个故障域之中，因为他们共享了例如电源、物理网络连接等等的物理特性。可用域对用户来说是可见的，因为它们是能够被定位到的，但是，用户并不怎么需要去确定可用域的位置。另外，运维人员还可以设置默认的可用域，系统将会把实例调度到这个可用域之上，而不是系统中默认的 nova 的可用域。</para></section>
+    <section xml:id="segregation-example">
+      <title>隔离的例子</title>
+    <para>In this example the cloud is divided into two regions, one
+        for each site, with two availability zones in each based on
+        the power layout of the data centers. A number of host
+        aggregates have also been defined to allow targeting of
+        virtual machine instances using flavors, that require special
+        capabilities shared by the target hosts such as SSDs, 10 GbE
+        networks, or GPU cards.</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Massively_Scalable_Cells_+_regions_+_azs.png"/>
+        </imageobject>
+    </mediaobject></section>
+</section>

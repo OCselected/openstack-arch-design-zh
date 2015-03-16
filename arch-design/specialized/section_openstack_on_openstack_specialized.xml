@@ -1,0 +1,67 @@
+<?xml version="1.0" ?><!DOCTYPE section [
+<!ENTITY % openstack SYSTEM "../../common/entities/openstack.ent"> %openstack;
+<!-- The master of this file is in openstack-manuals repository, file
+     doc/common/entities/openstack.ent.
+     Any changes to the master file will override changes in other
+     repositories. --><!-- Some useful entities borrowed from HTML --><!ENTITY ndash "&#x2013;">
+<!ENTITY mdash "&#x2014;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY times "&#215;">
+<!ENTITY hellip "&#133;">
+<!-- Useful for describing APIs in the User Guide --><!ENTITY COPY '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+<!ENTITY CHECK '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="../common/figures/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]><section version="5.0" xml:id="arch-guide-openstack-on-openstack" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <?dbhtml stop-chunking?>
+  <title>OpenStack 上的 OpenStack</title>
+  <para>某些情况下可能需要运行一个嵌套在另外的 OpenStack 云上的 OpenStack。这种场景使得整个 OpenStack 环境都由运行在底层 OpenStack 云所控制的宿主机和服务器上的实例来管理和准备。公有云提供商可以使用这项技术在完全基于 OpenStack 的云上来高效地管理升级和维护的过程。开发和测试 OpenStack 的人员也可以在不管公有还是私有的可用的 OpenStack 计算资源上，根据这个指引部署他们自己的 OpenStack 环境。</para>
+  <section xml:id="challenges-for-nested-cloud">
+    <title>挑战</title>
+    <para>网络方面是这个嵌套云架构的最复杂部分。由于底层裸金属架构的云拥有所有的硬件设备，当使用 VLAN 的时候，VLAN 需要被暴露到底层云上的物理端口，但是它们也同样需要被展现到嵌套层中。作为备选方案，网络覆盖技术能够在上层云(运行在 OpenStack 之上的 OpenStack)被用以为部署提供所需要的软件定义联网。</para>
+  </section>
+  <section xml:id="hypervisor-nested-cloud">
+    <title>虚拟机管理程序</title>
+    <para>这种场景中需要解决的一个关键问题是决定采用何种方式为嵌套的 OpenStack 环境提供宿主机。这个决定将会影响在嵌套 OpenStack 部署中哪些操作系统可以被使用。</para>
+  </section>
+  <section xml:id="possible-solutions-nested-cloud-deployment">
+    <title>可能的解决方案：部署</title>
+    <para>部署整个 OpenStack 环境是比较麻烦的，不过这个困难可以被轻松瓦解，通过创建一个 Heat 模板来部署整个环境或者使用一个配置管理系统。一旦 Heat 模板创建完成，部署新的 OpenStack 环境就变得非常简单并且可以使用自动化方式完成。</para>
+    <para>The OpenStack-on-OpenStack project (<glossterm>TripleO</glossterm>)
+      addresses this issue—currently, however, the project does
+      not completely cover nested stacks. For more information, see
+      <link xlink:href="https://wiki.openstack.org/wiki/TripleO">
+      https://wiki.openstack.org/wiki/TripleO</link>.
+    </para>
+  </section>
+  <section xml:id="possible-solutions-nested-cloud-hypervisor">
+    <title>可能的解决方案：宿主机</title>
+    <para>在运行 TripleO 的场景下，底层的 OpenStack 环境以裸金属的方式部署计算节点。然后 OpenStack 将会被部署在这些计算的裸金属服务器上，并使用诸如 KVM 之类的管理程序。</para>
+    <para>In the case of running smaller OpenStack clouds for testing
+      purposes, and performance would not be a critical factor, QEMU
+      can be utilized instead. It is also possible to run a KVM
+      hypervisor in an instance
+      (see <link xlink:href="http://davejingtian.org/2014/03/30/nested-kvm-just-for-fun/">
+      http://davejingtian.org/2014/03/30/nested-kvm-just-for-fun/</link>),
+      though this is not a supported configuration, and could be a
+      complex solution for such a use case.</para>
+  </section>
+  <section xml:id="nested-cloud-diagram">
+    <title>图示</title>
+    <para>
+      <mediaobject>
+        <imageobject>
+          <imagedata contentwidth="4in" fileref="../figures/Specialized_OOO.png"/>
+        </imageobject>
+      </mediaobject>
+    </para>
+  </section>
+</section>

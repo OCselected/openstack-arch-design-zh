@@ -1,0 +1,48 @@
+<?xml version="1.0" ?><chapter version="5.0" xml:id="storage_focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>存储型</title>
+
+    <para>云存储是一种数据存储的模型。这种模型下电子数据存放在逻辑的存储池之中，物理的存储设备则分布在多个服务器或者地点之中。云存储一般来说指的是所支持的对象存储服务，然而，随着发展，这个概念包括了其它能够作为服务提供的数据存储，比如块存储。</para>
+    <para>云存储是运行在虚拟化基础设施之上的，并且在可访问接口、弹性、可扩展性、多租户以及可测量资源方面都类似于更广泛意义上的云计算。云存储服务可以是场外的服务，也可以在内部进行部署。</para>
+    <para>云存储由很多分散的但是同质化的资源所组成，并且通常被称为集成存储云。云存储具有非常高的容错能力，这是通过冗余以及数据的分布存储实现的。通过创建版本化的副本，云存储是非常耐用的，而且对于数据的副本来说，其一致性也是非常高的。</para>
+    <para>在规模到达一定的程度时，数据操作的管理对于整个组织来说就会是一个资源密集型的过程。分级存储管理(HSM)系统以及数据网格能够帮助对数据评估的基准值作出注解以及报告，从而做出正确的决定以及自动化该数据决策。HSM 支持自动化的排列和移动，以及数据操作的协调编排。数据网格是一个架构，或者是一项不断发展的服务集合技术，此项技术能够将多个服务协调到一起，让用户能够管理大规模的数据集合。</para>
+    <para>以下是云存储类型的应用部署的例子：</para>
+    <itemizedlist>
+        <listitem>
+            <para>活跃归档、备份和分级存储管理</para>
+        </listitem>
+        <listitem>
+            <para>通用内容存储和同步。比如私有的 dropbox。</para>
+        </listitem>
+        <listitem>
+            <para>基于并行文件系统的数据分析。</para>
+        </listitem>
+        <listitem>
+            <para>某些服务的非结构化数据存储。比如社交媒体的后端存储。</para>
+        </listitem>
+        <listitem>
+            <para>持久化的块存储。</para>
+        </listitem>
+        <listitem>
+            <para>操作系统和应用镜像存储。</para>
+        </listitem>
+        <listitem>
+            <para>媒体流。</para>
+        </listitem>
+        <listitem>
+            <para>数据库。</para>
+        </listitem>
+        <listitem>
+            <para>内容分发。</para>
+        </listitem>
+        <listitem>
+            <para>云存储配对。</para>
+        </listitem>
+    </itemizedlist>
+
+    <xi:include href="storage_focus/section_user_requirements_storage_focus.xml"/>
+    <xi:include href="storage_focus/section_tech_considerations_storage_focus.xml"/>
+    <xi:include href="storage_focus/section_operational_considerations_storage_focus.xml"/>
+    <xi:include href="storage_focus/section_architecture_storage_focus.xml"/>
+    <xi:include href="storage_focus/section_prescriptive_examples_storage_focus.xml"/>
+
+</chapter>

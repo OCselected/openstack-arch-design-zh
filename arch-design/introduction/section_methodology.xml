@@ -1,0 +1,167 @@
+<?xml version="1.0" ?><!DOCTYPE section [
+<!ENTITY % openstack SYSTEM "../../common/entities/openstack.ent"> %openstack;
+<!-- The master of this file is in openstack-manuals repository, file
+     doc/common/entities/openstack.ent.
+     Any changes to the master file will override changes in other
+     repositories. --><!-- Some useful entities borrowed from HTML --><!ENTITY ndash "&#x2013;">
+<!ENTITY mdash "&#x2014;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY times "&#215;">
+<!ENTITY hellip "&#133;">
+<!-- Useful for describing APIs in the User Guide --><!ENTITY COPY '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+<!ENTITY CHECK '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="../common/figures/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]><section version="5.0" xml:id="methodology" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>方法论</title>
+    <para>云的魅力在于它可以干任何事。无论从健壮性还是灵活性，都是这个世界上目前来说最好的。是的，云具有很高的灵活性，且可以做几乎任何事，但是想要充分发挥云的威力，定义好云将如何使用是非常重要的，否则创建和测试的使用案例意义就不复存在。此章讲述的是那些设计最适合、用户最关注的云架构背后的思考过程。</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Methodology.png"/>
+        </imageobject>
+    </mediaobject>
+    <para>上图展示了在获取用户需求和构建使用案例过程中的抽象流程。一旦用例被定义，它就可以被用于设计云的架构。</para>
+    <para>用例选择规划看起来是反直觉的，比如，使用Amazon的服务，从注册到使用也就是花5分钟的时间而已。难道Amazon真的不关心用户的计划？错了，Amazon的产品管理部门花了大量的时间去研究吸引他们典型用户的究竟是什么，也在琢磨着交付更好的服务。对于企业来说，计划的流程没有什么不同，只是不会去规划外部的付费用户罢了，举例来说，用户仅仅是内部的应用程序开发者或者是web门户。下面所列的目标在考虑创建用例时用的到。</para>
+    <para>总体业务目标</para>
+    <itemizedlist>
+        <listitem>
+            <para>开发务必清晰定义，符合业务目标和需求</para>
+        </listitem>
+        <listitem>
+            <para>增加项目的支持，积极的和业务相关人员、客户以及最终用户保持沟通。</para>
+        </listitem>
+    </itemizedlist>
+    <para>技术</para>
+    <itemizedlist>
+        <listitem>
+            <para>协调OpenStack架构中各个项目，努力的通过社区获得更多的支持。</para>
+        </listitem>
+        <listitem>
+            <para>为自动化设计好的架构可大大的加速开发和部署。</para>
+        </listitem>
+        <listitem>
+            <para>使用恰当的工具可增加开发的效率。</para>
+        </listitem>
+        <listitem>
+            <para>创建更好的、更多的测试指标和测试工具，以支持开发的持续集成、测试流程和自动化。</para>
+        </listitem>
+    </itemizedlist>
+    <para>组织</para>
+    <itemizedlist>
+        <listitem>
+            <para>选用好多消息工具，良好的管理支持团队。</para>
+        </listitem>
+        <listitem>
+            <para>增强文化氛围，诸如对于开源的理解，云架构，敏捷开发，持续开发/测试/集成等，总而言之，涉及到开发的所有环节都需要。</para>
+        </listitem>
+    </itemizedlist>
+    <para>举例来说明上述的一切，想想一个业务目标是将其公司的电子商务站点使用云来构建。此目标意味着应用程序将要支持每秒成千上万的会话，各种负载以及大量复杂和瞬息完变的数据。通过识别诸如每秒并发事务，数据库的大小等关键指标，相信构建出一个基于假设的测试方法是可行的。</para>
+    <formalpara>
+      <title>基于用户场景开发功能</title>
+      <para>基于用户场景开发功能，可轻松开发测试用例，即可在项目的整个过程中有个掂量。假如组织没有准备好一个应用，或者没有准备好一个用于开发用户需求的应用，那么就需要创建需求，以构建合适的测试工具和开发可用的指标。一旦指标确认，即使遇到需求变更，也可轻松面对快速变化，而且无须过度担心提前具体需求。将此类比于使用创新的方法配置系统，不能因为需求的变化而每次都重新设计。</para>
+    </formalpara>
+    <formalpara>
+      <title>云的局限特性集</title>
+      <para>建立需求是发掘用户痛点，而不是重新创建OpenStack已经有的工具集。认为建立OpenStack的只有一种好办法，那只能弄巧成拙。在开发一个平台中通过限制集中带来的慢速是非常重要的，因为它会导致需求转变为处理工具本身，所以请不要重新创建一整套的工具。欲成功的部署云，与技术产品负责人一起建立关键功能显得不可或缺。</para>
+    </formalpara>
+    <section xml:id="application-cloud-readiness-methods">
+        <title>为云准备好应用程序</title>
+        <para>尽管云被设计出来是让事情变得更简单，但是要意识到“使用云”不仅仅是建立一个实例然后将应用丟进去就这么简单是非常重要的。这种一夜之间平地起高楼的事情是需要确定的情况的，要明白在云和过去的基于服务器硬件环境以及过去虚拟化环境是有着本质上的区别的。</para>
+        <para>在过去的环境中，还有那些过去的企业级应用，服务器和应用的运行都是被当作“宠物”看待的，他们被精心的照看和爱护，甚至每台服务器都有自己的名字如“甘道夫“或”哆啦唉梦“,一旦他们生病了，则需要人去护理直到恢复健康。所有的这些设计表明应用是不可以停止。</para>
+        <para>在云的环境中，打个比方，服务器更像是牛群中的某一头牛。它们太多了，成千上万，命名的方式可能是类似的编号 NY-1138-Q，如果它们中的一个出问题了，管理员会直接抛弃它，再重新安装和启动一个即可。遗留的应用还没有准备好运行在此云环境中，所以很自然的会遭遇停运，丢失数据，甚至更加糟糕的。</para>
+        <para>在为云设计应用还有另外一些原因需要注意。一些是防御性的，例如一些应用并不能准确的确定在什么地方或什么样的硬件去启动，所以他们需要灵活性，即使做不到至少应该保持适应性更强。另外一些则是主动性的，例如，使用云的一个优点是其有高扩展性，所以应用需要被设计的能够使用这些优点，当然云还有更多的优点，也得一并考虑。</para>
+    </section>
+    <section xml:id="determining-whether-an-application-is-cloud-ready">
+        <title>决定那些应用程序是可在云中运行</title>
+        <para>寻找适合于在云中运行的应用，还是有几种方法可以考虑的。</para>
+            <variablelist>
+              <varlistentry>
+                <term>结构</term>
+                <listitem>
+                  <para>那些大型的、单层次的、铁板一块的旧的应用是非常典型的不适合云环境的。将负载分割为多个实例会获得高效，所以部分系统失效不会特别影响其他部分的系统，或者说随应用的需要而横向扩展。</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>依赖</term>
+                <listitem>
+                  <para>
+                    Applications that depend on specific
+                    hardware—such as a particular chip set or an
+                    external device such as a fingerprint
+                    reader—might not be a good fit for the
+                    cloud, unless those dependencies are specifically
+                    addressed. Similarly, if an application depends on
+                    an operating system or set of libraries that
+                    cannot be used in the cloud, or cannot be
+                    virtualized, that is a problem.
+                  </para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>连通性</term>
+                <listitem>
+                  <para>自包含的应用或它们所依赖的资源在云的环境无法实现，将无法运行。也许在一些情况下，通过自定义网络解决了这些问题，但是运行是否良好还得看选择云的环境。</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>耐久性和弹性</term>
+                <listitem>
+                  <para>尽管有服务水平协议(SLA)的存在,但是还是会有一些坏的事情发生：服务器宕机，网络连接发生紊乱，多个租户无法访问服务。应用程序必须足够的稳固，以应对上述事情的发生。</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+    </section>
+    <section xml:id="designing-for-the-cloud">
+        <title>设计云</title>
+        <para>这里有一些原则忠告，在为一个应用设计云的时候请时刻铭记：</para>
+        <itemizedlist>
+            <listitem>
+                <para>做一个悲观主义者：承担一切失败，基于目标选择手段。善待那些将系统搞坏的程序。</para>
+            </listitem>
+            <listitem>
+                <para>将鸡蛋放在多个篮子里：考虑多个供应商，基于地理分区不同的数据中心，多可用的zones以容纳本地存在的隐患。可移植性的设计。</para>
+            </listitem>
+            <listitem>
+                <para>考虑效率：低效的设计将不可扩展。高效的设计可以无须花费多少钱即可轻松扩展。去掉那些不需要的组件或容量。</para>
+            </listitem>
+            <listitem>
+                <para>保持偏执：深度设计防御，通过构建在每一层和每个组件之间的安全确保零差错。不信任任何人。</para>
+            </listitem>
+            <listitem>
+                <para>但是也不要太偏执：不是所有的应用都需要钻石级的解决方案。为不同的服务水平协议、不同的服务层和安全级别等分别设计不同的架构。</para>
+            </listitem>
+            <listitem>
+                <para>管理数据：数据通常是最为灵活的也最复杂的一块，尤其是在云中或云集成的架构中。要在分析和传送数据付出更多的努力。</para>
+            </listitem>
+            <listitem>
+                <para>放手：自动化可以增加一致性、质量以及减少响应的时间。</para>
+            </listitem>
+            <listitem>
+                <para>分离和征服：尽可能分区和并行的分层。尽可能的确保组件足够小且可移植。在层之间使用负载均衡。</para>
+            </listitem>
+            <listitem>
+                <para>保持弹性：随着增加的资源，确保结果是增加的性能和扩展。减少资源要没有负面影响。</para>
+            </listitem>
+            <listitem>
+                <para>保持动态：激活动态配置变化诸如自动扩展，失效恢复，资源发现等，以适应变化的环境，错误的发生以及负载的变化。</para>
+            </listitem>
+            <listitem>
+                <para>贴近原则：通过移动高度密切的组件和相似数据靠近以减少延迟。</para>
+            </listitem>
+            <listitem>
+                <para>保持松散：松耦合，服务接口，分离关注度高的点，抽象并定义好的应用程序接口，交付灵活。</para>
+            </listitem>
+            <listitem>
+                <para>注意开销：自动扩展，数据传输，虚拟软件许可证，保留的实例等等均会快速增加每月的使用支出。密切监测使用情况。</para>
+            </listitem>
+        </itemizedlist>
+    </section>
+</section>

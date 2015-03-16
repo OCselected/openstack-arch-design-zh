@@ -1,0 +1,13 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="specialized-networking-example" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <?dbhtml stop-chunking?>
+  <title>特殊网络应用的例子</title>
+  <para>有些与网络进行互动的应用需要更加专门的连接。类似于 looking glass 之类的应用需要连接到 BGP 节点，或者路由参与者应用可能需要在二层上加入一个网络。</para>
+  <section xml:id="challenges-specialized-networking">
+    <title>挑战</title>
+    <para>将特殊的网络应用连接至它们所需要的资源能够改变 OpenStack 部署的设计。基于覆盖网络的部署是无法支持路由参与者应用的，而且也可能阻挡二层网络监听者应用。</para>
+  </section>
+  <section xml:id="possible-solutions-specialized-networking">
+    <title>可能的解决方案</title>
+    <para>使用带有提供商网络的 OpenStack 联网方式进行 OpenStack 的部署可以允许直接到上游网络设备的二层网络连接。这种设计提供了通过中间系统到中间系统(ISIS)协议进行通信，或者传输由 OpenFlow 控制器所控制的网络包等功能所需要的二层联网要求。使用比如 <glossterm>Open vSwitch</glossterm> 这类的带有代理程序的多种二层网络插件能够允许通过 VLAN 直接到三层设备上的特定端口的私有连接。这使得之后会加入自治系统的 BGP 点对点连接能够存在。应该尽量避免使用三层网络的插件，因为它们会分隔广播域并且阻止邻接路由器的形成。</para>
+  </section>
+</section>

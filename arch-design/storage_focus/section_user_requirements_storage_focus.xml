@@ -1,0 +1,101 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="user-requirements-storage-focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>用户需求</title>
+    <para>据数据的需求来定义存储型云，他们包括：</para>
+      <itemizedlist>
+        <listitem>
+          <para>性能</para>
+        </listitem>
+        <listitem>
+          <para>访问模式</para>
+        </listitem>
+        <listitem>
+          <para>数据结构</para>
+        </listitem>
+      </itemizedlist>
+    <para>成本以及用户需求之间的平衡，决定了在云架构中需要使用的方法和技术。</para>
+    <variablelist>
+      <varlistentry>
+        <term>成本</term>
+        <listitem>
+            <para>用户只为他实际使用的存储买单。这个值通常由用户在一个月之中的平均使用量表示。这并不意味着云存储更便宜，云存储只让运营费用变得便宜，而非资产支出。从商业角度来说，方案能够适当的扩展，避免了提前购买一个不能被完全利用的大容量存储，是有益的。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>法律需求</term>
+        <listitem>
+            <para>很多辖区对于云环境中的数据的存储及管理都有相关的法律上或者监管上的要求。这些规章的常见领域包括数据保管政策和数据所有权政策。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <section xml:id="legal-requirements-storage-focus">
+      <title>法律需求</title>
+    <para>很多辖区对于云环境中的数据的保管及管理都有相关的法律上或者监管上的要求。这些规章的常见领域包括：</para>
+      <note>
+        <para>Examples of such legal frameworks include the <link xlink:href="http://ec.europa.eu/justice/data-protection/">data
+          protection framework</link> of the European Union and the
+          requirements of the <link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules/">Financial
+          Industry Regulatory Authority</link> in the United
+          States. Consult a local regulatory body for more information.
+        </para>
+      </note>
+    <variablelist>
+      <varlistentry>
+        <term>数据保管</term>
+        <listitem>
+            <para>确保持久化数据的保管和记录管理以符合数据档案化需求的政策。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>数据所有权</term>
+        <listitem>
+            <para>管理数据的所有权和责任的政策。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>数据独立性</term>
+        <listitem>
+            <para>管理位于外国或者其它辖区的数据存储问题的政策。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>数据合规性</term>
+        <listitem>
+            <para>管理由于法律原因因而特定类型的信息必须存放在特定的地点或者由于相同的原因数据不能够存放在其它地点的政策。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    </section>
+
+    <section xml:id="technical-requirements-storage-focus">
+      <title>技术需求</title>
+    <para>以下是一些需要被合并到架构设计中的技术性需求：</para>
+    <variablelist>
+      <varlistentry>
+        <term>数据亲近度</term>
+        <listitem>
+            <para>设计必须考虑每个宿主机上的存储，或者由集中存储设备所提供的存储，以提供高性能或者大容量的存储空间。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>性能</term>
+        <listitem>
+            <para>可能需要使用不同的技术来缓存磁盘操作以提供性能。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>可用性</term>
+        <listitem>
+            <para>关于可用性的特殊需求将影响用以存储及保护数据的技术。这些需求也将会影响成本以及要实施的方案。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>安全性</term>
+        <listitem>
+            <para>数据无论是在传输时或其他方式都将会被保护。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </section>
+</section>

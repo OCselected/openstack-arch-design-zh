@@ -1,0 +1,43 @@
+<?xml version="1.0" ?><chapter version="5.0" xml:id="hybrid" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>混合云</title>
+
+    <para><glossterm baseform="hybrid cloud">混合云</glossterm>,依据定义，意思就是跨多个云的设计。举个这种类型架构的例子，设计包含多个OpenStack云的情景(例如，一个是基于OpenStack的私有云，另外一个是基于OpenStack的公有云)，又或许是一个OpenStack云和一个非OpenStack云的互操作的情况(例如，一个基于OpenStack的私有云和Amazon Web Services互相操作).<glossterm baseform="bursting">突破</glossterm> 到外部的云，当私有云没有可用的资源时，系统可以自动到外部的云去建立新的实例。</para>
+    <para>一些包含混合云架构的场景如下:</para>
+    <itemizedlist>
+        <listitem>
+            <para>从私有云突破到公有云</para>
+        </listitem>
+        <listitem>
+            <para>灾难恢复</para>
+        </listitem>
+        <listitem>
+            <para>开发和测试</para>
+        </listitem>
+        <listitem>
+            <para>联合云,允许用户从不同的提供商那选择资源</para>
+        </listitem>
+        <listitem>
+            <para>构建混合云以支持原来的系统，从而过渡到云</para>
+        </listitem>
+    </itemizedlist>
+    <para>作为混合云设计所处理的系统，其实已经不是云架构或组织所能控制的，一个混合云架构需要考虑架构的方面可能没有其他云所必须的。举例，设计也许需要处理硬件、软件、以及其他组织控制下的应用程序接口。</para>
+    <para>同样的，基于OpenStack的混合云架构在多大程度上影响着云的运维者和云的消费者，让他们可以使用OpenStack本身的工具去完成一些任务。根据定义，此中状况没有那个单一的云可以提供所有的功能。为了管理整个系统，用户、运维人员、最终用户会需要一个总体工具，即众所周知的云管理平台(CMP)。任何组织只要使用了混合云，都会有一个CMP，有些CMP还需要运维人员登录外部的门户以及创建一个公有云的实例。</para>
+    <para>There are commercially available options, such as
+        Rightscale, and open source options, such as ManageIQ
+        (<link xlink:href="http://manageiq.org">http://manageiq.org</link>),
+        but there is no single CMP that can
+        address all needs in all scenarios. Whereas most of the
+        sections of this book talk about the aspects of OpenStack, an
+        architect needs to consider when designing an OpenStack
+        architecture. This section will also discuss the things the
+        architect must address when choosing or building a CMP to run
+        a hybrid cloud design, even if the CMP will be a manually
+        built solution.</para>
+
+    <xi:include href="hybrid/section_user_requirements_hybrid.xml"/>
+    <xi:include href="hybrid/section_tech_considerations_hybrid.xml"/>
+    <xi:include href="hybrid/section_operational_considerations_hybrid.xml"/>
+    <xi:include href="hybrid/section_architecture_hybrid.xml"/>
+    <xi:include href="hybrid/section_prescriptive_examples_hybrid.xml"/>
+
+</chapter>

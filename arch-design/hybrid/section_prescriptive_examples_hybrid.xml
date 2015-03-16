@@ -1,0 +1,81 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="prescriptive-examples-multi-cloud" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>示例</title>
+    <para>混合云环境一般被设计为如下场景：</para>
+    <itemizedlist>
+        <listitem>
+            <para>从私有云突破负载到公有的OpenStack云</para>
+        </listitem>
+        <listitem>
+            <para>从私有云突破负载到公有的非OpenStack云</para>
+        </listitem>
+        <listitem>
+            <para>跨云的高可用性(技术多样)</para>
+        </listitem>
+    </itemizedlist>
+    <para>本章讨论这些场景的每个环境实例。</para>
+    <para>A公司的数据中心运行在危险的低容量环境中。在可预料的将来是不可能扩展此数据中心的。为了满足持续增长的开发资源需求，公司决定使用公有云资源。</para>
+    <para>A公司已经拥有显著数量的硬件的数据中心，将负载迁移到公有云中不是可行的方式。</para>
+    <para>公司已经有个内部的云管理平台，这是选择合适的云的直接需求，当然还依赖于当前本地的容量。</para>
+      <note>
+        <para>这是一个定制的内部应用，为了特别的目的而写的。</para>
+      </note>
+    <para>此解决方案的描述实例如下图所示。</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Multi-Cloud_Priv-Pub3.png"/>
+        </imageobject>
+    </mediaobject>
+    <para>此例子展现了两个云，以及一个云管理平台(CMP)，CMP将两个云连接起来。</para>
+      <note>
+        <para>本书不会尝试去阐释某个特定的CMP，但是上面示意图描述了典型的使用编排组件如何处理负载和Telemetry服务。</para>
+      </note>
+    <para>其中的私有云是一个基于OpenStack搭建的，有一个或多个控制节点，也有一个或多个计算节点。它包括了有Telemetry模块提供的计费服务，当负载增加时，Telemetry会捕获到，并且将这一消息交由CMP去处理。在私有云的容量够用时，CMP使用OpenStack提供的API,调
+用编排服务来创建实例，从而响应用户的需求。当私有云容量不够用时，CMP会向公有云的编排服务API请求，让之去公有云中创建实例。</para>
+    <para>在此例中，“A公司”整个的部署都不是直接到外部公有云的，因为公司担心下列情形：对资源缺少控制、整个控制的安全、增加运营费用。</para>
+
+    <section xml:id="bursting-to-public-nonopenstack-cloud">
+      <title>突破到一个不是OpenStack的公有云</title>
+    <para>第二个例子是从私有云突破负载到非OpenStack公有云中，比如亚马逊web服务(AWS),以增加容量和随需扩展应用。</para>
+    <para>对于OpenStack-to-AWS的混合云来说，它的架构和下面示意图非常的相像:</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Multi-Cloud_Priv-AWS4.png"/>
+        </imageobject>
+    </mediaobject>
+    <para>公司B的开发者已经在使用AWS来完成他们的一些工作而且不打算切换云提供商。</para>
+    <para>只要CMP能够使用合适的API连接到外部云提供商，工作流流程仍然和以前的场景没有多大差别。CMP的一些列诸如监测负载，创建&gt;新的实例等动作都是一样的，但是它们必须使用合适的API调用来访问公有云。</para>
+    <para>，如果公有云提供商是亚马逊Web服务，CMP须使用EC2 API来创建新的实例以及分配一个弹性IP，而在以前在私有云中IP要添加到HAProxy中。CMP也需要参考AWS特有的工具，如CloudWatch和CloudFormation。</para>
+    <para>有几款开源工具所构建的CMP已经可用，可以掌控这种类型的转换，它们有ManageIQ,jClouds,以及JumpGate。</para>
+    </section>
+
+    <section xml:id="high-availability-disaster-recovery">
+      <title>高可用/灾难恢复</title>
+    <para>C公司有着当他们本地的数据中心发生灾难性的事故后能够恢复的需求，一些应用当前运行在他们的私有OpenStack云中，需要保护的数据相关有块存储、对象存储以及数据库，架构的设计支持系统大量组件失效后，仍然能够确保系统继续交付服务。当服务仍然为用户
+可用时，系统在后台通过标准的最佳实践的灾难恢复规则来恢复失效的组件。为了实现这些目标，数据复制到第二个云中，且是远距离的不同地理位置。关于此系统描述的逻辑图见下面示意图：</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Multi-Cloud_failover2.png"/>
+        </imageobject>
+    </mediaobject>
+    <para>此例子包含了由一个云管理平台连接的两个私有OpenStack云，来源的云，即1号OpenStack云，包括一个控制器和至少一个实例运行MySQL,也包括至少一个块存储卷和一个对象存储卷，以为用户在所有时间的数据都可用，该方法的用于保护每个数据不同的这些来源的细节。</para>
+    <para>对象存储是否有复制能力要看对象存储具体的提供商。OpenStack对象存储内嵌此特性，可以创建基于地理位置不同的复制，在每个云中至少要配置一份复制，为了能够在单个磁盘可以工作，云需要被配置使用OpenStack身份且是联合的身份，且和通过Swift代理将多个
+云的OpenStack对象存储彼此通信。</para>
+    <para>For Block Storage, the replication is a little more
+        difficult, and involves tools outside of OpenStack itself. The
+        OpenStack Block Storage volume is not set as the drive itself
+        but as a logical object that points to a physical back end. The
+        disaster recovery is configured for Block Storage for
+        synchronous backup for the highest level of data protection,
+        but asynchronous backup could have been set as an alternative
+        that is not as latency sensitive. For asynchronous backup, the
+        Block Storage API makes it possible to export the data and also the
+        metadata of a particular volume, so that it can be moved and
+        replicated elsewhere. More information can be found here:
+        <link xlink:href="https://blueprints.launchpad.net/cinder/+spec/cinder-backup-volume-metadata-support">
+        https://blueprints.launchpad.net/cinder/+spec/cinder-backup-volume-metadata-support</link>.
+    </para>
+    <para>同步备份，同时在云中创建相同的卷，且选择合适的类型，这样每个云都有相同的后端。这可以通过CMP来完成创建卷，因为CMP知道两个云创建相同的卷。一旦这被配置，一个解决方案包括DRDB就可以被用户同步真实的物理设备。</para>
+    <para>数据库组件的备份使用同步备份。MySQL不支持跨地区的复制，所以灾难恢复是由复制文件本身来提供的。在类似MySQL数据库后端使用对象存储是不可能的，所以Swift的复制在这里就没有用武之地。它也不能被决定使用另外其他的地理分层的存储系统来存储数据，诸&gt;如Ceph作为块存储。它必须使用另外层次的保护，其中的一个选择就是使用OpenStack块存储卷来存储数据库，而且和块存储的备份一样来&gt;备份数据库。</para>
+    </section>
+</section>

@@ -1,0 +1,96 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="user-requirements-multi-site" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>用户需求</title>
+    <para>一个多区域架构是复杂的而且尤其自身的风险和考虑，因此确保考虑此架构的设计应满足用户和业务的需求显得异常重要。</para>
+    <para>很多辖区对于云环境中的数据的保管及管理都有相关的法律上或者监管上的要求。这些规章的常见领域包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para>确保持久化数据的保管和记录管理以符合数据档案化需求的数据保留政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理数据的所有权和责任的数据所有权政策。</para>
+        </listitem>
+        <listitem>
+            <para>管理位于外国或者其它辖区的数据存储问题的数据独立性政策。</para>
+        </listitem>
+        <listitem>
+            <para>数据合规性,管理由于监管上的问题因而特定类型的数据必须存放在特定的地点或者更重要的，由于相同的原因，不能够存放在其它地点的数据管理政策。</para>
+        </listitem>
+    </itemizedlist>
+    <para>Examples of such legal frameworks include the data
+        protection framework of the European Union (<link xlink:href="http://ec.europa.eu/justice/data-protection">http://ec.europa.eu/justice/data-protection</link>)
+        and the requirements of the Financial Industry Regulatory
+        Authority (<link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules">http://www.finra.org/Industry/Regulation/FINRARules</link>)
+        in the United States. Consult a local regulatory body for more
+        information.</para>
+    <section xml:id="workload-characteristics">
+      <title>负载特性</title>
+    <para>预期的工作负荷是需要被捕获到指导决策的关键要求。理解负载在预想的多区域环境和用例上下文很重要。另外一个考虑负载的路径是想它怎么使用系统。一个负载可以是单个的应用或一组共同工作的应用。它也可以是在多个region中运行的多份应用的复制。通常在多区域部署的相同负载需要在多个不同物理地点运行相同的工作。</para>
+    <para>此多区域场景在本书中有一个或多个其他类似的场景，另外在两个或多个地点的额外负载需求。下面是可能一样的场景：</para>
+    <para>对于很多案例来说用户的负载会直接影响到其应用的性能，因此需要将此纳入考虑范围。欲确保应用的延迟为零或尽可能的最小化，多地点唯一的实现就是在部署云时。这些地点可以是不同的数据中心，不同的城市，不同的国家或地理位置，取决于用户需求和当地用户。</para></section>
+    <section xml:id="consistency-images-templates-across-sites">
+        <title>镜像和模板在跨不同站点时要保持一致性。</title>
+    <para>在跨不同的站点有必要保持部署实例的一致性，这需要构建基础设施，如果为镜像服务提供的后端存储是OpenStack对象存储的话，这很轻松的就可跨多个站点建立一致性镜像的仓库。具有中央端点与多个存储节点将允许为每一个站点有一致的集中存储。</para>
+    <para>不使用中心化的对象存储将会带来运维方面的问题，例如一致性的镜像库就需要维护，包括开发复制机制以掌控传输镜像和跨多站点的镜像变化。</para></section>
+    <section xml:id="high-availability-multi-site"><title>高可用</title>
+    <para>如果高可用是提供持续基础设施运营的需求，那么高可用的基本需求就应该被定义。</para>
+    <para>OpenStack管理组件需要哪怕是最基本的或最小级别的冗余，举个最简单的例子，这样当任何一个站点失效时而不会受到显著的影响，因为有OpenStack服务依然可用。</para>
+    <para>The <link xlink:href="http://docs.openstack.org/high-availability-guide/content/"><citetitle>OpenStack
+        High Availability Guide</citetitle></link>
+        contains more information on how to provide redundancy for the
+        OpenStack components.</para>
+    <para>多网络链路应该在站点之间部署，以提供所有组件的冗余。这其中包括存储的复制，存储应该使用专用网络隔离，或者使用VLAN的QoS功能来控制复制流量，或者为该流量提供高的优先级。记住，如果数据存储经常改动，网络的需求就会显著影响到维护站点的运维成本。</para>
+    <para>维护对象可用性的能力会显著影响到对象存储的设计和实现，也会影响到站点之间的广域网网络设计。</para>
+    <para>连接多于两个站点会增加挑战，会给设计考虑增加更多的复杂性。多站点实现需要额外的规划，增加交付内外部连通性的复杂拓扑，一些选项包括完全mesh拓扑，hub spoke,spine leaf,或3d Torus。</para>
+    <para>不是所有运行在云中的应用都知道自己运行在云中。如果有这样的情况存在，应该清晰的去衡量和定义什么样的基础设施可以支持，但是更加重要的是什么样的基础设施不支持。举个例子，在站点之间支持共享存储。它是可能的，尽管OpenStack本身不支持这样的解决方案，需要第三方的硬件供应商来弥补这一需求。在举一个例子，应用可以直接消费对象存储，这些应用需要自己知道在使用OpenStack对象存储。</para></section>
+    <section xml:id="application-readiness"><title>应用准备</title>
+    <para>一些应用可以容忍对象存储没有同步，但是也有另外的应用需要这些对象被复制且跨多个region可用。理解云如何实现会影响到新的和已有的应用，对于降低风险和整个云项目成功很重要。已经完成的应用期望基础设施并无冗余，已有的应用没有将运行在云中考虑的话就需要重写了。</para></section>
+    <section xml:id="cost-multi-site"><title>成本</title>
+    <para>多个站点的需求带来更多的额外开销。更多的站点，意味着更多的开销和复杂性。开销可以细分为以下几类：</para>
+    <itemizedlist>
+        <listitem>
+            <para>计算资源</para>
+        </listitem>
+        <listitem>
+            <para>网络资源</para>
+        </listitem>
+        <listitem>
+            <para>重复</para>
+        </listitem>
+        <listitem>
+            <para>存储</para>
+        </listitem>
+        <listitem>
+            <para>管理</para>
+        </listitem>
+        <listitem>
+            <para>运营成本</para>
+        </listitem>
+    </itemizedlist></section>
+    <section xml:id="site-loss-and-recovery">
+      <title>站点失效和恢复</title>
+    <para>中断会引起站点的部分或全部功能的尚失。理解并实现恢复策略，且要规划恢复方案。</para>
+    <itemizedlist>
+        <listitem>
+            <para>已经部署的应用需要持续的服务，且更加重要的，需要考虑由于站点的不可用带来的性能冲击和应用的可靠性。</para>
+        </listitem>
+        <listitem>
+            <para>当一个站点失效时，理解在站点之间的对象和数据复制会发生什么很重要。如果这导致队列开始建立，要考虑到多长时间这些队列到什么事情爆炸发生之前可安全完成。</para>
+        </listitem>
+        <listitem>
+            <para>确保在灾难发生之后，当业务恢复正常之前的这段时间内，恢复站点的正确操作的几种办法要决定下来。我们建议用户恢复的架构要避免竞争状态。</para>
+        </listitem>
+    </itemizedlist></section>
+    <section xml:id="compliance-and-geo-location-multi-site">
+      <title>合规性和地理位置</title>
+    <para>一个组织须有一定的法律义务和法规遵从来衡量什么是需要的负载或数据能否存放在指定的地区。</para></section>
+    <section xml:id="auditing-multi-site">
+      <title>审计</title>
+    <para>为了能够快速的追查问题，一个经过好的经过深思熟虑的审计策略是非常重要的。对于安全组和租户的变动保持跟踪，在生产环境中可用于回滚，例如，如果一个租户的安全组规则消失了，能够快速追查问题的能力对于运维来说很重要。</para></section>
+    <section xml:id="separation-of-duties">
+      <title>职责分工</title>
+    <para>一个常见的需求是为不同的云管理功能定义不同的角色。此例即是站点需要合并职责和权限的需求。</para></section>
+    <section xml:id="authentication-between-sites">
+        <title>站点之间的认证</title>
+    <para>理想中最好是有一个单一的认证域而不是在每个站点中分离的去实现。这当然会要求认证机制是高可用和分布式的确定持续可操作。局部认证服务也需要好好的规划。</para></section>
+</section>

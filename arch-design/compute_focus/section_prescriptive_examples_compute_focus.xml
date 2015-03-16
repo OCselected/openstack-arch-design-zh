@@ -1,0 +1,88 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="prescriptive-example-compute-focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>示例</title>
+    <para>欧洲理事会核物理研究中心(CERN)，以研究核物理而闻名的欧盟组织，提供粒子加速器和其他基础设施的高能量物理研究。</para>
+    <para>CERN在2011年准备在欧洲建立第三个数据中心。</para>
+    <informaltable rules="all">
+        <col width="40%"/>
+        <col width="60%"/>
+        <thead>
+            <tr><th>数据中心</th><th>大体的容量</th></tr>
+            </thead>
+        <tbody>
+            <tr>
+                <td>瑞士日内瓦</td>
+                <td>
+                    <itemizedlist>
+                        <listitem><para>3.5 万瓦特</para></listitem>
+                        <listitem><para>91000 个核</para></listitem>
+                        <listitem><para>120 PB 硬盘</para></listitem>
+                        <listitem><para>100 PB 磁带</para></listitem>
+                        <listitem><para>310 TB 内存</para></listitem>
+                    </itemizedlist>
+                </td>
+            </tr>
+            <tr>
+                <td>匈牙利布达佩斯</td>
+                <td>
+                    <itemizedlist>
+                        <listitem><para>2.5 晚瓦特</para></listitem>
+                        <listitem><para>20000 个核</para></listitem>
+                        <listitem><para>6 PB 硬盘</para></listitem>
+                    </itemizedlist>
+                </td>
+            </tr>
+        </tbody>
+    </informaltable>
+    <para>为了支持越来越多的相关大型强子对撞机(LHC)实验的计算重度使用者,CERN 最终选用了使用SCientific Linux和 RDO部署的OpenStack云。这些努力的目的是简化中心计算资源的管理，在2013年增加了额外的数据中心，计算能力增长了一倍，但是维护人员确依然是原有的水平。</para>
+    <para>CERN使用 <glossterm baseform="cell">cells</glossterm>来实现计算资源隔离以及在不同数据中心透明的扩展。这个决定意味着在支持安全组与在线迁移的权衡。其他一些细节诸如flavor需要跨cell时手动复制。尽管cell有这些缺点，但是它还是承担起了所需的规模。同时为用户暴露出一单个公用API端点。</para>
+    <para>原来的二个数据中心，每个创建为一个计算cell，第三个cell是2013年新增的新数据中心。每个cell包含了3个可用区域以进一步隔离计算资源，还有至少3个RabbitMQ 消息代理，并被配置为镜像队列的集群，这样就实现了高可用。</para>
+    <para>API cell ,是置放在瑞士的数据中心，在负载均衡器HAProxy后面，它可使用定制过的各种cell调度器去直接调用计算cell的API。定制化的调度器允许指定负载到特定的数据中心，或者是所有的数据中心，但它会根据那个cell还有内存可用来决定选择那个cell。</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Generic_CERN_Example.png"/>
+        </imageobject>
+    </mediaobject>
+    <para>在cell里的可以定制的过滤器：</para>
+    <itemizedlist>
+        <listitem><para>ImagePropertiestFilter - 为提供特殊处理，取决于客户机操作系统的使用(基于Linux或基于Windows)</para>
+        </listitem>
+        <listitem><para>ProjectsToAggregateFilter - 为了提供特殊处理，取决于该实例相关联的项目。</para>
+        </listitem>
+        <listitem><para>default_schedule_zones -允许选择多个默认可用区域，而不是单一的。</para></listitem>
+    </itemizedlist>
+    <para>每个cell里的MySQL数据库服务都由中心的数据库团队管理，且均配置为主/备模式，后端使用NetApp存储。每隔6小时做一次备份。</para>
+    <section xml:id="network-architecture">
+      <title>网络架构</title>
+    <para>为了集成到原有CERN网络基础设施，他们对legacy 网络(nova-network)进行了定制。以驱动的形式集成到CERN现有的数据库，用来追踪MAC和IP地址的分配。</para>
+    <para>该驱动有助于为新的实例选择一个MAC地址和IP地址，基于调度器会将实例在那个计算节点上启动。</para>
+    <para>该驱动接受调度器分配的实例到计算节点，然后在数据库中拿到预先注册列表中的MAC和IP地址分配到这个节点，然后数据库更新实例所被分配的地址。</para></section>
+    <section xml:id="storage-architecture">
+      <title>存储架构</title>
+    <para>OpenStack镜像服务被部署在API单元中且配置了版本1(V1)的API。也需要镜像注册服务。后端的存储使用的Ceph集群，大小有3PB。</para>
+    <para>由Scientific Linux 5和 6组成的一个小型的“黄金”集合，使用Orchestration工具可以将应用依次放置。Puppet用于实例配置管理和定制化，但是也有预期Orchestration部署。</para></section>
+    <section xml:id="monitoring">
+      <title>监控</title>
+    <para>尽管没有直接的付费需求，Telemetry模块还是用到了，在这里拿到测量数据主要目的是调整项目的配额。也用到了一个分片的、复制的后端MongoDB。为了扩展API负载，nova-api服务被部署到子的cell中，此cell即是一个个的实例组成，Telemetry队列运行于此。这也意味着一些支撑服务包括keystone,glance-api以及glance-registry需要也可以在子的cell中配置。</para>
+    <mediaobject>
+        <imageobject>
+            <imagedata contentwidth="4in" fileref="../figures/Generic_CERN_Architecture.png"/>
+        </imageobject>
+    </mediaobject>
+    <para>
+        Additional monitoring tools in use include <link xlink:href="http://flume.apache.org/">Flume</link>, <link xlink:href="http://www.elasticsearch.org/">Elastic
+        Search</link>, <link xlink:href="http://www.elasticsearch.org/overview/kibana/">Kibana</link>,
+        and the CERN developed <link xlink:href="http://lemon.web.cern.ch/lemon/index.shtml">Lemon</link>
+        project.
+    </para>
+    </section>
+    <section xml:id="references-cern-resources"><title>参考</title>
+    <para>架构设计指南的作者们非常感谢CERN,他们公开了他们在他们的环境中部署OpenStack的文档，是这一节的内容的组织的基础。</para>
+    <itemizedlist>
+        <listitem><para><link xlink:href="http://openstack-in-production.blogspot.fr">http://openstack-in-production.blogspot.fr</link>
+        </para></listitem>
+        <listitem><para>
+              <link xlink:href="http://www.openstack.org/assets/presentation-media/Deep-Dive-into-the-CERN-Cloud-Infrastructure.pdf">深入学习CERN云基础设施</link></para>
+        </listitem>
+    </itemizedlist></section>
+</section>

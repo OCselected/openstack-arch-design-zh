@@ -1,0 +1,63 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="arch-guide-why-and-who-we-wrote-this-book" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>我们为什么及如何写作此书</title>
+    <para>OpenStack环境从验证测试迁移到实际生产部署的速度决定着和架构设计相关的问题的多寡。目前已经存在的文档中，都是定位在特定的部署、配置以及实际操作的，还没有整体框架式的相关描述。</para>
+    <para>我们写作此书是希望能够给读者带来抛砖引玉的作用，让读者可以根据自身所在的组织具体需求来设计OpenStack架构。此指南针对通用情况的使用案例，抽取了我们认为重要的设计考虑，且根据我们的设计提供了具体的例子。此指南的目标不是为安装和配置云提供相关介绍，是专注于那些和用户需求密切相关的设计原理，相比技术和操作上的考虑也少了许多。在OpenStack文档相关的板块中关于安装和配置的相关向导/指南已经有很多资料了，寻找想要的即可。</para>
+    <para>本书是基于sprint格式书写的，sprint格式是一种针对写书的便利、快速开发的一种方法。想得知更多信息，请访问Book Sprints官方站点 (www.booksprints.net)。</para>
+    <para>本书的写作共花了5天的时间，在2014年的7月份，中间当然历经辛勤的汗水、激情以及合理的饮食。在帕洛阿尔托的VMware公司总部午饭时我们庆祝了本书的完成。整个过程我们在Twitter中使用#OpenStackDesign 直播。Faith Bosworth 和 Adam Hyde帮助我们轻松驾驭Book Sprint。</para>
+    <para>我们非常感谢VMware的盛情款待，以及我们的雇主，Cisco, Cloudscaling,Comcast,EMC,Mirantis,Rackspace,Red Hat, Verizon和VMware,能够让我们花时间做点有意义的事情。尤其感谢Anne Gentle 和 Kenneth Hui，由于二位的领导和组织，才有此书诞生的机会。</para>
+    <para>作者团队成员有：</para>
+    <itemizedlist>
+        <listitem>
+            <para>Kenneth Hui (EMC)
+                  <link xlink:href="http://twitter.com/hui_kenneth">@hui_kenneth</link></para>
+        </listitem>
+        <listitem>
+            <para>Alexandra Settle (Rackspace)
+                  <link xlink:href="http://twitter.com/dewsday">@dewsday</link></para>
+        </listitem>
+        <listitem>
+            <para>Anthony Veiga (Comcast)
+                  <link xlink:href="http://twitter.com/daaelar">@daaelar</link></para>
+        </listitem>
+        <listitem>
+            <para>Beth Cohen (Verizon)
+                  <link xlink:href="http://twitter.com/bfcohen">@bfcohen</link></para>
+        </listitem>
+        <listitem>
+            <para>Kevin Jackson (Rackspace)
+                  <link xlink:href="http://twitter.com/itarchitectkev">@itarchitectkev</link></para>
+        </listitem>
+        <listitem>
+            <para>Maish Saidel-Keesing (Cisco)
+                  <link xlink:href="http://twitter.com/maishsk">@maishsk</link></para>
+        </listitem>
+        <listitem>
+            <para>Nick Chase (Mirantis)
+                  <link xlink:href="http://twitter.com/NickChase">@NickChase</link></para>
+        </listitem>
+        <listitem>
+            <para>Scott Lowe (VMware)
+                  <link xlink:href="http://twitter.com/scott_lowe">@scott_lowe</link></para>
+        </listitem>
+        <listitem>
+            <para>Sean Collins (Comcast)
+                  <link xlink:href="http://twitter.com/sc68cal">@sc68cal</link></para>
+        </listitem>
+        <listitem>
+            <para>Sean Winn (Cloudscaling)
+                  <link xlink:href="http://twitter.com/seanmwinn">@seanmwinn</link></para>
+        </listitem>
+        <listitem>
+            <para>Sebastian Gutierrez (Red Hat)
+                  <link xlink:href="http://twitter.com/gutseb">@gutseb</link></para>
+        </listitem>
+        <listitem>
+            <para>Stephen Gordon (Red Hat)
+                  <link xlink:href="http://twitter.com/xsgordon">@xsgordon</link></para>
+        </listitem>
+        <listitem>
+            <para>Vinny Valdez (Red Hat)
+                  <link xlink:href="http://twitter.com/VinnyValdez">@VinnyValdez</link></para>
+        </listitem>
+    </itemizedlist>
+</section>

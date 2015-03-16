@@ -1,0 +1,51 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="arch-guide-how-this-book-is-organized" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>本书是如何组织的</title>
+    <para>本书采用多个章节来组织，通过使用案例来帮助用户作出架构选择，以<glossterm>OpenStack</glossterm>云安装来具体体现。每一章关注一个单一的架构以鼓励读者可随意的阅读，但是每一章包含的一些适用场景的信息也是其他章节需要的。云架构师也许通过阅读所有的案例将此书作为一个全面的参考，但是很可能仅重复阅读其中适合于某一案例的章节。当选择阅读挑选的使用案例时，请记住需要阅读更多的章节，以为云制定完整的设计。本指南中覆盖到的使用案例包括：</para>
+    <itemizedlist>
+        <listitem>
+            <para><link linkend="generalpurpose">通用型</link>: 使用通用的组件构建一个云，是多数的使用案例，占80%。</para>
+        </listitem>
+        <listitem>
+            <para><link linkend="compute_focus">计算型</link>: 专注于计算密集性、高负载的云，例如高性能计算(HPC)</para>
+        </listitem>
+        <listitem>
+            <para><link linkend="storage_focus">存储型</link>: 用于存储密集负载的云，例如基于并行文件系统的数据分析。</para>
+        </listitem>
+        <listitem>
+            <para><link linkend="network_focus">网络型</link>: 依赖于网络的高性能和高可靠的云，例如 <glossterm>内容传送网络 (CDN)</glossterm>。</para>
+        </listitem>
+        <listitem>
+            <para><link linkend="multi_site">多站点</link>: 构建一个基于地理分布、可靠性、数据位置等原因的应用程序部署且需多个站点可供服务的云。</para>
+        </listitem>
+        <listitem>
+            <para><link linkend="hybrid">混合云</link>: 一种多个不同的云相杂的架构，目的是提供可用性，失效切换，防止单一云的突然崩溃。</para>
+        </listitem>
+        <listitem>
+            <para><link linkend="massively_scalable">大规模扩展</link>: 专注于云计算服务提供者或其他大规模扩展安装的架构。</para>
+        </listitem>
+    </itemizedlist>
+    <para>章节 <link linkend="specialized">特殊用例</link>阐释了上述所定义的使用案例中没有覆盖到的架构信息。</para>
+    <para>本指南的每一章都会分出以下小节：</para>
+    <itemizedlist>
+        <listitem>
+            <para>介绍：此架构使用案例的额要介绍</para>
+        </listitem>
+        <listitem>
+            <para>用户需求：用户所考虑的内容，那些典型的在组织中起关键作用的。</para>
+        </listitem>
+        <listitem>
+            <para>技术考虑：在实际案例中所处理的技术问题。</para>
+        </listitem>
+        <listitem>
+            <para>实践考虑：在实际案例中和架构考虑中的那些不断的操作任务。</para>
+        </listitem>
+        <listitem>
+            <para>架构：总体架构</para>
+        </listitem>
+        <listitem>
+            <para>实例：架构设计被实际部署的一个或几个场景。</para>
+        </listitem>
+    </itemizedlist>
+    <para>书中所用到的术语词汇表</para>
+
+</section>
