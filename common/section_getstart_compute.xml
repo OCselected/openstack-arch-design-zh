@@ -1,0 +1,181 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="compute-service" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>OpenStack 计算服务</title>
+  <para>使用OpenStack计算服务来托管和管理云计算系统。OpenStack计算服务是基础设施即服务(IaaS)系统的主要部分，模块主要由Python实现。</para>
+  <para>OpenStack计算服务的认证由和OpenStack认证服务交互来完成，磁盘和服务器镜像由OpenStack镜像服务交互来完成，以及OpenStack仪表盘是为用户和管理员提供的操作界面。镜像的访问通过项目和用户来限制，配额由每个项目来限制(例如，实例数量)。OpenStack计算通过标准的硬件来做横向扩展，下载镜像以启动实例。</para>
+  <para>OpenStack计算服务由下列组件所构成：</para>
+  <variablelist>
+    <title>应用程序接口</title>
+    <varlistentry>
+      <term><systemitem class="service">nova-api</systemitem> service</term>
+      <listitem>
+        <para>接收和响应来自最终用户的计算API请求。此服务支持OpenStack计算服务API，Amazon EC2 API，以及特殊的管理API用于赋予用户做一些管理的操作。它会强制实施一些规则，发起多数的编排活动，例如运行一个实例。</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><systemitem class="service">nova-api-metadata</systemitem> service</term>
+      <listitem>
+        <para>Accepts metadata requests from instances. The
+            <systemitem class="service">nova-api-metadata</systemitem>
+          service is generally used when you run in multi-host mode
+          with <systemitem class="service">nova-network</systemitem>
+          installations. For details, see <link xlink:href="http://docs.openstack.org/admin-guide-cloud/content/section_metadata-service.html">Metadata service</link> in the <citetitle>OpenStack Cloud
+            Administrator Guide</citetitle>.</para>
+        <para>在Debian系统中，它包含在<systemitem class="service">nova-api</systemitem>包中，可通过 <package>debconf</package>来选择。</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <variablelist>
+    <title>计算服务核心</title>
+    <varlistentry>
+      <term><systemitem class="service">nova-compute</systemitem> service</term>
+      <listitem>
+        <para>一个持续工作的守护进程，通过Hypervior的API来创建和销毁虚拟机实例。例如：</para>
+        <itemizedlist>
+          <listitem>
+            <para>XenServer/XCP 的 XenAPI</para>
+          </listitem>
+          <listitem>
+            <para>KVM 或 QEMU 的 libvirt</para>
+          </listitem>
+          <listitem>
+            <para>VMware 的 VMwareAPI</para>
+          </listitem>
+        </itemizedlist>
+        <para>过程是蛮复杂的。最为基本的，守护进程同意了来自队列的动作请求，转换为一系列的系统命令如启动一个KVM实例，然后，到数据库中更新它的状态。</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><systemitem class="service">nova-scheduler</systemitem> service</term>
+      <listitem>
+        <para>拿到一个来自队列请求虚拟机实例，然后决定那台计算服务器主机来运行它。</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><systemitem class="service">nova-conductor</systemitem> 模块</term>
+      <listitem>
+        <para>Mediates interactions between the <systemitem class="service">nova-compute</systemitem> service and the
+          database. It eliminates direct accesses to the cloud
+          database made by the <systemitem class="service">nova-compute</systemitem> service. The <systemitem class="service">nova-conductor</systemitem> module scales
+          horizontally. However, do not deploy it on nodes where the
+            <systemitem class="service">nova-compute</systemitem>
+          service runs. For more information, see <link xlink:href="http://russellbryantnet.wordpress.com/2012/11/19/a-new-nova-service-nova-conductor/">A new Nova service: nova-conductor</link>.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><systemitem class="service">nova-cert</systemitem> 模块</term>
+      <listitem>
+        <para>一个服务器的守护进程，为X509证书服务的Nova Cert 服务，用于为<command>euca-bundle-image</command>生成证书，仅用于EC2 API。</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+  <variablelist>
+    <title>虚拟机网络</title>
+    <varlistentry>
+      <term><systemitem class="service">nova-network</systemitem> 守护进程</term>
+      <listitem>
+        <para>和 <systemitem class="service">nova-compute</systemitem>服务类似，从队列接收网络任务然后操作网络，执行的任务诸如设置网桥或更改IPtables规则。</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <?hard-pagebreak ?>
+  <variablelist>
+    <title>终端接口</title>
+    <varlistentry>
+      <term><systemitem class="service">nova-consoleauth</systemitem> 守护进程</term>
+      <listitem>
+        <para>Authorizes tokens for users that console proxies
+          provide. See <systemitem class="service">nova-novncproxy</systemitem> and <systemitem class="service">nova-xvpnvcproxy</systemitem>. This
+          service must be running for console proxies to work. You can
+          run proxies of either type against a single <systemitem class="service">nova-consoleauth</systemitem> service in a
+          cluster configuration. For information, see <link xlink:href="http://docs.openstack.org/trunk/config-reference/content/about-nova-consoleauth.html">About nova-consoleauth</link>.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><systemitem class="service">nova-novncproxy</systemitem> 守护进程</term>
+      <listitem>
+        <para>提供一个代理，用于访问正在运行的实例，通过VNC协议，支持基于浏览器的novnc客户端。</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><systemitem class="service">nova-spicehtml5proxy</systemitem> 守护进程</term>
+      <listitem>
+        <para>提供一个代理，用于访问正在运行的实例，通过 SPICE 协议，支持基于浏览器的 HTML5 客户端。</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><systemitem class="service">nova-xvpnvncproxy</systemitem> 守护进程</term>
+      <listitem>
+        <para>提供一个代理，用于访问正在运行的实例，通过VNC协议，支持OpenStack特定的Java客户端。</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><systemitem class="service">nova-cert</systemitem> 守护进程</term>
+      <listitem>
+        <para>X509 证书。</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <para os="debian">在Debian中，一个独特的包<package>nova-consoleproxy</package> ，提供了包含<package>nova-novncproxy</package>, <package>nova-spicehtml5proxy</package>, and <package>nova-xvpvncproxy</package>三个包，欲选择相应的包，编辑文件<filename>/etc/default/nova-consoleproxy</filename>或者使用<package>debconf</package>接口。用户也可以手动编辑文件<filename>/etc/default/nova-consoleproxy</filename> ，以及启动和停止终端守护进程。</para>
+  <variablelist>
+    <title>镜像管理(EC2 场景)</title>
+    <varlistentry>
+      <term><systemitem class="service">nova-objectstore</systemitem> 守护进程</term>
+      <listitem>
+        <para>一个S3接口，用于注册镜像，使用的是OpenStack 镜像服务，这个是由euca2ools来支持的，euca2ools使用 <emphasis role="italic">S3 语言</emphasis>来和<systemitem class="service">nova-objectstore</systemitem>通话，然后， <systemitem class="service">nova-objectstore</systemitem>将之翻译向镜像服务发出请求。</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>euca2ools 客户端</term>
+      <listitem>
+        <para>A set of command-line interpreter commands for managing
+          cloud resources. Although it is not an OpenStack module, you
+          can configure <systemitem class="service">nova-api</systemitem> to support this EC2 interface. For
+          more information, see the <link xlink:href="https://www.eucalyptus.com/docs/eucalyptus/3.4/index.html">Eucalyptus 3.4 Documentation</link>.</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <variablelist>
+    <title>命令行客户端和其他接口</title>
+    <varlistentry>
+      <term>nova 客户端</term>
+      <listitem>
+        <para>用于用户作为租户管理员或最终用户来提交命令。</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <variablelist>
+    <title>其他组件</title>
+    <varlistentry>
+      <term>队列</term>
+      <listitem>
+        <para>A central hub for passing messages between daemons.
+          Usually implemented with <link xlink:href="http://www.rabbitmq.com/">RabbitMQ</link>, but
+          can be implemented with an AMQP message queue, such as <link xlink:href="http://qpid.apache.org/">Apache Qpid</link> or
+            <link xlink:href="http://www.zeromq.org/">Zero
+          MQ</link>.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>SQL数据库</term>
+      <listitem>
+        <para>存储构建时和运行时的状态，为云基础设施，包括有：</para>
+        <itemizedlist>
+          <listitem>
+            <para>可用实例类型</para>
+          </listitem>
+          <listitem>
+            <para>使用中的实例</para>
+          </listitem>
+          <listitem>
+            <para>可用网络</para>
+          </listitem>
+          <listitem>
+            <para>项目</para>
+          </listitem>
+        </itemizedlist>
+        <para>理论上，OpenStack计算可以支持任何和SQL-Alchemy所支持的后端数据库，通常使用SQLite3来做测试可开发工作，MySQL和PostgreSQL 作生产环境。</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</section>

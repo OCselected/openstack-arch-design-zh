@@ -1,0 +1,88 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="keystone-user-management" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>用户管理</title>
+    <para>认证用户管理主要的组件有：</para>
+    <itemizedlist>
+        <listitem>
+            <para><emphasis role="bold">用户</emphasis>.就表示现实中的你、我、他。相关信息如用户名、密码以及电子邮箱。此例中是创建了一个名为<literal>alice</literal>的用户：</para>
+            <screen><prompt>$</prompt> <userinput>keystone user-create --name alice --pass mypassword123 --email alice@example.com</userinput></screen>
+        </listitem>
+        <listitem>
+            <para><emphasis role="bold">租户</emphasis>. 一个项目或一组或是一个组织。当用户向OpenStack服务提出请求时，必须指定相应的租户。例如：用户要查询计算服务当前正在运行的实例，可以列出用户指定的租户所有正在运行的实例。这个例子是创建了一个名称为 <literal>acme</literal>的租户：</para>
+            <screen><prompt>$</prompt> <userinput>keystone tenant-create --name acme</userinput></screen>
+            <note>
+                <para>由于在早期的OpenStack版本中使用术语<emphasis>project</emphasis>替代<emphasis>tenant</emphasis>，所以在一些命令行程序使用 <literal>--project_id</literal>来作为租户ID来使用，而不是通常的<literal>--tenant-id</literal> 或 <literal>--os-tenant-id</literal> 。</para>
+            </note>
+        </listitem>
+        <listitem>
+            <para><emphasis role="bold">角色</emphasis>，在给定的租户中用户可以操作的权限范围。</para>
+            <para>此例子中创建了一个名称为 <literal>compute-user</literal>的角色：</para>
+            <screen><prompt>$</prompt> <userinput>keystone role-create --name compute-user</userinput></screen>
+            <note>
+                <para>根据不同的服务，角色的表现也不尽相同，如计算和镜像服务，角色就意味着赋予某些用户，再如认证服务，角色仅仅是个名称而已。</para>
+            </note>
+        </listitem>
+    </itemizedlist>
+    <?hard-pagebreak ?>
+    <para>The Identity Service assigns a tenant and a role to a user.
+        You might assign the <literal>compute-user</literal> role to
+        the <literal>alice</literal> user in the
+            <literal>acme</literal> tenant:</para>
+    <screen><prompt>$</prompt> <userinput>keystone user-list</userinput>
+<computeroutput>+--------+---------+-------------------+--------+
+|   id   | enabled |       email       |  name  |
++--------+---------+-------------------+--------+
+| 892585 |   True  | alice@example.com | alice  |
++--------+---------+-------------------+--------+</computeroutput></screen>
+    <screen><prompt>$</prompt> <userinput>keystone role-list</userinput>
+<computeroutput>+--------+--------------+
+|   id   |     name     |
++--------+--------------+
+| 9a764e | compute-user |
++--------+--------------+</computeroutput></screen>
+    <screen><prompt>$</prompt> <userinput>keystone tenant-list</userinput>
+<computeroutput>+--------+------+---------+
+|   id   | name | enabled |
++--------+------+---------+
+| 6b8fd2 | acme |   True  |
++--------+------+---------+</computeroutput></screen>
+    <screen><prompt>$</prompt> <userinput>keystone user-role-add --user 892585 --role 9a764e --tenant-id 6b8fd2</userinput>       </screen>
+    <para>A user can have different roles in different tenants. For
+        example, Alice might also have the <literal>admin</literal>
+        role in the <literal>Cyberdyne</literal> tenant. A user can
+        also have multiple roles in the same tenant.</para>
+    <para>The
+                <filename>/etc/<replaceable>[SERVICE_CODENAME]</replaceable>/policy.json</filename>
+        file controls the tasks that users can perform for a given
+        service. For example,
+            <filename>/etc/nova/policy.json</filename> specifies the
+        access policy for the Compute service,
+            <filename>/etc/glance/policy.json</filename> specifies the
+        access policy for the Image Service, and
+            <filename>/etc/keystone/policy.json</filename> specifies
+        the access policy for the Identity Service.</para>
+    <para>The default <filename>policy.json</filename> files in the
+        Compute, Identity, and Image Service recognize only the
+            <literal>admin</literal> role: all operations that do not
+        require the <literal>admin</literal> role are accessible by
+        any user that has any role in a tenant.</para>
+    <para>If you wish to restrict users from performing operations in,
+        say, the Compute service, you need to create a role in the
+        Identity Service and then modify
+            <filename>/etc/nova/policy.json</filename> so that this
+        role is required for Compute operations.</para>
+    <?hard-pagebreak ?>
+    <para>For example, this line in
+            <filename>/etc/nova/policy.json</filename> specifies that
+        there are no restrictions on which users can create volumes:
+        if the user has any role in a tenant, they can create volumes
+        in that tenant.</para>
+    <programlisting language="json">&quot;volume:create&quot;: [],</programlisting>
+    <para>To restrict creation of volumes to users who had the
+            <literal>compute-user</literal> role in a particular
+        tenant, you would add <literal>&quot;role:compute-user&quot;</literal>,
+        like so:</para>
+    <programlisting language="json">&quot;volume:create&quot;: [&quot;role:compute-user&quot;],</programlisting>
+    <para>To restrict all Compute service requests to require this
+        role, the resulting file would look like:</para>
+    <programlisting language="json"><xi:include href="../common/samples/restrict_roles2.json" parse="text"/></programlisting>
+</section>

@@ -1,0 +1,27 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="image-service-overview" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <title>OpenStack镜像服务</title>
+      <para>正如在 <xref linkend="conceptual-architecture"/>所展现的那样，OpenStack镜像服务是基础设施服务(IaaS)的中心，它接收请求磁盘或镜像的API、来自最终用户的或OpenStack计算服务组件的镜像元数据。它支持在各种仓库类型存放磁盘或服务器镜像，仓库类型包括OpenStack对象存储。</para>
+      <para>多种定期的进程运行在OpenStack镜像服务之上以支持缓存。复制服务通过集群确保一致性和可用性，其他的定期的进程包括审计、更性和回收。</para>
+      <para>OpenStack镜像服务包括下面组件:</para>
+      <variablelist>
+        <varlistentry>
+          <term><systemitem class="service">glance-api</systemitem></term>
+          <listitem><para>接收镜像API的调用，诸如镜像发现、恢复、存储。</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><systemitem class="service">glance-registry</systemitem></term>
+          <listitem><para>存储、处理和恢复镜像的元数据，元数据包括项诸如大小和类型。</para>
+          <note><title>安全须知</title>
+          <para>registry是一个私有的内部服务，这意味着仅为OpenStack镜像服务所使用。不要将之开放给用户。</para></note>
+        </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>数据库</term>
+          <listitem><para>存放镜像元数据，用户是可以依据个人喜好选择数据库的，多数的部署使用MySQL或SQLite。</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>镜像文件的存储仓库</term>
+          <listitem><para>支持多种类型的仓库，它们有普通文件系统、对象存储、RADOS块设备、HTTP、以及亚马逊S3。记住，其中一些仓库仅支持只读方式使用。</para></listitem>
+       </varlistentry>
+      </variablelist>
+    </section>

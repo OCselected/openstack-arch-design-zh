@@ -1,0 +1,124 @@
+<?xml version="1.0" ?><chapter version="5.0" xml:id="ch_getting-started-with-openstack" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>开始使用OpenStack</title>
+    <para xml:id="para1">OpenStack项目是一个适用各种类型云的开源云计算平台，它的目标是：简单的实现，大规模扩展，丰富的功能。来自全世界各地的开发者和云计算技术专家们创建了OpenStack项目。</para>
+    <para xml:id="para2">OpenStack通过一系列相关联的服务提供了基础设施及服务(<glossterm>IaaS</glossterm>) 解决方案。每个服务对外提供应用程序接口(<glossterm>API</glossterm>)便于轻松集。取决于用户的需求，用户可以选择安装部分服务，也可以选择安装全部服务。</para>
+    <para xml:id="para3">以下表格描述了OpenStack架构的OpenStack服务:</para>
+    <table rules="all" width="85%" xml:id="table1">
+        <caption>OpenStack 服务</caption>
+        <col width="15%"/>
+        <col width="15%"/>
+        <col width="70%"/>
+        <thead>
+            <tr>
+                <th>服务</th>
+                <th>项目名称</th>
+                <th>描述</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><link xlink:href="http://www.openstack.org/software/openstack-dashboard/"><glossterm>Dashboard</glossterm></link>
+                </td>
+                <td><link xlink:href="http://docs.openstack.org/developer/horizon/"><glossterm>控制面板</glossterm></link>
+                </td>
+                <td>提供了一个基于web的自服务门户，与OpenStack底层服务交互，诸如启动一个实例，分配IP地址以及配置访问控制。</td>
+            </tr>
+            <tr>
+                <td><link xlink:href="http://www.openstack.org/software/openstack-compute/"><glossterm>Compute</glossterm></link>
+                </td>
+                <td><link xlink:href="http://docs.openstack.org/developer/nova/"><glossterm>Nova</glossterm></link>
+                </td>
+                <td>在OpenStack环境中计算实例的生命周期管理。按需响应包括生成、调度、回收虚拟机等操作。</td>
+            </tr>
+            <tr>
+                <td><link xlink:href="http://www.openstack.org/software/openstack-networking/"><glossterm>网络</glossterm></link>
+                </td>
+                <td><link xlink:href="http://docs.openstack.org/developer/neutron/"><glossterm>Neutron</glossterm></link>
+                </td>
+                <td>确保为其它OpenStack服务提供网络连接即服务，比如OpenStack计算。为用户提供API定义网络和使用。基于插件的架构其支持众多的网络提供商和技术。</td>
+            </tr>
+            <tr><th align="center" colspan="3">存储</th></tr>
+            <tr>
+                <td><link xlink:href="http://www.openstack.org/software/openstack-storage/"><glossterm>Object Storage</glossterm></link>
+                </td>
+                <td><link xlink:href="http://docs.openstack.org/developer/swift/"><glossterm>Swift</glossterm></link>
+                </td>
+                <td>通过一个 <glossterm>RESTful</glossterm>,基于HTTP的应用程序接口存储和任意检索的非结构化数据对象。它拥有高容错机制，基于数据复制和可扩展架构。它的实现并像是一个文件服务器需要挂载目录。在此种方式下，它写入对象和文件到多个硬盘中，以确保数据是在集群内跨服务器的多份复制。</td>
+            </tr>
+            <tr>
+                <td><link xlink:href="http://www.openstack.org/software/openstack-storage/"><glossterm>块存储</glossterm></link>
+                </td>
+                <td><link xlink:href="http://docs.openstack.org/developer/cinder/"><glossterm>Cinder</glossterm></link>
+                </td>
+                <td>为运行实例而提供的持久性块存储。它的可插拔驱动架构的功能有助于创建和管理块存储设备。</td>
+            </tr>
+            <tr><th align="center" colspan="3">共享服务</th></tr>
+            <tr>
+                <td><link xlink:href="http://www.openstack.org/software/openstack-shared-services/"><glossterm>认证服务</glossterm></link>
+                </td>
+                <td><link xlink:href="http://docs.openstack.org/developer/keystone/"><glossterm>Keystone</glossterm></link>
+                </td>
+                <td>为其他OpenStack服务提供认证和授权服务，为所有的OpenStack服务提供一个端点目录。</td>
+            </tr>
+            <tr>
+                <td><link xlink:href="http://www.openstack.org/software/openstack-shared-services/"><glossterm>镜像服务</glossterm></link>
+                </td>
+                <td><link xlink:href="http://docs.openstack.org/developer/glance/"><glossterm>Glance</glossterm></link>
+              </td>
+                <td>存储和检索虚拟机磁盘镜像，OpenStack计算会在实例部署时使用此服务。</td>
+            </tr>
+
+            <tr>
+                <td><link xlink:href="http://www.openstack.org/software/openstack-shared-services/"><glossterm>Telemetry</glossterm></link>
+                </td>
+                <td><link xlink:href="http://docs.openstack.org/developer/ceilometer/"><glossterm>Ceilometer</glossterm></link>
+                </td>
+                <td>为OpenStack云的计费、基准、扩展性以及统计等目的提供监测和计量。</td>
+            </tr>
+
+            <tr><th align="center" colspan="3">高层次服务</th></tr>
+            <tr>
+                <td><link xlink:href="http://www.openstack.org/software/openstack-shared-services/"><glossterm>编配</glossterm></link></td>
+                <td><link xlink:href="http://docs.openstack.org/developer/heat/"><glossterm>Heat</glossterm></link>
+                </td>
+                <td>既可以使用本地<glossterm baseform="Heat Orchestration                         Template (HOT)">HOT</glossterm>模板格式，亦可使用AWS CloudFormation模板格式，来编排多个综合的云应用，通过OpenStack本地REST API或者是CloudFormation相兼容的队列API。</td>
+            </tr>
+            <tr>
+                <td><link xlink:href="http://www.openstack.org/software/openstack-shared-services/"><glossterm>数据库</glossterm></link>
+                </td>
+                <td><link xlink:href="http://docs.openstack.org/developer/trove/"><glossterm>Trove</glossterm></link>
+                </td>
+                <td>提供可扩展和稳定的云数据库即服务的功能，可同时支持关系性和非关系性数据库引擎。</td>
+            </tr>
+        </tbody>
+    </table>
+    <xi:include href="section_getstart_conceptual_arch.xml"/>
+    <xi:include href="section_getstart_logical_arch.xml"/>
+    <?hard-pagebreak ?>
+    <section xml:id="openstack-services">
+        <title>OpenStack 服务</title>
+        <para>此章描述了OpenStack服务的细节。</para>
+        <xi:include href="section_getstart_compute.xml"/>
+        <?hard-pagebreak ?>
+        <xi:include href="section_storage-concepts.xml"/>
+        <xi:include href="section_getstart_object-storage.xml"/>
+        <xi:include href="section_getstart_block-storage.xml"/>
+        <?hard-pagebreak ?>
+        <xi:include href="section_getstart_networking.xml"/>
+        <?hard-pagebreak ?>
+        <xi:include href="section_getstart_dashboard.xml"/>
+        <xi:include href="section_keystone-concepts.xml"/>
+        <?hard-pagebreak ?>
+        <xi:include href="section_getstart_image.xml"/>
+        <xi:include href="section_getstart_telemetry.xml"/>
+        <xi:include href="section_getstart_orchestration.xml"/>
+        <xi:include href="section_getstart_trove.xml"/>
+        <xi:include href="section_getstart_sahara.xml"/>
+    </section>
+    <section xml:id="feedback">
+        <title>反馈</title>
+        <para>To provide feedback on documentation, join and use the
+                <email>openstack-docs@lists.openstack.org</email>
+            mailing list at <link xlink:href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-docs">OpenStack Documentation Mailing List</link>, or <link xlink:href="https://bugs.launchpad.net/openstack-manuals/+filebug">report a bug</link>.</para>
+    </section>
+</chapter>

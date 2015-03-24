@@ -1,0 +1,267 @@
+<?xml version="1.0" ?><appendix version="5.0" xml:id="app_community_support" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <?dbhtml stop-chunking?>
+    <title>社区支持</title>
+    <para>以下可用的资源是帮助用户运行和使用OpenStack。OpenStack社区会经常性的改进和增加OpenStack的主要特性，如果用户有问题，请不要在提问题方面犹豫。使用下面列出的资源，以获得OpenStack社区的支持，也能得到一些安装/使用时一些解决问题的思路和方法。</para>
+    <section xml:id="support-documentation">
+        <title>文档</title>
+        <para>For the available OpenStack documentation, see <link xlink:href="http://docs.openstack.org">docs.openstack.org</link>.</para>
+        <para>To provide feedback on documentation, join and use the
+                <email>openstack-docs@lists.openstack.org</email>
+            mailing list at <link xlink:href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-docs">OpenStack Documentation Mailing List</link>, or <link xlink:href="https://bugs.launchpad.net/openstack-manuals/+filebug">report a bug</link>.</para>
+        <para>以下书籍解释了如何安装一个基于OpenStack云及其相关的组件</para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    <link xlink:href="http://docs.openstack.org/juno/install-guide/install/zypper/content/">
+                        <citetitle>基于openSUSE 13.1 或 SUSE Linux Enterprise Server 11 SP3的安装向导</citetitle>
+                    </link></para>
+            </listitem>
+            <listitem>
+                <para>
+                    <link xlink:href="http://docs.openstack.org/juno/install-guide/install/yum/content/">
+                        <citetitle>基于Red Hat Enterprise Linux 7, CentOS 7, 以及 Fedora 20的安装向导</citetitle>
+                    </link></para>
+            </listitem>
+            <listitem>
+                <para>
+                    <link xlink:href="http://docs.openstack.org/juno/install-guide/install/apt/content/">
+                        <citetitle>基于Ubuntu 14.04的安装向导</citetitle>
+                    </link></para>
+            </listitem>
+        </itemizedlist>
+        <para>以下书籍解释了如何配置和运行一个基于OpenStack的云：</para>
+        <itemizedlist>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/arch-design/content/"><citetitle>架构设计指南</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para>
+                    <link xlink:href="http://docs.openstack.org/admin-guide-cloud/content/"><citetitle>云计算平台管理员手册</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/juno/config-reference/content/"><citetitle>配置参考手册</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/ops/"><citetitle>实战指南</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/high-availability-guide/content/"><citetitle>高可用指南</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/sec/"><citetitle>安全指南</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/image-guide/content/"><citetitle>虚拟机镜像指南</citetitle></link></para>
+            </listitem>
+        </itemizedlist>
+        <para>以下书籍解释了如何使用OpenStack图形界面和命令行客户端：</para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    <link xlink:href="http://docs.openstack.org/api/quick-start/content/"><citetitle>应用程序接口快速入门</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para>
+                    <link xlink:href="http://docs.openstack.org/user-guide/content/"><citetitle>用户指南</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para>
+                    <link xlink:href="http://docs.openstack.org/user-guide-admin/content/"><citetitle>管理员手册</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para>
+                    <link xlink:href="http://docs.openstack.org/cli-reference/content/"><citetitle>命令行参考</citetitle></link></para>
+            </listitem>
+        </itemizedlist>
+        <para>下面文档提供了OpenStack 应用程序接口的参考和向导：</para>
+        <itemizedlist>
+            <listitem>
+                <para><link xlink:href="http://developer.openstack.org/api-ref.html">OpenStack应用程序接口完全参考(HTML)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://developer.openstack.org/api-ref-guides/bk-api-ref.pdf">OpenStack应用程序接口完全参考(PDF)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/api/openstack-block-storage/2.0/content/"><citetitle>OpenStack 块存储服务 API v2 参考</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/api/openstack-compute/2/content/"><citetitle>OpenStack 计算服务 API V2 以及其扩展参考</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/api/openstack-identity-service/2.0/content/"><citetitle>OpenStack 认证服务 API v2.0 参考</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/api/openstack-image-service/2.0/content/"><citetitle>OpenStack 镜像服务 API v2 参考</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/api/openstack-network/2.0/content/"><citetitle>OpenStack 网络服务 API v2.0 参考</citetitle></link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="http://docs.openstack.org/api/openstack-object-storage/1.0/content/"><citetitle>OpenStack 对象存储 API v1参考</citetitle></link></para>
+            </listitem>
+        </itemizedlist>
+        <para>The <link xlink:href="http://docs.openstack.org/training-guides/content/"><citetitle>Training Guides</citetitle></link>
+            offer software training for cloud administration and
+            management.</para>
+    </section>
+    <section xml:id="support-ask_openstack">
+        <title><link xlink:href="http://ask.openstack.org">问答论坛</link></title>
+        <para>During the set up or testing of OpenStack, you might
+            have questions about how a specific task is completed or
+            be in a situation where a feature does not work correctly.
+            Use the <link xlink:href="http://ask.openstack.org">ask.openstack.org</link> site to ask questions and
+            get answers. When you visit the <link xlink:href="http://ask.openstack.org">http://ask.openstack.org</link> site, scan the
+            recently asked questions to see whether your question has
+            already been answered. If not, ask a new question. Be sure
+            to give a clear, concise summary in the title and provide
+            as much detail as possible in the description. Paste in
+            your command output or stack traces, links to screen
+            shots, and any other information which
+            might be useful.</para>
+    </section>
+    <section xml:id="support-mailing-lists">
+        <title>OpenStack 邮件列表</title>
+        <para>A great way to get answers and insights is to post your
+            question or problematic scenario to the OpenStack mailing
+            list. You can learn from and help others who might have
+            similar issues. To subscribe or view the archives, go to
+                <link xlink:href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack">http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack</link>.
+            You might be interested in the other mailing lists for
+            specific projects or development, which you can find <link xlink:href="http://wiki.openstack.org/MailingLists">on
+                the wiki</link>. A description of all mailing lists is
+            available at <link xlink:href="http://wiki.openstack.org/MailingLists">http://wiki.openstack.org/MailingLists</link>.</para>
+    </section>
+    <section xml:id="support-wiki">
+        <title>OpenStack 维基百科</title>
+        <para>The <link xlink:href="http://wiki.openstack.org/">OpenStack
+                wiki</link> contains a broad range of topics but some of the
+            information can be difficult to find or is a few pages deep.
+            Fortunately, the wiki search feature enables you to search by title
+            or content. If you search for specific information, such as about
+            networking or nova, you can find a large amount of relevant
+            material. More is being added all the time, so be sure to check back
+            often. You can find the search box in the upper-right corner of any
+            OpenStack wiki page.</para>
+    </section>
+    <section xml:id="support-bugs-area">
+        <title>Launchpad的Bug区</title>
+        <para>The OpenStack community values your set up and testing efforts and
+            wants your feedback. To log a bug, you must sign up for a Launchpad
+            account at <link xlink:href="https://launchpad.net/+login">https://launchpad.net/+login</link>. You can view existing bugs
+            and report bugs in the Launchpad Bugs area. Use the search feature
+            to determine whether the bug has already been reported or already
+            been fixed. If it still seems like your bug is unreported, fill out
+            a bug report.</para>
+        <para>一些小贴士：</para>
+        <itemizedlist>
+            <listitem>
+                <para>提供清晰、简洁的语法。</para>
+            </listitem>
+            <listitem>
+                <para>尽可能提供详细的细节描述。将命令行的输出或者trace输出粘贴出来，如果是截图请贴链接，以及其他任何有用的信息。</para>
+            </listitem>
+            <listitem>
+                <para>确保包含了软件和包的版本信息，尤其是使用的正在开发中的分支，诸如<literal>&quot;Juno release&quot; vs git commit bc79c3ecc55929bac585d04a03475b72e06a3208</literal>，这样的描述。</para>
+            </listitem>
+            <listitem>
+                <para>任何特别的部署信息都是有用的。例如用户使用的是Ubuntu 14.04，或者多节点安装。</para>
+            </listitem>
+        </itemizedlist>
+        <para>以下列出Launchpad Bug区：</para>
+        <itemizedlist>
+            <!-- Core projects, sorted alphabetically -->
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/cinder">Bugs: OpenStack 块存储 (cinder)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/nova">Bugs: OpenStack 计算 (nova)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/horizon">Bugs: OpenStack 仪表盘 (horizon)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/keystone">Bugs: OpenStack 认证 (keystone)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/glance">Bugs: OpenStack 镜像服务 (glance)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/neutron">Bugs: OpenStack 网络 (neutron)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/swift">Bugs: OpenStack 对象存储 (swift)</link></para>
+            </listitem>
+            <!-- Modules, sorted alphabetically -->
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/ironic">Bugs: 裸金属 (ironic)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/sahara">Bugs: 数据处理服务 (sahara)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/trove">Bugs: 数据库服务 (trove)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/heat">Bugs: 编排 (heat)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/ceilometer">Bugs: 计量 (ceilometer)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/marconi">Bugs: 队列服务 (marconi)</link></para>
+            </listitem>
+            <!-- Programs, sorted alphabetically -->
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/openstack-api-site">Bugs: OpenStack 应用程序接口文档 (developer.openstack.org)</link></para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://bugs.launchpad.net/openstack-manuals">Bugs: OpenStack 文档 (docs.openstack.org)</link></para>
+            </listitem>
+        </itemizedlist>
+    </section>
+    <section xml:id="support-irc-channel">
+        <title>The OpenStack 在线聊天室频道</title>
+        <para>The OpenStack community lives in the #openstack IRC channel on the
+            Freenode network. You can hang out, ask questions, or get immediate
+            feedback for urgent and pressing issues. To install an IRC client or
+            use a browser-based client, go to <link xlink:href="http://webchat.freenode.net">http://webchat.freenode.net/</link>. You can also use Colloquy
+            (Mac OS X, <link xlink:href="http://colloquy.info/">http://colloquy.info/</link>), mIRC (Windows, <link xlink:href="http://www.mirc.com/">http://www.mirc.com/</link>),
+            or XChat (Linux). When you are in the IRC channel and want to share
+            code or command output, the generally accepted method is to use a
+            Paste Bin. The OpenStack project has one at <link xlink:href="http://paste.openstack.org">http://paste.openstack.org</link>. Just paste your longer
+            amounts of text or logs in the web form and you get a URL that you
+            can paste into the channel. The OpenStack IRC channel is
+                <literal>#openstack</literal> on
+                <literal>irc.freenode.net</literal>. You can find a list of all
+            OpenStack IRC channels at <link xlink:href="https://wiki.openstack.org/wiki/IRC">https://wiki.openstack.org/wiki/IRC</link>.</para>
+    </section>
+    <section xml:id="support-documentation-feedback">
+        <title>文档反馈</title>
+        <para>To provide feedback on documentation, join and use the
+            <email>openstack-docs@lists.openstack.org</email> mailing list at
+            <link xlink:href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-docs">OpenStack
+                Documentation Mailing List</link>, or <link xlink:href="https://bugs.launchpad.net/openstack-manuals/+filebug">report a bug</link>.</para>
+    </section>
+    <section xml:id="distro-support">
+        <title>OpenStack分发包</title>
+        <para>以下是Linux发行版针对OpenStack的社区支持：</para>
+        <itemizedlist>
+            <listitem>
+                <para><emphasis role="bold">Debian:</emphasis>
+                    <link xlink:href="http://wiki.debian.org/OpenStack">Debian官方维基百科的OpenStack板块</link></para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">CentOS, Fedora, 以及 Red Hat Enterprise Linux:</emphasis>
+                    <link xlink:href="http://openstack.redhat.com/">红帽的RDO社区</link></para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">openSUSE 和 SUSE Linux Enterprise Server:</emphasis>
+                    <link xlink:href="http://en.opensuse.org/Portal:OpenStack">openSUSE的关于OpenStack的板块</link></para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">Ubuntu:</emphasis>
+                    <link xlink:href="https://wiki.ubuntu.com/ServerTeam/CloudArchive">ubuntu官方服务器团队之OpenStack云</link></para>
+            </listitem>
+        </itemizedlist>
+    </section>
+</appendix>

@@ -1,0 +1,72 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="metering-service" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <title>Telemetry模块</title>
+      <para> Telemetry 模块表现有如下功能:</para>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>Efficiently collects the metering data about the CPU
+          and network costs.</para>
+          </listitem>
+          <listitem>
+            <para>Collects data by monitoring notifications sent from
+          services or by polling the infrastructure.</para>
+          </listitem>
+          <listitem>
+            <para>Configures the type of collected data to meet
+          various operating requirements. It accesses and inserts the
+          metering data through the REST API.</para>
+          </listitem>
+          <listitem>
+            <para>Expands the framework to collect custom usage data
+          by additional plug-ins.</para>
+          </listitem>
+          <listitem>
+            <para>Produces signed metering messages that cannot be
+          repudiated.</para>
+          </listitem>
+        </itemizedlist>
+     </para>
+      <para>Telemetry 模块通常包含下面组件:</para>
+      <variablelist>
+        <varlistentry><term>一个计算服务代理 (<systemitem class="service">ceilometer-agent-compute</systemitem>)</term>
+          <listitem><para>运行在每个计算节点中，推送资源的使用状态，也许在未来会有其他类型的代理，但是目前来说社区专注于创建计算节点代理。</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term>中心代理 (<systemitem class="service">ceilometer-agent-central</systemitem>)</term>
+          <listitem><para>Runs on a central management server to poll for
+           resource utilization statistics for resources not tied to instances
+           or compute nodes.</para></listitem>
+        </varlistentry>
+        <varlistentry><term>通知代理 (<systemitem class="service">ceilometer-agent-notification</systemitem>)</term>
+          <listitem><para>Runs on a central management server to initiate
+          alarm actions, such as calling out to a webhook with a description
+          of the alarm state transition.</para></listitem>
+        </varlistentry>
+        <varlistentry><term>收集者 (<systemitem class="service">ceilometer-collector</systemitem>)</term>
+          <listitem><para>Runs on central management server(s) to monitor the
+           message queues (for notifications and for metering data coming from
+           the agent). Notification messages are processed and turned into
+           metering messages, which are sent to the message bus using the
+           appropriate topic. Telemetry messages are written to the data store
+           without modification.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term>警告评估 (<systemitem class="service">ceilometer-alarm-evaluator</systemitem>)</term>
+          <listitem><para>运行在一个或多个中心管理服务器，当警告发生是由于相关联的统计趋势超过阈值以上的滑动时间窗口，然后作出决定。</para></listitem>
+        </varlistentry>
+        <varlistentry><term>警告通知  (<systemitem class="service">ceilometer-alarm-notifier</systemitem>)</term>
+          <listitem><para>运行在一个或多个中心管理服务器，允许警告为一组收集的实例基于评估阀值来设置。</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>A data store</term>
+          <listitem><para>A database capable of handling
+            concurrent writes (from one or more collector instances)
+            and reads (from the API server).</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>API服务  (<systemitem class="service">ceilometer-api</systemitem>)</term>
+          <listitem><para>运行在一个或多个中心管理服务器，提供从数据存储的数据访问。</para></listitem>
+        </varlistentry>
+      </variablelist>
+      <para>这些服务使用OpenStack消息总线来通信，只有收集者和API服务可以访问数据存储。</para>
+    </section>

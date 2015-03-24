@@ -1,0 +1,24 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="block-storage-service" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <title>OpenStack块存储</title>
+      <para>OpenStack块存储服务(cinder)为虚拟机添加持久的存储，块存储提供一个基础设施为了管理卷，以及和OpenStack计算服务交互，为实例提供卷。此服务也会激活管理卷的快照和卷类型的功能。</para>
+      <para>块存储服务通常包含下列组件：</para>
+      <variablelist>
+        <varlistentry>
+          <term><systemitem class="service">cinder-api</systemitem></term>
+          <listitem><para>接收API请求，然后将之路由到<systemitem class="service">cinder-volume</systemitem>这里执行。</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><systemitem class="service">cinder-volume</systemitem></term>
+          <listitem><para>直接和块存储的服务交互，以及诸如 <systemitem class="service">cinder-scheduler</systemitem>这样的流程交互，它和这些流程交互是通过消息队列。<systemitem>cinder-volume</systemitem> 服务响应那些发送到块存储服务的读写请求以维护状态，它可以可多个存储供应商通过driver架构作交互。</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><systemitem class="service">cinder-scheduler</systemitem>守护进程</term>
+        <listitem> <para>选择最佳的存储节点来创建卷，和它类似的组件是<systemitem class="service">nova-scheduler</systemitem>。</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>消息队列</term>
+          <listitem><para>在块存储的进程之间路由信息。</para></listitem>
+        </varlistentry>
+    </variablelist>
+    </section>

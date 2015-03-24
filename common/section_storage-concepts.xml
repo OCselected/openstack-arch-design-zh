@@ -1,0 +1,108 @@
+<?xml version="1.0" ?><!DOCTYPE section [
+<!ENTITY % openstack SYSTEM "entities/openstack.ent">
+<!-- The master of this file is in openstack-manuals repository, file
+     doc/common/entities/openstack.ent.
+     Any changes to the master file will override changes in other
+     repositories. --><!-- Some useful entities borrowed from HTML --><!ENTITY ndash "&#x2013;">
+<!ENTITY mdash "&#x2014;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY times "&#215;">
+<!ENTITY hellip "&#133;">
+<!-- Useful for describing APIs in the User Guide --><!ENTITY COPY '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+<!ENTITY CHECK '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="../common/figures/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]><section version="5.0" xml:id="storage-concepts" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>存储概念</title>
+  <para>OpenStack堆栈使用下列存储类型：</para>
+  <table rules="all">
+    <caption>存储类型</caption>
+    <col width="33%"/>
+    <col width="33%"/>
+    <col width="33%"/>
+    <thead>
+      <tr>
+        <td>On-instance / ephemeral</td>
+        <td>块存储 (cinder)</td>
+        <td>Object Storage (swift)</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>运行在操作系统中，且提供scratch空间</td>
+        <td>用于给虚拟机(VM)添加额外的持久存储</td>
+        <td>用于存放虚拟机镜像和数据</td>
+      </tr>
+      <tr>
+        <td>随着VM的销毁而消失</td>
+        <td>除非人工删除，否则一直存在</td>
+        <td>除非人工删除，否则一直存在</td>
+      </tr>
+      <tr>
+        <td>访问和VM想关联</td>
+        <td>访问和VM想关联</td>
+        <td>对任何地方都可用</td>
+      </tr>
+      <tr>
+        <td>在OpenStack计算服务下实现的文件系统</td>
+        <td>通过OpenStack块存储控制协议(例如，iSCSI)来挂载</td>
+        <td>REST API</td>
+      </tr>
+      <tr>
+        <td>系统管理员配置大小，基于flavor</td>
+        <td>大小根据需要而定</td>
+        <td>针对于未来的增长，可轻松扩展</td>
+      </tr>
+      <tr>
+        <td>Example: 10 GB first disk, 30 GB/core second disk</td>
+        <td>Example: 1 TB &quot;extra hard drive&quot;</td>
+        <td>举例：10倍的TB数据单元存储</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <para>用户须知：<itemizedlist>
+      <listitem>
+        <para><emphasis>用户不可以想传统的硬盘那样使用OpenStack对象存储。</emphasis>对象存储相对POSIX标准的文件系统放宽了一些约束以获得其他的功能，用户可通过使用HTTP的应用程序接口来访问对象，但是用户不能做一些原子操作(因为最终一致性的原因)，用户可以很容易的扩展存储系统以及避免中心节点的失败。</para>
+      </listitem>
+      <listitem>
+        <para><emphasis>OpenStack镜像服务在OpenStack的集群是用来管理虚拟机镜像的，而非实际存储它们。</emphasis>它为存储提供了不同的抽象方法--一个连向存储的桥，而不是存储本身。</para>
+      </listitem>
+      <listitem>
+        <para><emphasis>OpenStack对象存储用于独立的功能。</emphasis> 对象存储(swift)可独立于计算(Nova)产品之外对外提供服务。</para>
+      </listitem>
+    </itemizedlist></para>
+  <variablelist>
+    <title>命令行客户端和其他接口</title>
+    <varlistentry>
+      <term>swift 客户端</term>
+      <listitem>
+        <para>用户可以通过此命令行客户端来向REST API提交命令，授权的用户角色可以是管理员用户，经销商用户，或者是swift用户。</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>swift-init</term>
+      <listitem><para>Script that initializes the building of the ring
+      file, takes daemon names as parameter and offers commands.
+      Documented in
+        <link xlink:href="http://docs.openstack.org/developer/swift/admin_guide.html#managing-services">http://docs.openstack.org/developer/swift/admin_guide.html#managing-services</link>.</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>swift-recon</term>
+      <listitem><para/></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>swift-ring-builder</term>
+      <listitem><para>Storage ring build and rebalance utility.
+        Documented in <link xlink:href="http://docs.openstack.org/developer/swift/admin_guide.html#managing-the-rings">http://docs.openstack.org/developer/swift/admin_guide.html#managing-the-rings</link>.</para></listitem>
+    </varlistentry>
+  </variablelist>
+</section>

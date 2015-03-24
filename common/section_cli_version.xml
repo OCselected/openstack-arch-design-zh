@@ -1,0 +1,12 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="checking_version_cli" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <title>Discover the version number for a client</title>
+        <para>Run the following command to discover the version number
+                for a client:</para>
+        <screen><prompt>$</prompt> <userinput><replaceable>工程</replaceable> --version</userinput></screen>
+        <para>For example, to see the version number for the
+                        <command>nova</command> client, run the
+                following command:</para>
+        <screen><prompt>$</prompt> <userinput>nova --version</userinput></screen>
+        <para>The version number (2.15.0 in the example) is returned.</para>
+        <screen><computeroutput>2.15.0</computeroutput></screen>
+</section>

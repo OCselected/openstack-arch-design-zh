@@ -1,0 +1,20 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="networking-service-overview" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>OpenStack 网络</title>
+  <para>OpenStack网络允许用户为了创建和挂接网卡设备而由其他OpenStack服务来管理并连接。插件机制可实现容纳不同的网络设备和软件，为OpenStack架构和部署提供灵活的机制。</para>
+  <para>它包含下列组件：</para>
+  <variablelist>
+    <varlistentry><term><systemitem class="service">neutron-server</systemitem></term>
+        <listitem><para>接收和路由API请求到合适的OpenStack网络插件，以达到预想的目的。</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>OpenStack网络插件和代理</term>
+        <listitem><para>插拔端口，创建网络和子网，以及提供IP地址，这些插件和代理依赖于供应商和技术而不同，OpenStack网络基于插件和代理为Cisco 虚拟和物理交换机、NEC OpenFlow产品，Open vSwitch,Linux bridging以及VMware NSX 产品穿线搭桥。</para>
+      <para>常见的代理L3(3层)，DHCP(动态主机IP地址)，以及插件代理。</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>消息队列</term>
+      <listitem><para>用于在neutron-server和各种代理之间路由信息，也会为各种插件将网络状态存储到数据库中。</para></listitem>
+    </varlistentry>
+  </variablelist>
+  <para>OpenStack网络主要和OpenStack计算交互，以提供网络连接到它的实例。</para>
+</section>

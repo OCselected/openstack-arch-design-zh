@@ -1,0 +1,36 @@
+<?xml version="1.0" ?><para version="5.0" xml:lang="zh" xmlns="http://docbook.org/ns/docbook">
+  <!-- The tool that generated this table lives in the
+     openstack-doc-tools repository. The editions made in
+     this file will *not* be lost if you run the script again. -->
+  <table rules="all">
+    <caption>Description of configuration options for
+        <literal>[realm2]</literal> in <filename>container-sync-realms.conf</filename>
+    </caption>
+    <col width="50%"/>
+    <col width="50%"/>
+    <thead>
+      <tr>
+        <th>Configuration option = Default value</th>
+        <th>描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><option>cluster_name3</option> = <replaceable>https://host3/v1/</replaceable></td>
+        <td>No help text available for this option.</td>
+      </tr>
+      <tr>
+        <td><option>cluster_name4</option> = <replaceable>https://host4/v1/</replaceable></td>
+        <td>No help text available for this option.</td>
+      </tr>
+      <tr>
+        <td><option>key</option> = <replaceable>realm2key</replaceable></td>
+        <td>No help text available for this option.</td>
+      </tr>
+      <tr>
+        <td><option>key2</option> = <replaceable>realm2key2</replaceable></td>
+        <td>No help text available for this option.</td>
+      </tr>
+    </tbody>
+  </table>
+</para>

@@ -1,0 +1,24 @@
+<?xml version="1.0" ?><para version="5.0" xml:lang="zh" xmlns="http://docbook.org/ns/docbook">
+  <!-- The tool that generated this table lives in the
+     openstack-doc-tools repository. The editions made in
+     this file will *not* be lost if you run the script again. -->
+  <table rules="all">
+    <caption>Description of configuration options for
+        <literal>[pipeline-main]</literal> in <filename>account-server.conf</filename>
+    </caption>
+    <col width="50%"/>
+    <col width="50%"/>
+    <thead>
+      <tr>
+        <th>Configuration option = Default value</th>
+        <th>描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><option>pipeline</option> = <replaceable>healthcheck recon account-server</replaceable></td>
+        <td>No help text available for this option.</td>
+      </tr>
+    </tbody>
+  </table>
+</para>

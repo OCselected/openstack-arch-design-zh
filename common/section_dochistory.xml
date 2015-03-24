@@ -1,0 +1,8 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="doc_change_history" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Document change history</title>
+    <?dbhtml stop-chunking?>
+    <para>此版本的向导完全取代旧版本的，且所有旧版本的在此版本中不再生效。</para>
+    <para>下面表格描述的是近期的改动：</para>
+    <?rax revhistory?>
+    <!-- Table generated in output from revision element in the book element -->
+</section>

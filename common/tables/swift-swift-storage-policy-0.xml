@@ -1,0 +1,28 @@
+<?xml version="1.0" ?><para version="5.0" xml:lang="zh" xmlns="http://docbook.org/ns/docbook">
+  <!-- The tool that generated this table lives in the
+     openstack-doc-tools repository. The editions made in
+     this file will *not* be lost if you run the script again. -->
+  <table rules="all">
+    <caption>Description of configuration options for
+        <literal>[storage-policy-0]</literal> in <filename>swift.conf</filename>
+    </caption>
+    <col width="50%"/>
+    <col width="50%"/>
+    <thead>
+      <tr>
+        <th>Configuration option = Default value</th>
+        <th>描述</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><option>默认值</option> = <replaceable>yes</replaceable></td>
+        <td>0 means to not use a per-disk thread pool. It is recommended to keep this value small, as large values can result in high read latencies due to large queue depths. A good starting point is 4 threads per disk.</td>
+      </tr>
+      <tr>
+        <td><option>name</option> = <replaceable>Policy-0</replaceable></td>
+        <td>No help text available for this option.</td>
+      </tr>
+    </tbody>
+  </table>
+</para>

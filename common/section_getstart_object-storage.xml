@@ -1,0 +1,30 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="object-storage-service" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>OpenStack对象存储</title>
+  <para>OpenStack对象存储是一个多租户的对象存储系统，它支持大规模扩展，可以以低成本来管理大型的非结构化数据，通过RESTful HTTP 应用程序接口。</para>
+  <para>它包含下列组件：</para>
+  <variablelist>
+    <varlistentry><term>代理服务器 (<systemitem class="service">swift-proxy-server</systemitem>)</term>
+      <listitem><para>接收OpenStack对象存储API和纯粹的HTTP请求以上传文件，更改元数据，以及创建容器。它可服务于在web浏览器下显示文件和容器列表。为了改进性能，代理服务可以使用可选的缓存，通常部署的是memcache。</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>账户服务 (<systemitem class="service">swift-account-server</systemitem>)</term>
+          <listitem><para>管理由对象存储定义的账户。</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>容器服务 (<systemitem class="service">swift-container-server</systemitem>)</term>
+      <listitem><para>管理容器或文件夹的映射，对象存储内部。</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>对象服务 (<systemitem class="service">swift-object-server</systemitem>)</term>
+      <listitem><para>在存储节点管理实际的对象，诸如文件。</para></listitem>
+  </varlistentry>
+    <varlistentry>
+     <term>各种定期进程</term>
+     <listitem><para>为了驾驭大型数据存储的任务，复制服务需要在集群内确保一致性和可用性，其他定期进程有审计，更新和reaper。</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>WSGI中间件</term>
+          <listitem><para>掌控认证，使用OpenStack认证服务。</para></listitem>
+  </varlistentry>
+</variablelist>
+</section>

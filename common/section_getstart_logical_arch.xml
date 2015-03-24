@@ -1,0 +1,33 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="logical-architecture" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>逻辑架构</title>
+  <para>为了设计、部署和配置OpenStack,管理员必须理解逻辑架构。</para>
+  <para>OpenStack的模块一定是下列类型中的一种：</para>
+  <variablelist>
+   <varlistentry><term>守护进程</term>
+    <listitem>
+      <para>运行在后台的进程。在Linux平台中，一个守护进程通常被安装为一个服务。</para>
+    </listitem>
+   </varlistentry>
+   <varlistentry><term>脚本</term>
+    <listitem>
+      <para>安装一个虚拟环境并且运行测试，例如，脚本<code>run_tests.sh</code>安装一个虚拟环境且在一个服务中运行单元测试。</para>
+    </listitem>
+   </varlistentry>
+   <varlistentry><term>命令行接口(CLI)</term>
+    <listitem>
+      <para>让用户可通过简单易用的命令向OpenStack服务发出API调用请求。</para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+  <para>下面示意图展示了多数通常情况下，但不是唯一，OpenStack云的架构:</para>
+  <!-- Source files in this repository in doc/src/docbkx/common/figures/openstack-arch-havana-v1.zip -->
+  <figure xml:id="os-logical-arch">
+    <title>逻辑架构</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata contentwidth="6.5in" fileref="figures/openstack-arch-havana-logical-v1.jpg"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>正如<xref linkend="concept_arch"/>，最终用户可通过仪表盘、命令行以及API来和OpenStack交互，所有服务的认证均通过共用的认证服务，各个服务通过彼此的公开API来交互，除了一些个管理员命令需要特别的授权之外。</para>
+</section>

@@ -1,0 +1,16 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="dashboard-service" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <title>OpenStack仪表盘</title>
+      <para>The OpenStack dashboard is a modular <link xlink:href="https://www.djangoproject.com/">Django web
+          application</link> that provides a graphical interface to
+        OpenStack services.</para>
+      <informalfigure>
+        <mediaobject>
+          <imageobject>
+            <imagedata contentwidth="4in" fileref="figures/horizon-screenshot.jpg"/>
+          </imageobject>
+        </mediaobject>
+      </informalfigure>
+      <para>The dashboard is usually deployed through <link xlink:href="http://code.google.com/p/modwsgi/">mod_wsgi</link> in Apache. You can modify the dashboard
+        code to make it suitable for different sites.</para>
+      <para>从网络架构的角度来看，此服务必须为最终用户可访问，且需要为所有其他的OpenStack服务公开API。如果要使用其他服务的管理功能，则必须可访问到 Admin API的入口，还得保证不能被最终用户访问到。</para>
+    </section>

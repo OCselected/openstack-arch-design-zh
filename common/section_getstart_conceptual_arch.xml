@@ -1,0 +1,13 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="conceptual-architecture" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>概念架构</title>
+    <para>下面示意图解释了OpenStack服务之间的关系：</para>
+    <!-- Source files in this repository in doc/src/docbkx/common/figures/openstack-arch-havana-v1.zip -->
+    <figure xml:id="concept_arch">
+        <title>OpenStack概念架构</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata contentwidth="6in" fileref="figures/openstack_havana_conceptual_arch.png"/>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</section>

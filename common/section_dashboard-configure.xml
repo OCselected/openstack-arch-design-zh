@@ -1,0 +1,15 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="configure-dashboard" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>配置GUI界面</title>
+    <?dbhtml stop-chunking?>
+    <para>You can configure the dashboard for a simple HTTP
+        deployment.</para>
+    <para>You can configure the dashboard for a secured HTTPS
+        deployment. While the standard installation uses a
+        non-encrypted HTTP channel, you can enable SSL support for the
+        dashboard.</para>
+    <para>Also, you can configure the size of the VNC window in the
+        dashboard.</para>
+ <xi:include href="section_dashboard-configure-http.xml"/>
+    <xi:include href="section_dashboard-configure-https.xml"/>
+    <xi:include href="section_dashboard-configure-vnc-window.xml"/>
+</section>

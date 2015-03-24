@@ -1,0 +1,16 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="vnc-window" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>更改界面VNC窗口的大小</title>
+    <para>The <filename>_detail_vnc.html</filename> file defines
+        the size of the VNC window. To change the window size, edit
+        this file.</para>
+    <procedure xml:id="adjust-vnc-window">
+    <step>
+        <para>编辑文件<filename>/usr/share/pyshared/horizon/dashboards/nova/instances/templates/instances/_detail_vnc.html.</filename></para>
+    </step>
+    <step>
+        <para>Modify the <literal>width</literal> and
+            <literal>height</literal> parameters, as follows:</para>
+        <programlisting>&lt;iframe src=&quot;{{ vnc_url }}&quot; width=&quot;720&quot; height=&quot;430&quot;&gt;&lt;/iframe&gt;</programlisting>
+    </step>
+</procedure>
+</section>

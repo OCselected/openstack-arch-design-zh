@@ -1,0 +1,211 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="dashboard-sessions" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Set up session storage for the dashboard</title>
+    <para>The dashboard uses <link xlink:href="https://docs.djangoproject.com/en/dev/topics/http/sessions/">Django sessions framework</link> to handle user session
+        data. However, you can use any available session back end. You
+        customize the session back end through the
+            <literal>SESSION_ENGINE</literal> setting in your <filename>local_settings</filename> file
+            (on Fedora/RHEL/CentOS: <filename>
+            /etc/openstack-dashboard/local_settings</filename>, on Ubuntu and Debian:
+            <filename>/etc/openstack-dashboard/local_settings.py</filename> and on openSUSE: <filename>/srv/www/openstack-dashboard/openstack_dashboard/local/local_settings.py</filename>).
+   </para>
+    <para>The following sections describe the pros and cons of each
+        option as it pertains to deploying the dashboard.</para>
+    <section xml:id="dashboard-session-local">
+        <title>本地内存缓存</title>
+        <para>Local memory storage is the quickest and easiest session
+            back end to set up, as it has no external dependencies
+            whatsoever. It has the following significant
+            drawbacks:</para>
+        <itemizedlist>
+            <listitem>
+                <para>No shared storage across processes or
+                    workers.</para>
+            </listitem>
+            <listitem>
+                <para>No persistence after a process
+                    terminates.</para>
+            </listitem>
+        </itemizedlist>
+        <para>The local memory back end is enabled as the default for
+            Horizon solely because it has no dependencies. It is not
+            recommended for production use, or even for serious
+            development work. Enabled by:</para>
+        <programlisting language="python"><?db-font-size 75%?>SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+CACHES = {
+  'default' : {
+    'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+  }
+}</programlisting>
+    </section>
+    <section xml:id="dashboard-session-key-value-store">
+        <?dbhtml stop-chunking?>
+        <title>键-值存储</title>
+        <para>You can use applications such as Memcached or Redis for external
+            caching. These applications offer persistence and shared storage
+            and are useful for small-scale deployments and/or development.
+       </para>
+        <section xml:id="dashboard-session-memcached">
+        <title>Memcached</title>
+        <para>Memcached is a high-performance and distributed memory object caching system
+              providing in-memory key-value store for small chunks of arbitrary data.</para>
+        <para>需求:</para>
+        <itemizedlist>
+            <listitem>
+                <para>Memcached 服务运行中且可被访问。</para>
+            </listitem>
+            <listitem>
+                <para>Python 模块 <literal>python-memcached</literal> 已经安装。</para>
+            </listitem>
+        </itemizedlist>
+        <para>激活者：</para>
+        <programlisting language="python"><?db-font-size 75%?>SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+CACHES = {
+  'default': {
+    'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache'
+    'LOCATION': 'my_memcached_host:11211',
+  }
+}</programlisting>
+        </section>
+        <section xml:id="dashboard-session-redis">
+        <title>Redis</title>
+        <para>Redis是一款开源项目，基于BSD许可证，用于高级的健-值存储。It is often referred to as a data structure server.</para>
+        <para>需求:</para>
+        <itemizedlist>
+            <listitem>
+                <para>Redia服务运行中且可被访问。</para>
+            </listitem>
+            <listitem>
+                <para>Python 模块 <literal>redis</literal> 以及 <literal>django-redis</literal> 已经安装。</para>
+            </listitem>
+        </itemizedlist>
+        <para>激活者：</para>
+        <programlisting language="python"><?db-font-size 75%?>SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+CACHES = {
+    &quot;default&quot;: {
+        &quot;BACKEND&quot;: &quot;redis_cache.cache.RedisCache&quot;,
+        &quot;LOCATION&quot;: &quot;127.0.0.1:6379:1&quot;,
+        &quot;OPTIONS&quot;: {
+            &quot;CLIENT_CLASS&quot;: &quot;redis_cache.client.DefaultClient&quot;,
+        }
+    }
+}</programlisting>
+        </section>
+    </section>
+    <section xml:id="dashboard-session-database">
+        <title>初始化和配置数据库</title>
+        <para>后端的数据库会话保持一致性、扩展性，且要做到高并发和高可用。</para>
+        <para>However, database-backed sessions are one of the slower
+            session storages and incur a high overhead under heavy
+            usage. Proper configuration of your database deployment
+            can also be a substantial undertaking and is far beyond
+            the scope of this documentation.</para>
+        <procedure>
+            <step>
+                <para>启动mysql命令行客户端：</para>
+                <screen><prompt>$</prompt> <userinput>mysql -u root -p</userinput></screen>
+            </step>
+            <step>
+                <para>按照提示输入MySQL root用户的密码。</para>
+            </step>
+            <step>
+                <para>To configure the MySQL database, create the dash
+                    database:</para>
+                <para><screen><prompt>mysql&gt;</prompt> <userinput>CREATE DATABASE dash;</userinput></screen></para>
+            </step>
+            <step>
+                <para>Create a MySQL user for the newly created dash
+                    database that has full control of the
+                    database. Replace <replaceable>DASH_DBPASS</replaceable> with
+                    a password for the new user:</para>
+                <para><screen><prompt>mysql&gt;</prompt> <userinput>GRANT ALL PRIVILEGES ON dash.* TO 'dash'@'%' IDENTIFIED BY '<replaceable>DASH_DBPASS</replaceable>';</userinput>
+<prompt>mysql&gt;</prompt> <userinput>GRANT ALL PRIVILEGES ON dash.* TO 'dash'@'localhost' IDENTIFIED BY '<replaceable>DASH_DBPASS</replaceable>';</userinput></screen></para>
+            </step>
+            <step>
+                <para>在<literal>mysql&gt;</literal>提示符下输入quit，退出MySQL。</para>
+            </step>
+            <step>
+                <para>In the <filename>local_settings</filename> file
+                (on Fedora/RHEL/CentOS: <filename>
+                /etc/openstack-dashboard/local_settings</filename>, on Ubuntu/Debian:
+                <filename>/etc/openstack-dashboard/local_settings.py</filename> and on openSUSE: <filename>/srv/www/openstack-dashboard/openstack_dashboard/local/local_settings.py</filename>),
+                    change these options:</para>
+                <programlisting language="python"><?db-font-size 75%?>SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+DATABASES = {
+    'default': {
+        # Database configuration here
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dash',
+        'USER': 'dash',
+        'PASSWORD': '<replaceable>DASH_DBPASS</replaceable>',
+        'HOST': 'localhost',
+        'default-character-set': 'utf8'
+    }
+}</programlisting>
+            </step>
+            <step>
+                <para>After configuring the <filename>local_settings</filename>
+                    as shown, you can run the <command>manage.py
+                        syncdb</command> command to populate this
+                    newly created database.</para>
+                <screen><prompt>#</prompt> <userinput>/usr/share/openstack-dashboard/manage.py syncdb</userinput></screen>
+                <para>Note on openSUSE the path is <filename>/srv/www/openstack-dashboard/manage.py</filename>.
+                </para>
+                <para>结果返回下面的输出:</para>
+                <screen><computeroutput>Installing custom SQL ...
+Installing indexes ...
+DEBUG:django.db.backends:(0.008) CREATE INDEX `django_session_c25c2c28` ON `django_session` (`expire_date`);; args=()
+No fixtures found.</computeroutput></screen>
+            </step>
+            <step>
+                <para>To avoid a warning when you restart Apache on Ubuntu,
+                    create a <filename>blackhole</filename> directory in the
+                    dashboard directory, as follows:</para>
+                <screen><prompt>#</prompt> <userinput>mkdir -p /var/lib/dash/.blackhole</userinput></screen>
+            </step>
+            <step>
+                <title>重启和刷新Apache</title>
+                    <para>Ubuntu中：<screen><prompt>#</prompt> <userinput>/etc/init.d/apache2 restart</userinput></screen></para>
+                    <para>在 Fedora/RHEL/CentOS 下: <screen><prompt>#</prompt> <userinput>service httpd restart</userinput></screen><screen><prompt>#</prompt> <userinput>service apache2 restart</userinput></screen></para>
+                    <para>openSUSE中: <screen><prompt>#</prompt> <userinput>systemctl restart apache2.service</userinput></screen></para>
+            </step>
+            <step>
+                <para>On Ubuntu, restart the <systemitem class="service">nova-api</systemitem> service to ensure that the
+                    API server can connect to the dashboard without
+                    error:</para>
+                <screen><prompt>#</prompt> <userinput>service nova-api restart</userinput></screen>
+            </step>
+        </procedure>
+    </section>
+    <section xml:id="dashboard-session-cached-database">
+        <title>缓存数据库</title>
+        <para>To mitigate the performance issues of database queries,
+            you can use the Django <command>cached_db</command> session
+            back end, which
+            utilizes both your database and caching infrastructure to
+            perform write-through caching and efficient retrieval.</para>
+        <para>Enable this hybrid setting by configuring both your
+            database and cache, as discussed previously. Then, set the
+            following value:</para>
+        <programlisting language="python"><?db-font-size 75%?>SESSION_ENGINE = &quot;django.contrib.sessions.backends.cached_db&quot;</programlisting>
+    </section>
+    <section xml:id="dashboard-session-cookies">
+        <title>Cookies</title>
+        <para>If you use Django 1.4 or later, the <command>signed_cookies</command>
+            back end avoids server load and scaling problems.</para>
+        <para>This back end stores session data in a cookie, which is
+            stored by the user's browser. The back end uses a
+            cryptographic signing technique to ensure session data is
+            not tampered with during transport. This is not the same
+            as encryption; session data is still readable by an
+            attacker.</para>
+        <para>The pros of this engine are that it requires no
+            additional dependencies or infrastructure overhead, and it
+            scales indefinitely as long as the quantity of session
+            data being stored fits into a normal cookie.</para>
+        <para>The biggest downside is that it places session data into
+            storage on the user's machine and transports it over the
+            wire. It also limits the quantity of session data that can
+            be stored.</para>
+        <para>See the Django <link xlink:href="https://docs.djangoproject.com/en/dev/topics/http/sessions/#using-cookie-based-sessions">cookie-based sessions</link> documentation.</para>
+    </section>
+</section>

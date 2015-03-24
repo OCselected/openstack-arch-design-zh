@@ -1,0 +1,49 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="fibrechannel" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>计算服务对光纤的支持</title>
+    <para>Fibre Channel support in OpenStack Compute is remote block
+        storage attached to compute nodes for VMs.</para>
+    <!-- TODO: This below statement needs to be verified for current release-->
+    <para>In the Grizzly release, Fibre Channel supported only the KVM
+        hypervisor.</para>
+    <para>Compute and Block Storage support Fibre Channel automatic zoning on
+        Brocade and Cisco switches. On other hardware Fibre Channel arrays must
+        be pre-zoned or directly attached to the KVM hosts.</para>
+    <section xml:id="fibre-channel-reqs">
+        <title>要求KVM主机</title>
+        <para>You must install these packages on the KVM host:</para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    <package>sysfsutils</package> - Nova uses the
+                        <package>systool</package> application in this
+                    package.</para>
+            </listitem>
+            <listitem>
+                <para>
+                    <package>sg3-utils</package> or <package>sg3_utils</package> - Nova uses the
+                        <package>sg_scan</package> and
+                        <package>sginfo</package> applications.</para>
+            </listitem>
+        </itemizedlist>
+        <para>Installing the <package>multipath-tools</package>
+            package is optional.</para>
+    </section>
+    <section xml:id="fibre-channel-packages">
+        <title>安装需要的软件包</title>
+        <para>使用这些命令来安装系统软件包：</para>
+        <itemizedlist>
+            <listitem>
+                <para>运行openSUSE或SUSE Linux企业版的系统：</para>
+                <screen><prompt>#</prompt> <userinput>zypper install sysfsutils sg3_utils multipath-tools</userinput></screen>
+            </listitem>
+            <listitem>
+                <para>运行Red Hat的系统：</para>
+                <screen><prompt>#</prompt> <userinput>yum install sysfsutils sg3_utils multipath-tools</userinput></screen>
+            </listitem>
+            <listitem>
+                <para>运行Ubuntu的系统：</para>
+                <screen><prompt>#</prompt> <userinput>apt-get install sysfsutils sg3-utils multipath-tools</userinput></screen>
+            </listitem>
+        </itemizedlist>
+    </section>
+</section>

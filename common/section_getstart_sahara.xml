@@ -1,0 +1,22 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="sahara-service" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>数据处理服务</title>
+  <para>OpenStack(sahara)的数据处理服务旨在为用户提供一个简单的部署数据处理(Hadoop,Spark)集群，仅通过提供一些简单的参数如Hadoop版本，集群的拓扑，节点硬件系统就可搞定。当用户填写了所有的参数后，sahara花几分钟就可将集群部署完成。Sahara还提供了为已有的集群扩展，按需添加/删除工作节点。</para>
+
+  <para>解决方案可交付如下使用场景： <itemizedlist>
+      <listitem><para>为开发和测试环境提供在OpenStack中快速的部署Hadoop集群。</para></listitem>
+      <listitem><para>在一个通用型OpenStack IaaS云中充分利用其未使用的计算能力。</para></listitem>
+      <listitem><para>为ad-hoc或突破分析负载提供分析即服务。</para></listitem>
+     </itemizedlist></para>
+
+
+  <para>关键特性有：<itemizedlist>
+      <listitem><para>基于OpenStack组件设计。</para></listitem>
+      <listitem><para>通过REST API来管理，其界面已经是OpenStack web界面的一部分，目前已可用。</para></listitem>
+      <listitem><para>支持不同的Hadoop发行版：<itemizedlist>
+          <listitem><para>Hadoop安装引擎的可插拔系统。</para></listitem>
+          <listitem><para>集成了供应商特别的管理工具，诸如Apache Ambari或Cloudera 管理终端。</para></listitem>
+        </itemizedlist></para></listitem>
+      <listitem><para>对Haddop配置模板的预定义，拥有可修改参数的能力。</para></listitem>
+      <listitem><para>基于Hive或Pig为ad-hoc分析查询提供友好的用户界面。</para></listitem>
+    </itemizedlist></para>
+</section>

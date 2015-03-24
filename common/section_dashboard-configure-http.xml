@@ -1,0 +1,25 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="configure-dashboard-http" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>为HTTP配置仪表盘</title>
+    <?dbhtml stop-chunking?>
+    <para>用户可以为一个简单的HTTP的部署配置仪表盘。标准的安装使用的是没有加密的HTTP。</para>
+    <procedure xml:id="dashboard-config-http">
+            <step>
+                <para>指定OpenStack认证服务入口点的主机设置在配置文件 <filename>/etc/openstack-dashboard/local_settings.py</filename>中，设置项为  <literal>OPENSTACK_HOST</literal></para>
+                <para>以下例子即显示了上面的设置：</para>
+                <programlisting language="python"><?db-font-size 65%?><xi:include href="samples/local_settings.py" parse="text"/></programlisting>
+                <para>The service catalog configuration in the
+                Identity Service determines whether a service appears
+                in the dashboard. For the full listing, see
+                        <link xlink:href="http://docs.openstack.org/developer/horizon/topics/settings.html">Horizon Settings and
+                    Configuration</link>.</para>
+            </step>
+            <step>
+                <para>重启Apache http服务，在Ubuntu/Debian/SUSE下:</para>
+                <screen><prompt>#</prompt> <userinput>service apache2 restart</userinput></screen>
+                <para>在 Fedora/RHEL/CentOS下:</para>
+                <screen><prompt>#</prompt> <userinput>service httpd restart</userinput></screen>
+                <para>接下来，重启 memcached:</para>
+                <screen><prompt>#</prompt> <userinput>service memcached restart</userinput></screen>
+            </step>
+        </procedure>
+</section>

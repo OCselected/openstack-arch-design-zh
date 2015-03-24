@@ -1,0 +1,35 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="section_conventions" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <?dbhtml stop-chunking?>
+  <title>约定</title>
+  <para>OpenStack文档使用了多种排版约定。</para>
+  <simplesect xml:id="conventions-admonitions">
+    <title>声明</title>
+    <para>以下形式的标志为注意项</para>
+    <note>
+      <para>便签或提醒</para>
+    </note>
+    <important>
+      <para>提醒用户进一步操作之前必须谨慎</para>
+    </important>
+    <warning>
+      <para>关于有丢失数据的风险或安全漏洞的危险信息提示</para>
+    </warning>
+  </simplesect>
+  <simplesect xml:id="conventions-prompts">
+    <title>命令行提示符</title>
+    <variablelist>
+      <varlistentry>
+        <term><emphasis role="bold"><prompt>$</prompt> 提示符</emphasis></term>
+        <listitem>
+          <para><prompt>$</prompt> 提示符表示任意用户，包括 <literal>root</literal>用户，都可以运行的命令。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><emphasis role="bold"><prompt>#</prompt> 提示符</emphasis></term>
+        <listitem>
+          <para> <prompt>#</prompt> 提示符表明命令仅为 <literal>root</literal>可以执行。当然，用户如果可以使用<command>sudo</command>命令的话，也可以运行此提示符后面的命令。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </simplesect>
+</section>

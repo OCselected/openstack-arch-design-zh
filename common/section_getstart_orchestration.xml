@@ -1,0 +1,24 @@
+<?xml version="1.0" ?><section version="5.0" xml:id="orchestration-service" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Orchestration模块概念</title>
+  <para>Orchestration模块提供了一个基于模板的orchestration，用于描述云的应用，通过运行的OpenStack API调用生成运行的云应用。软件和OpenStack其他核心组件集成为一个单一文件的模板系统。模板允许用户创建大多数的OpenStack资源类型，诸如实例，floating IP,卷，安全组，用户等，它也提供高级功能，诸如实例高可用，实例自动扩展，以及嵌套的OpenStack,这给OpenStack的核心项目带来了大量的用户基础。</para>
+  <para>服务鼓励部署者去直接集成Orchestration模块，或者通过自定义插件实现。</para>
+  <para>Orchestration模块通常包含下面的组件:</para>
+  <variablelist>
+    <varlistentry>
+      <term><code>heat</code> 命令行客户端</term>
+      <listitem><para>一个命令行工具，和heat-api通信，以运行AWS CloudFormation API，最终开发者可以直接使用Orchestration REST API。</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><code>heat-api</code> 组件</term><listitem><para>一个OpenStack本地 REST API ,发送API请求到heat-engine，通过远程过程调用(RPC)。</para>
+    </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><code>heat-api-cfn</code> 组件</term> <listitem><para>AWS 队列API，和AWS CloudFormation兼容，发送API请求到heat-engine，通过远程过程调用。</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><code>heat-engine</code></term>
+      <listitem><para>启动模板和提供给API消费者回馈事件。</para>
+    </listitem>
+  </varlistentry>
+</variablelist>
+</section>
