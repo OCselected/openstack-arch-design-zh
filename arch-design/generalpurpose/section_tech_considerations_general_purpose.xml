@@ -56,20 +56,8 @@ format="SVG" scale="60"/>
     <para>一个计算设计在多个池中分配资源，会使云中运行的应用资源利用的最为充分。每个独立的资源池应该被设计为特定的类型的实例或一组实例提供服务，设计多个资源池可帮助确保这样，当实例被调度到hypervisor节点，每个独立的节点资源将会被分配到最合适的可用的硬件。这就是常见的集装箱模式。</para>
     <para>使用一致的硬件来设计资源池中的节点对装箱起到积极作用。选择硬件节点当作计算资源池的一部分最好是拥有一样的处理器、内存以及存储类型。选择一致的硬件设计，将会在云的整个生命周期展现出更加容易部署、支持和维护的好处。</para>
     <para>OpenStack支持配置<firstterm>资源超分配比例</firstterm>，即虚拟资源比实际的物理资源，目前支持CPU和内存。默认的CPU超分配比例是16：1，默认的内存超分配比例是1.5：1。在设计阶段就要想要是否决定调整此超分配比例，因为这会直接影响到用户计算节点的硬件布局。</para>
-    <para>For example, consider a m1.small instance uses 1
-        vCPU, 20 GB of ephemeral storage and 2,048 MB of RAM. When
-        designing a hardware node as a compute resource pool to
-        service instances, take into consideration the number of
-        processor cores available on the node as well as the required
-        disk and memory to service instances running at capacity. For
-        a server with 2 CPUs of 10 cores each, with hyperthreading
-        turned on, the default CPU overcommit ratio of 16:1 would
-        allow for 640 (2 × 10 × 2 × 16) total <literal>m1.small</literal> instances. By
-        the same reasoning, using the default memory overcommit ratio
-        of 1.5:1 you can determine that the server will need at least
-        853 GB (640 × 2,048 MB / 1.5) of RAM. When sizing nodes for
-        memory, it is also important to consider the additional memory
-        required to service operating system and service needs.</para>
+    <para>举例说明，想像一下，现在有一个m1.small类型的实例，使用的是1 vCPU,20GB的临时存储，2048MB的内存。当设计为此类实例提>供计算资源池的硬件节点时，考虑节点需要多少个处理器、多大的磁盘、内存大小才可以满足容量需求。对于一个有2颗10个核的CPU，并开启超线程的服务器，基于默认的CPU超分配比例16：1来计算的话，它总共能运行640(2x10x2x16)个m1.small类型的实例。同样，基于默认的内存超分配比例1.5：1来计算的话，用户则需要至少853GB(640x2048/1.5x1048)内存。当基于内存来丈量服务器节点时，考虑操作系统本身和其服务所需要使用的内存也是非常重要的。
+    </para>
     <para>处理器的选择对于硬件设计来讲实在是太过重要了，尤其是对比不同处理器之间的特性和性能。一些近来发布的处理器，拥有针对虚拟化的特性，如硬件增强虚拟化，或者是内存分页技术(著名的EPT影子页表)。这些特性对于在云中运行的虚拟机来说，有着非常关键的影响。</para>
     <para>考虑到云中计算需求的资源节点也是很重要的，资源节点即非hypervisor节点，在云中提供下列服务：</para>
       <itemizedlist>
@@ -225,9 +213,8 @@ format="SVG" scale="60"/>
             <para>裸金属</para>
         </listitem>
     </itemizedlist>
-    <para>A complete list of supported hypervisors and their
-        capabilities can be found at
-        <link xlink:href="https://wiki.openstack.org/wiki/HypervisorSupportMatrix">OpenStack Hypervisor Support Matrix</link>.
+    <para>
+ 支持hypervisor和它们的兼容性的完整列表可以从<link xlink:href="https://wiki.openstack.org/wiki/HypervisorSupportMatrix">https://wiki.openstack.org/wiki/HypervisorSupportMatrix</link>页面找到。
     </para>
     <para>通用型云须确保使用的hypervisor可以支持多数通用目的的用例，例如KVM或Xen。更多特定的hypervisor需要根据特定的功能和支持特性需求来做出选择。在一些情况下，也许是授权所需，需要运行的软件必须是在认证的hpervisor中，比如来自VMware，微软和思杰的产品。</para>
     <para>通过OpenStack云平台提供的特性决定了选择最佳的hyperviosr。举个例子，要使通用型云主要支持基于微软的迁移，或工作人员&gt;所管理的是需要特定技能的去管理hypervisor或操作系统，Hyper-V也许是最好的选择。即使是决定了使用Hyper-V，这也并不意味着不可以去管理相关的操作系统，要记得OpenStack是支持多种hypervisor的。在设计通用型用时需要考虑到不同的hypervisor有他们特定的硬件需&gt;求。例如欲整合VMware的特性：活迁移，那么就需要安装安装vMotion,给ESXi hypervisor所使用的VCenter/vSphere，这即是增加的基础设施需求。</para>
@@ -284,23 +271,10 @@ format="SVG" scale="60"/>
 
     <section xml:id="network-performance-tech-considerations">
       <title>网络性能</title>
-    <para>In a general purpose OpenStack cloud, the requirements of
-        the network help determine performance capabilities. For
-        example, small deployments may employ 1 Gigabit Ethernet (GbE)
-        networking, whereas larger installations serving multiple
-        departments or many users would be better architected with
-        10 GbE networking. The performance of the running instances will
-        be limited by these speeds. It is possible to design OpenStack
-        environments that run a mix of networking capabilities. By
-        utilizing the different interface speeds, the users of the
-        OpenStack environment can choose networks that are fit for
-        their purpose.</para>
-    <para>For example, web application instances may run
-        on a public network presented through OpenStack Networking
-        that has 1 GbE capability, whereas the back-end database uses
-        an OpenStack Networking network that has 10 GbE capability to
-        replicate its data or, in some cases, the design may
-        incorporate link aggregation for greater throughput.</para>
+    <para>通用型OpenStack云，网络的需求其实帮助决定了其本身的性能能力。例如，小的部署环境使用千兆以太网(GbE)，大型的部署环境或者许多用户就要求使用10 GbE。运行着的实例性能收到了它们的速度限制。设计OpenStack环境，让它拥有可以运行混合网络的能力是可能的。通过利用不同速度的网卡，OpenStack环境的用户可以选择不同的网络去满足不同的目的。
+        </para>
+    <para> 例如，web应用的实例在公网上运行的是OpenStack网络中的1 GbE，但是其后端的数据库使用的是OpenStack网络的10 GbE以复制数据，在某些情况下，为了更大的吞吐量使用聚合链接这\n样的设计。
+    </para>
     <para>网络的性能可以考虑有硬件的负载均衡来帮助实现，为云抛出的API提供前端的服务。硬件负载均衡通常也提供SSL终端，如果用户的环境有需求的话。当实现SSL减负时，理解SSL减负的能力来选择硬件，这点很重要。</para>
     </section>
 
@@ -322,15 +296,11 @@ format="SVG" scale="60"/>
     <para>OpenStack其本身的部署是期望高可用的，实现此需要至少两台服务器来完成。他们可以运行所有的服务，由消息队列服务连接起来，消息队列服务如RabbitMQ或QPID，还需要部署一个合适的数据库服务如MySQL或MariaDB。在云中所有的服务都是可横向扩展的，其实后端的服务同样需要扩展。检测和报告在服务器上的使用和采集，以及负载测试，都可以帮助作出横向扩展的决定。</para>
     <para>当决定网络功能的时候务必小心谨慎。当前的OpenStack不仅支持遗留网络(nova-network)系统还支持新的，可扩展的OpenStack网络(neutron)。二者在提供高可用访问时有各自的优缺点。遗留网络提供的网络服务的代码是由OpenStack计算来维护的，它可提供移除来自路由的单点故障特性，但是此特性在当前的Openstack网络中不被支持。遗留网络的多主机功能受限于仅在运行实例的主机，一旦失效，此实例将无法被访问。</para>
     <para>另一方面，当使用OpenStack网络时，OpenStack控制器服务器或者是分离的网络主机掌控路由。对于部署来说，需要在网络中满足此特性，有可能使用第三方软件来协助维护高可用的3层路由。这么做允许通常的应用程序接口来控制网络硬件，或者基于安全的行为提供复杂多层的web应用。从OpenStack网络中完全移除路由是可以的，取而代之的是硬件的路由能力。在此情况下，交换基础设施必须支持3层路由。</para>
-     <para>OpenStack Networking and legacy networking
-       both have their advantages and
-       disadvantages. They are both valid and supported options that
-       fit different network deployment models described in the
-       <citetitle><link xlink:href="http://docs.openstack.org/openstack-ops/content/network_design.html#network_deployment_options">OpenStack Operations Guide</link></citetitle>.</para>
+     <para>OpenStack网络和遗留网络各有各的优点和缺点。它们有效的和支持的属性适合不同的网络部署模式，详细描述见<citetitle><link xlink:href="http://docs.openstack.org/openstack-ops/content/network_design.html#network_deployment_options">OpenStack 运维指南</link></citetitle>。
+    </para>
     <para>确保用户的部署有足够的后备能力。举例来说，部署是拥有两台基础设施的控制器节点，此设计须包括控制器可用。一旦丢失单个控制器这种事件发生，云服务将会停止对外服务。当有高可用需求的设计时，解决此需求的办法就是准备冗余的、高可用的控制器节点。</para>
     <para>应用程序的设计也必须记入到云基础设施的能力之中。如果计算主机不能提供无缝的活迁移功能，就必须预料到一旦计算节点失效，运行在其上的实例，以及其中的数据，都不可访问。反过来讲，提供给用户的是具有高级别的运行时间保证的实例，基础设施必须被部署为没有任何的单点故障，即使是某计算主机消失，也得马上有其他主机顶上。这需要构建在企业级存储的共享文件系统之上，或者是OpenStack块存储，以满足保证级别和对应的服务匹配。</para>
-    <para>For more information on high availability in OpenStack, see the <link xlink:href="http://docs.openstack.org/high-availability-guide"><citetitle>OpenStack
-      High Availability Guide</citetitle></link>.
+    <para>关于OpenStack高可用更多信息，请阅读 <link xlink:href="http://docs.openstack.org/high-availability-guide"><citetitle>OpenStack 高可用指南</citetitle></link>.
         </para>
     </section>
 
@@ -361,8 +331,7 @@ format="SVG" scale="60"/>
     <para>无论是公有云还是私有云，管理用户的系统必须认真的考虑。身份认证服务允许LDAP作为认证流程的一部分。Including such systems in an OpenStack deployment may ease user management if integrating into existing systems.</para>
     <para>理解用户的认证需要一些敏感信息如用户名、密码和认证令牌是非常重要的。基于这个原因，强烈建议将认证的API服务隐藏在基于硬件的SSL终端之后。</para>
     <para>
-      For more information OpenStack Security, see the <link xlink:href="http://docs.openstack.org/security-guide/"><citetitle>OpenStack
-      Security Guide</citetitle></link>
+更多关于OpenStack安全的信息，请访问<link xlink:href="http://docs.openstack.org/security-guide/"><citetitle>OpenStack >安全指南</citetitle></link>。
     </para>
   </section>
 </section>

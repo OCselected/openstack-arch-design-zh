@@ -154,17 +154,10 @@ format="SVG" scale="60"/>
       <varlistentry>
         <term>延伸性</term>
         <listitem>
-            <para>Expandability is a major architecture factor for
-                storage solutions with general purpose OpenStack
-                cloud. A storage solution that expands
-                to 50 PB is considered more expandable than a
-                solution that only scales to 10 PB. This metric is
-                related to, but different, from scalability, which is a
-                measure of the solution's performance as it expands. For example, the storage
-                architecture for a cloud that is intended for a development
-                platform may not have the same expandability and scalability
-                requirements as a cloud that is intended for a
-                commercial product.</para>
+          <para>
+对于通用型OpenStack云存储解决方案来说，可扩展性也是主要的架构因素。一个存储解决方案能够扩展到50PB,而另外一个只能扩
+到10PB,前者明显比后者的扩展性强好多倍。此扩展与scalability有关，但是不一样，scalability更加倾向于解决方案的性能衡量。举例>，一个存储架构为专注于开发者平台的云和商业产品云在expandability和scalability上就不可能一样。
+          </para>
         </listitem>
       </varlistentry>
     </variablelist>
@@ -221,13 +214,8 @@ format="SVG" scale="60"/>
     </section>
     <section xml:id="selecting-networking-hardware">
         <title>选择网络硬件</title>
-    <para>Selecting network architecture determines which network
-        hardware will be used. Networking software is determined by
-        the selected networking hardware.
-        For example, selecting networking hardware that only supports
-        Gigabit Ethernet (GbE) will impact the overall design. Similarly,
-        deciding to use 10 Gigabit Ethernet (10 GbE) will have a
-        number of impacts on various areas of the overall design.</para>
+    <para>选择网络架构决定了那些网络硬件将会被使用。而网络的软件是由选择好的网络硬件所决定的。举例，选择了网络硬件仅支持千兆以太网 (GbE)会影响到整个设计。同样地，决定使用 万兆以太网(10GbE)仅会影响到整个设计的局部一些区域。
+    </para>
     <para>有许多设计上的细节需要被考虑。选择好了网络硬件(或网络软件)会影响到管理工具的使用。除非出现下面情况：越来越多的用户倾向于使用&quot;开放“的网络软件来支持广泛的网络硬件，意味着某些情况下网络硬件和软件之间的关系是不是被严格定义。关于此类型的软件Cumulus Linux即是个例子，Cumulus Linux具有运行多数交换机供应商的硬件的能力。</para>
     <para>选择联网硬件时需要考虑的一些关键因素包括：</para>
     <variablelist>
@@ -247,9 +235,8 @@ format="SVG" scale="60"/>
         <term>端口速度</term>
         <listitem>
             <para>
-              The networking hardware must support the proposed
-              network speed, for example: 1 GbE, 10 GbE, or
-              40 GbE (or even 100 GbE).</para>
+网络硬件必须支持常见的网络速度，例如：1GbE、10GbE 或者 40GbE(甚至是 100GbE)。
+              </para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -377,27 +364,15 @@ format="SVG" scale="60"/>
           <para>路由守护进程</para>
         </listitem>
       </itemizedlist>
-    <para>Some of these software packages are described
-        in more detail in the <citetitle>OpenStack High Availability
-        Guide</citetitle> (refer to the <link xlink:href="http://docs.openstack.org/high-availability-guide/content/ch-network.html">Network
-        controller cluster stack chapter</link> of the OpenStack High
-        Availability Guide).</para>
+    <para>这些软件包更加详细的描述可参考 <citetitle>OpenStack高可用指南</citetitle> 中的(<link xlink:href="http://docs.openstack.org/high-availability-guide/content/ch-network.html">Network 控制器集群</link> 章节)。
+    </para>
     <para>对于通用型OpenStack云来说，基础设施组件需要高可用。如果设计时没有包括硬件的负载均衡器，那么就得包含网络软件包如HAProxy。</para>
     </section>
     <section xml:id="management-software">
       <title>管理软件</title>
     <para>选择支撑软件解决方案影响着整个OpenStack云设计过程。这些软件可提供诸如集群、日志、监控以及告警。</para>
-    <para>Inclusion of clustering software, such as Corosync or
-        Pacemaker, is determined primarily by the availability
-        requirements. The impact of including (or not
-        including) these software packages is primarily determined by
-        the availability of the cloud infrastructure and the
-        complexity of supporting the configuration after it is
-        deployed. The <link xlink:href="http://docs.openstack.org/high-availability-guide/"><citetitle>OpenStack High Availability Guide</citetitle></link>
-        provides more
-        details on the installation and configuration of Corosync and
-        Pacemaker, should these packages need to be included in the
-        design.</para>
+    <para>在集群软件中如 Corosync和Pacemaker在可用性需求中占主流。包含(不包含)这些软件包是主要决定的，要使云基础设施具有高可用的话，当然在部署之后会带来复杂的配置。<link xlink:href="http://docs.openstack.org/high-availability-guide/"><citetitle>OpenStack 高可用指南</citetitle></link> 提供了更加详细的安装和配置Corosync和Pacemaker，所以在设计中这些软件包需要被包含。
+        </para>
     <para>对日志、监测以及报警的需求是由运维考虑决定的。它们的每个子类别都包含了大量的属性。举例，在日志子类别中，某些情况考虑使用Logstash,Splunk，instanceware Log Insight等，或者其他的日志聚合-合并工具。日志需要存放在中心地带，使分析数据变得更为简单。日志数据分析引擎亦得提供自动化和问题通知，通过提供一致的预警和自动修复某些常见的已知问题。</para>
     <para>如果这些软件包都需要的话，设计必须计算额外的资源使用率(CPU，内存，存储以及网络带宽)。其他一些潜在影响设计的有：</para>
     <itemizedlist>

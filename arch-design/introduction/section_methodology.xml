@@ -93,15 +93,7 @@ format="SVG" scale="60"/>
                 <term>依赖</term>
                 <listitem>
                   <para>
-                    Applications that depend on specific
-                    hardware—such as a particular chip set or an
-                    external device such as a fingerprint
-                    reader—might not be a good fit for the
-                    cloud, unless those dependencies are specifically
-                    addressed. Similarly, if an application depends on
-                    an operating system or set of libraries that
-                    cannot be used in the cloud, or cannot be
-                    virtualized, that is a problem.
+                   如果应用程序依赖特别的硬件，比如特别的芯片或者是类似指纹识别等外设，是不适合于云计算的。除非使用特别的方式来实现。同样的，如果应用依赖于操作系统或一组程序库不能用于云环境，或者无法在虚拟化环境中运行，这就真的成了问题了。
                   </para>
                 </listitem>
               </varlistentry>

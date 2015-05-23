@@ -66,9 +66,7 @@
     <para>计算主机可以按需求来进行相应的组件升级，这就是传说中的纵向扩展。升级更多核的CPU,增加整台服务器的内存，要视运行的应用是需要CPU更紧张，还是需要内存更急切，以及需要多少。</para>
     <para>磁盘容量不足会给整个性能带来负面影响，会波及到CPU和内存的使用。这取决于后端架构的OpenStack块存储层，可以是为企业级存储系统增加磁盘，也可以是安装新的块存储节点，也可以是为计算主机直接挂接存储，也可以为实例从共享存储中添加临时空间。都有可能。</para>
     <para>
-      For a deeper discussion on many of these topics, refer to the
-      <link xlink:href="http://docs.openstack.org/ops"><citetitle>OpenStack
-      Operations Guide</citetitle></link>.
+有关这些题目的更加深入的讨论，请参考 <link xlink:href="http://docs.openstack.org/ops"><citetitle>OpenStack 运维实战</citetitle></link>。
     </para>
     </section>
 </section>
