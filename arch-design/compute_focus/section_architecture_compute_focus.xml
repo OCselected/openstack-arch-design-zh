@@ -281,13 +281,7 @@
     <para>话说OpenStack是一个为构建云服务平台的软件项目，完全公平的收集各类软件，所以有大家都在用的其它软件包，可以在给定的OpenStack设计中按需添加。</para>
   <section xml:id="networking-software-arch">
     <title>联网软件</title>
-    <para>OpenStack Networking provides a wide variety of networking services
-      for instances. There are many additional networking software packages
-      that might be useful to manage the OpenStack components themselves.
-      Some examples include software to provide load balancing,
-      network redundancy protocols, and routing daemons. Some of these
-      software packages are described in more detail in the
-      <citetitle>OpenStack High Availability Guide</citetitle> (<link xlink:href="http://docs.openstack.org/high-availability-guide/content">http://docs.openstack.org/high-availability-guide/content</link>).
+    <para>OpenStack网络为实例提供各种各样的网络服务。另外有许多网络软件包用于管理OpenStack组件自身。这里举一些例子，可提供负载均衡，网络冗余协议或路由守护进程，关于这些软件包更加详细的描述细节都在<citetitle>OpenStack 高可用指南</citetitle> (<link xlink:href="http://docs.openstack.org/high-availability-guide/content">http://docs.openstack.org/high-availability-guide/content</link>)中找到。
     </para>
     <para>对于计算型OpenStack云来说，OpenStack基础设施组件需要高可用。如果在设计中没有考虑硬件的负载均衡，那么就得考虑网络软件包，如HAProxy。</para>
   </section>

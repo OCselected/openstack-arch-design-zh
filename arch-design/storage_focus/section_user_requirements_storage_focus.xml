@@ -33,11 +33,8 @@
       <title>法律需求</title>
     <para>很多辖区对于云环境中的数据的保管及管理都有相关的法律上或者监管上的要求。这些规章的常见领域包括：</para>
       <note>
-        <para>Examples of such legal frameworks include the <link xlink:href="http://ec.europa.eu/justice/data-protection/">data
-          protection framework</link> of the European Union and the
-          requirements of the <link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules/">Financial
-          Industry Regulatory Authority</link> in the United
-          States. Consult a local regulatory body for more information.
+        <para>
+     相关的法律制度包括了有欧盟的数据保护框架(<link xlink:href="http://ec.europa.eu/justice/data-protection/">http://ec.europa.eu/justice/data-protection/</link>)以及美国金融业监督管理局的要求(<link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules">http://www.finra.org/Industry/Regulation/FINRARules</link>)。请咨询当地的监管机构以了解更多相关信息。
         </para>
       </note>
     <variablelist>

@@ -194,25 +194,16 @@ format="SVG" scale="60"/>
       <varlistentry>
         <term>端口密度</term>
         <listitem>
-            <para>The physical space required to provide the
-                requisite port count affects the network design.
-                A switch that provides 48 10 GbE
-                ports in 1U has a much higher port density than a
-                switch that provides 24 10 GbE ports in 2U. On a
-                general scale, a higher port density leaves more rack
-                space for compute or storage components which is
-                preferred. It is also important to consider fault
-                domains and power density. Finally, higher density
-                switches are more expensive, therefore it is important
-                not to over design the network.</para>
+            <para>
+            网络的设计会受到物理空间的影响，需要提供足够的端口数。一个占用1U机柜空间的可提供48个 10GbE端口的交换机，显而易见的要比占用2U机柜空间的仅提供24个 10GbE端口的交换机有着更高的端口密度。高端口密度是首先选择的，因为其可以为计算和存储省下机柜空间。这也会引起人们的思考，容错的情况呢？电力密度？高密度的交换机更加的昂贵，也应该被考虑使用，但是没有必要覆盖设计中所有的网络，要视实际情况而定。
+            </para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>端口速度</term>
         <listitem>
-            <para>The networking hardware must support the
-                proposed network speed, for example: 1 GbE, 10 GbE, or
-                40 GbE (or even 100 GbE).</para>
+            <para>网络硬件必须支持建议的网速： 1 GbE, 10 GbE, 或 40 GbE (甚至是 100 GbE)。
+            </para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -344,15 +335,8 @@ format="SVG" scale="60"/>
 
     <section xml:id="networking-software-arch-storage">
       <title>联网软件</title>
-    <para>OpenStack Networking (neutron) provides a wide variety of networking
-        services for instances. There are many additional networking
-        software packages that may be useful to manage the OpenStack
-        components themselves. Some examples include HAProxy,
-        keepalived, and various routing daemons (like Quagga). The
-        <citetitle>OpenStack High Availability Guide</citetitle> describes
-        some of these software packages, HAProxy in particular. See the <link xlink:href="http://docs.openstack.org/high-availability-guide/content/ch-network.html">Network
-        controller cluster stack chapter</link> of the OpenStack High
-        Availability Guide.</para>
+    <para>OpenStack网络 (neutron)为实例提供各种各样的网络服务。另外有许多网络软件包用于管理OpenStack组件自身。这里举一些例子，可提供负载均衡，网络冗余协议或路由守护进程(如 Quagga)，关于这些软件包更加详细的描述细节都在<citetitle>OpenStack 高可用指南</citetitle>中找到 <link xlink:href="http://docs.openstack.org/high-availability-guide/content/ch-network.html">网络控制器集群</link>。
+    </para>
     </section>
 
     <section xml:id="management-software-arch-storage">

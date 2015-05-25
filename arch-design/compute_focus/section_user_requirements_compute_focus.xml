@@ -58,19 +58,14 @@ format="SVG" scale="60"/>
             <para>管理位于外国或者其它辖区的数据存储问题的数据独立性政策。</para>
         </listitem>
         <listitem>
-            <para>Data compliance—certain types of information needs
-                to reside in certain locations due to regular issues—and
-                more important cannot reside in other locations
-                for the same reason.</para>
+            <para>数据合规性—
+              管理由于监管上的问题因而特定类型的数据必须存放在特定的地点或者更重要的，由于相同的原因，不能够存放在其它地点的数据管理政策。
+                </para>
         </listitem>
     </itemizedlist>
     <para>
-      Examples of such legal frameworks include the <link xlink:href="http://ec.europa.eu/justice/data-protection/">data
-      protection framework</link> of the European Union and the
-      requirements of the <link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules/">Financial
-      Industry Regulatory Authority</link> in the United
-      States. Consult a local regulatory body for more
-      information.</para></section>
+    相关的法律制度包括了有欧盟的<link xlink:href="http://ec.europa.eu/justice/data-protection/">数据保护框架</link>以及美国<link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules">金融业监督管理局</link>的要求。请咨询当地的监管机构以了解更多相关信息。
+    </para></section>
     <section xml:id="technical-considerations-compute-focus-user">
       <title>技术因素</title>
     <para>下列一些技术需求需要被设计架构时纳入。</para>

@@ -201,29 +201,15 @@
       <title>冗余网络：柜顶交换机高可用风险分析</title>
     <para>联网的一个技术性考虑因素是数据中心的交换设备必须有备用的交换机以应对硬件故障的方案。</para>
     <para>
-      Research into the mean time between failures (MTBF) on switches
-      is between 100,000 and 200,000 hours. This number is dependent
-      on the ambient temperature of the switch in the data
-      center. When properly cooled and maintained, this translates to
-      between 11 and 22 years before failure. Even in the worst case
-      of poor ventilation and high ambient temperatures in the data
-      center, the MTBF is still 2-3 years. This is based on published
-      research found at <link xlink:href="http://www.garrettcom.com/techsupport/papers/ethernet_switch_reliability.pdf">http://www.garrettcom.com/techsupport/papers/ethernet_switch_reliability.pdf</link>
-      and <link xlink:href="http://www.n-tron.com/pdf/network_availability.pdf">http://www.n-tron.com/pdf/network_availability.pdf</link>.
+    关于交换机发生硬件故障的平均间隔时间(MTBF)的研究表明，此平均时间大概介于100,000 至 200,000 个小时之间。该数字还与>交换机所在的数据中心的环境温度相关。当采用适当的制冷及维护时，有 11 至 22 年的时间交换机才可能发生硬件故障。即使在最差情况
+的通风条件及数据中心的高环境温度下，该发生故障的平均间隔时间仍然为 2 到 3 年。以上内容基于公开发表的研究 <link xlink:href="http://www.garrettcom.com/techsupport/papers/ethernet_switch_reliability.pdf">http://www.garrettcom.com/techsupport/papers/ethernet_switch_reliability.pdf</link> 和 <link xlink:href="http://www.n-tron.com/pdf/network_availability.pdf">http://www.n-tron.com/pdf/network_availability.pdf</link>。
     </para>
     <para>大多数情况下，使用单独一台交换机的同时预留几台空闲的交换机以便替换坏了的设备，要比在整个数据中心中部署冗余的交换机的方式更加经济。相关的应用也应该能够在不影响正常运营的情况下，容忍机柜级别的故障，这是由于网络及计算资源是比较容易供应的也相对充足。</para></section>
     <section xml:id="preparing-for-future-ipv6-support">
       <title>为将来做准备：IPv6 支持</title>
     <para>
-      One of the most important networking topics today is the
-      impending exhaustion of IPv4 addresses. In early 2014, ICANN
-      announced that they started allocating the final IPv4 address
-      blocks to the Regional Internet Registries (<link xlink:href="http://www.internetsociety.org/deploy360/blog/2014/05/goodbye-ipv4-iana-starts-allocating-final-address-blocks/">http://www.internetsociety.org/deploy360/blog/2014/05/goodbye-ipv4-iana-starts-allocating-final-address-blocks/</link>).
-      This means the IPv4 address space is close to being fully
-      allocated. As a result, it will soon become difficult to
-      allocate more IPv4 addresses to an application that has
-      experienced growth, or is expected to scale out, due to the lack
-      of unallocated IPv4 address blocks.</para>
+      目前，一个网络方面的重要话题是 IPv4 地址即将用尽。2014 年初，ICANN 宣布他们已经开始分配最后的 IPv4 地址段给区域性>因特网注册(<link xlink:href="http://www.internetsociety.org/deploy360/blog/2014/05/goodbye-ipv4-iana-starts-allocating-final-address-blocks/">http://www.internetsociety.org/deploy360/blog/2014/05/goodbye-ipv4-iana-starts-allocating-final-address-blocks/</link>)。这意味着 IPv4 的地址空间已经接近被完全分配了。其结果是，由于未分配的 IPv4 地址段的匮乏，很快我们随着应用成>熟度提高或者由于扩展目的要为应用分配更多的 IPv4 地址就会变得困难。
+    </para>
     <para>对于关注网络方面的应用来说，未来将是 IPv6 协议的天下。IPv6 显著地扩大了地址空间，解决了 IPv4 协议长久以来存在的问题，并且将会成为未来面向网络应用的重要乃至本质部分。</para>
     <para>OpenStack 联网方式支持 IPv6，进行配置之后就可以享受到该特性带来的好处。要启用该特性，只需要简单地在网络模块中创建一个 IPv6 子网，并且在创建安全组时使用 IPv6 前缀即可。</para></section>
     <section xml:id="asymmetric-links">

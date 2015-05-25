@@ -70,10 +70,7 @@
         </imageobject>
     </mediaobject>
     <para>
-        Additional monitoring tools in use include <link xlink:href="http://flume.apache.org/">Flume</link>, <link xlink:href="http://www.elasticsearch.org/">Elastic
-        Search</link>, <link xlink:href="http://www.elasticsearch.org/overview/kibana/">Kibana</link>,
-        and the CERN developed <link xlink:href="http://lemon.web.cern.ch/lemon/index.shtml">Lemon</link>
-        project.
+另外使用的监测工具有<link xlink:href="http://flume.apache.org/">Flume</link>, <link xlink:href="http://www.elasticsearch.org/">Elastic Search</link>, <link xlink:href="http://www.elasticsearch.org/overview/kibana/">Kibana</link>, 以及CERN开发的项目<link xlink:href="http://lemon.web.cern.ch/lemon/index.shtml">Lemon</link>。
     </para>
     </section>
     <section xml:id="references-cern-resources"><title>参考</title>

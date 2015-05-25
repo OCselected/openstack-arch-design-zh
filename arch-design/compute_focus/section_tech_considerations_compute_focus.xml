@@ -45,20 +45,13 @@ format="SVG" scale="60"/>
             <para>storage required = 50 GB × 1600</para>
         </listitem>
     </itemizedlist>
-    <para>On the surface, the equations reveal the need for 200
-        physical cores and 80 TB of storage for
-        <filename>/var/lib/nova/instances/</filename>. However,
-        it is also important to
-        look at patterns of usage to estimate the load that the API
-        services, database servers, and queue servers are likely to
-        encounter.</para>
+    <para>表面上，公式的计算结果是需要200个物理核和80TB的存储，这些可在路径<filename>/var/lib/nova/instances/</filename>中找到。尽管如此，另外还得重点看着其他负载的使用量，诸如API服务，数据库服务，队列服务等，它们同样需要被计入总体。
+        </para>
     <para>举例，想一下下面二者之间的区别，一个是支持web托管平台的管理，另外一个是运行集成测试的，会在每次提交代码就会去创建一个实例。前者创建实例的大量工作仅在隔几个月才会发生，而后者会将大的负载不断的给云控制器。实例的生命周期必须被考虑，也就是说有充足的理由不要给云控制器那么大的工作负载。</para>
     <para>除了创建和销毁实例之外，用户还需要考虑什么时候访问服务，特别是访问nova-api和其关联的数据库。列出实例亦需要处理大量的信息，以及有那些用户在指定的频率下运行此操作，一个云用户大量的用户会显著的增加负载。有时候，这些都在无意之下就发生了。例如，OpenStaclk GUI界面中的实例列表会在每30秒刷新一次，所以浏览器如果一直保持打开状态，就会产生意料之外的负载。</para>
     <para>考虑这些因素可以帮助决定云控制器需要多少个核。一台拥有8CPU核和8GB内存的服务器，满足于上述的计算节点就绰绰有余。</para>
     <para>关键的硬件规格也是确保用户实例的性能的指标。请确保考虑好预算和性能需求，包括存储性能 (spindles/core), 内存可用性 (RAM/core), 网络带宽 (Gbps/core), 以及整个的CPU性能 (CPU/core).</para>
-    <para>The cloud resource calculator is a useful tool in examining
-        the impacts of different hardware and instance load outs. It
-        is available at: <link xlink:href="https://github.com/noslzzp/cloud-resource-calculator/blob/master/cloud-resource-calculator.ods">https://github.com/noslzzp/cloud-resource-calculator/blob/master/cloud-resource-calculator.ods</link>
+    <para>"云资源计算器是一个很有用的工具，用来考核不同硬件和实例负载的结果。可从下面链接获取：<link xlink:href="https://github.com/noslzzp/cloud-resource-calculator/blob/master/cloud-resource-calculator.ods">https://github.com/noslzzp/cloud-resource-calculator/blob/master/cloud-resource-calculator.ods</link>
     </para>
     <section xml:id="expansion-planning-compute-focus">
         <title>扩展计划</title>
@@ -66,7 +59,7 @@ format="SVG" scale="60"/>
     <para>扩展规划是一个颇为微妙的平衡行为。规划过于保守会导致想不到的超额认购，还会导致用户很不满。规划过去激进又会导致没有有效利用云，以及资金花在了一个未被有效使用的运营基础设施上。</para>
     <para>关键是认真的监测云运行时的使用量的高峰和低谷。目的是测量那些服务可以被无障碍的交付，并非什么平均速度或云的容量。基于此信息来模拟容量结果，确保用户更加准确的决定当前和未来的云的容量。</para></section>
     <section xml:id="cpu-and-ram-compute-focus"><title>CPU 和内存</title>
-    <para>(Adapted from:
+    <para>(节选自:
         <link xlink:href="http://docs.openstack.org/openstack-ops/content/compute_nodes.html#cpu_choice">http://docs.openstack.org/openstack-ops/content/compute_nodes.html#cpu_choice</link>)</para>
     <para>在当前的一代CPU,可以达到12个核，如果是英特尔CPU支持超线程的话，核还翻倍到24个。如果购买的服务器支持多CPU的话，核的数量则是再乘以CPU的个数。超线程技术是英特尔模拟多线程的实现，用于改善CPU的并行处理能力。打开超线程可以改善多线程程序的性能。</para>
     <para>用户是否打开CPU的超线程取决于用户实际情况。举例来说，关闭超线程有利于密集型的计算环境。分别在打开和关闭超线程的情况下运行本地负载，对之做性能测试，可以有助于对任何的情况作出更加恰当的决定。</para>
@@ -115,7 +108,7 @@ format="SVG" scale="60"/>
     </mediaobject></para>
     <para>这些默认的类型非常适合于典型的为商业服务器硬件负载。欲最大化的利用，就有必要定制类型或者干脆建议一个新的，为可用的硬件更好的调整实例的大小。</para>
     <para>负载的特点常会影响到硬件的选择和实例类型的配置，尤其是他们有不同的CPU、内存、硬盘的比例需求。</para>
-    <para>For more information on Flavors refer to:
+    <para>对于Flavor的更多信息请参考：
         <link xlink:href="http://docs.openstack.org/openstack-ops/content/flavors.html">http://docs.openstack.org/openstack-ops/content/flavors.html</link></para>
     </section>
     <section xml:id="performance-compute-focus"><title>性能</title>
@@ -149,8 +142,8 @@ format="SVG" scale="60"/>
     <para>在一个企业部署OpenStack为私有云，通常是安置在防火墙之后，和原来的系统一并认为是可信任网络。云的用户即是原来的员工，由公司本来的安全需求所约束。这导致推动大部分的安全域趋向信任模式。但是，当部署OpenStack为面向公用的角色时，不要心存侥幸，它被攻击的几率大大增加。例如，应用程序接口端点，以及其背后的软件，很容易成为一些坏人下手的地方，获得未经授权的访问服务或者阻止其他人访问正常的服务，这可能会导致丢失数据、程序失效，乃至名声。这些服务必须被保护，通过审计以及适当的过滤来实现。</para>
     <para>无论是公有云还是私有云，管理用户的系统必须认真的考虑。身份认证服务允许LDAP作为认证流程的一部分。包括将LDAP在部署时整合用户原有系统的话，可减少管理用户的压力。</para>
     <para>理解用户的认证需要一些敏感信息如用户名、密码和认证令牌是非常重要的。基于这个原因，强烈建议将认证的API服务隐藏在基&gt;于硬件的SSL终端之后。</para>
-    <para>More information on OpenStack Security can be found
-        at <link xlink:href="http://docs.openstack.org/security-guide/">http://docs.openstack.org/security-guide/</link></para>
+    <para>更多关于OpenStack安全的信息，请参考 <link xlink:href="http://docs.openstack.org/security-guide/">OpenStack安全指南</link>
+    </para>
     </section>
     <section xml:id="openstack-components-compute-focus">
       <title>OpenStack 组件</title>
@@ -179,7 +172,7 @@ format="SVG" scale="60"/>
         </listitem>
     </itemizedlist>
     <para>使用Orchestration支持自动扩展实例离不开Telemetry和预警系统。用户不部署Telemetry模块就无法使用Orchestration模块，也许选择使用其他的解决方案来满足计费和监测的需求。</para>
-    <para>See also:
+    <para>请参考:
         <link xlink:href="http://docs.openstack.org/openstack-ops/content/logging_monitoring.html">http://docs.openstack.org/openstack-ops/content/logging_monitoring.html</link></para>
     <itemizedlist>
         <listitem>

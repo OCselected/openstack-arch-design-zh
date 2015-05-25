@@ -1,9 +1,8 @@
 <?xml version="1.0" ?><section version="5.0" xml:id="technical-considerations-storage-focus" xml:lang="zh" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
     <?dbhtml stop-chunking?>
     <title>技术因素</title>
-    <para>Some of the key technical considerations that are critical
-        to a storage focused OpenStack design architecture
-        include:</para>
+    <para>对存储型的 OpenStack 设计架构来说比较关键的一些技术上的考虑因素包括：
+    </para>
     <variablelist>
       <varlistentry>
         <term>输入-输出需求</term>
@@ -15,16 +14,8 @@
       <varlistentry>
         <term>规模</term>
         <listitem>
-            <para>Scaling storage solutions in a storage focused
-                OpenStack architecture design is driven by initial
-                requirements, including <glossterm>IOPS</glossterm>,
-                capacity, and bandwidth, and future needs. Planning
-                capacity based on projected needs over the
-                course of a budget cycle is important for a design.
-                The architecture should balance cost
-                and capacity, while also allowing flexibility to
-                implement new technologies and methods as
-                they become available.</para>
+            <para>在一个存储型的 OpenStack 架构设计当中，存储解决方案的规模，是由初始的需求，包括 <glossterm>IOPS</glossterm>、容量>以及带宽等，以及未来的需要所决定的。对于一个设计来说，在整个预算周期之中，基于项目需要而计划容量，是很重要的。理想情况下，所选择的架构必须在成本以及容量之间做出平衡，同时又必须提供足够的灵活性，以便在新技术和方法可用时实现它们。
+            </para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -42,15 +33,8 @@
       <varlistentry>
         <term>存储管理</term>
         <listitem>
-            <para>You must address a range of storage
-                management-related considerations in
-                the design of a storage focused OpenStack cloud. These
-                considerations include, but are not limited to, backup
-                strategy (and restore strategy, since a backup that
-                can not be restored is useless), data
-                valuation-hierarchical storage management, retention
-                strategy, data placement, and workflow
-                automation.</para>
+            <para>在存储型 OpenStack 云的设计中，必须处理一系列和存储管理相关的考虑因素。这些因素包括但不限于，备份策略(以及恢复策略，因为不能恢复的备份没什么用处)、数据评估等级存储管理、保管策略、数据存放的位置以及工作流自动化。
+            </para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -61,10 +45,7 @@
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>When building a storage focused OpenStack architecture,
-        strive to build a flexible design based on an
-        industry standard core. One way of accomplishing this might be
-        through the use of different back ends serving different use
-        cases.</para>
+    <para>当尝试构建一个基于行业标准核心的灵活设计时，实现这个的一个办法，可能是通过使用不同的后端服务于不同的使用场景。
+    </para>
 <!--I feel like this last para just 'ends'. Is there more information to be put here? A.S -->
 </section>
