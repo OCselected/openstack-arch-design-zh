@@ -10,23 +10,9 @@
     <section xml:id="image-portability">
       <title>镜像移植</title>
     <para>当前运行实例的云的主要负载均使用hypervisor技术实现，如KVM,Xen,或ESXi。挑战来自于这些hypervisor使用的镜像格式虽然大部分兼容于彼此，但不是完全兼容。在私有或混合云解决方案中，可强制指定标准使用同一种hypervisor或实例镜像格式，但是这不太现实。特别是如果在架构中存在一个云是公有云时，这就根本不在设计者的控制之内。</para>
-    <para>There are conversion tools such as virt-v2v
-
-        (<link xlink:href="http://libguestfs.org/virt-v2v">http://libguestfs.org/virt-v2v</link>)
-        and virt-edit (<link xlink:href="http://libguestfs.org/virt-edit.1.html">http://libguestfs.org/virt-edit.1.html</link>)
-        that can be used in those scenarios but they are often not
-        suitable beyond very basic cloud instance specifications. An
-        alternative is to build a thin operating system image as the
-        base for new instances. This facilitates rapid creation of
-        cloud instances using cloud orchestration or configuration
-        management tools, driven by the CMP, for more specific
-        templating. Another more expensive option is to use a
-        commercial image migration tool. The issue of image
-        portability is not just for a one time migration. If the
-        intention is to use the multiple cloud for disaster recovery,
-        application diversity or high availability, the images and
-        instances are likely to be moved between the different cloud
-        platforms regularly.</para></section>
+    <para>
+     有一些转换工具比如virt-v2v  (<link xlink:href="http://libguestfs.org/virt-v2v">http://libguestfs.org/virt-v2v</link>) 以及virt-edit (<link xlink:href="http://libguestfs.org/virt-edit.1.html">http://libguestfs.org/virt-edit.1.html</link>) 在某些时候也许可以解决上述场景中的问题，但是不太适合甚至是最基本的云实例。一个替代办法是构建一个最小的操作系统镜像为新实例提供服务。这大大有助于迅速创建云实例，使用云orchestration或由CMP所驱动的配置管理工具，但这需要更多特定的模板。另外一个昂贵的选择是使用商业镜像迁移工具。问题是镜像移植并非说是一次就搞定，如果使用多个云的功能是灾难恢复、应用多样或高可用的话，镜像和实例会经常的在不同的云之间移动，而没一次移动都得进行相应的转换。
+    </para></section>
     <section xml:id="upper-layer-services">
       <title>上层服务</title>
     <para>很多云都在基本的计算、网络、存储组件之上提供补充的服务，这些额外的服务在云平台中通常用于简单的部署以及管理应用。</para>

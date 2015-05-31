@@ -3,10 +3,7 @@
     <title>运营因素</title>
     <para>使用region来部署一个多区域OpenStack云，要求每个部署的服务的服务目录包含per-region元素，不仅仅是认证服务本身。当前现成的OpenStack部署工具中，对于定义多region的支持还很有限。</para>
     <para>部署者务必意识到这点，为他们的站点提供合适的定制服务目录，无论是手动还是定制，都的使用这些部署工具。</para>
-    <para>Note that, as of the Icehouse release, documentation for
-        implementing this feature is in progress. See this bug for
-        more information:
-        <link xlink:href="https://bugs.launchpad.net/openstack-manuals/+bug/1340509">https://bugs.launchpad.net/openstack-manuals/+bug/1340509</link>.
+    <para>注意，自从Icehouse版本发布后，实现此特性的文档一直都在写作中，详情请浏览： <link xlink:href="https://bugs.launchpad.net/openstack-manuals/+bug/1340509">https://bugs.launchpad.net/openstack-manuals/+bug/1340509</link>。
     </para>
     <section xml:id="licensing">
       <title>许可</title>
@@ -25,24 +22,13 @@
     </itemizedlist></section>
     <section xml:id="logging-and-monitoring-multi-site">
       <title>记录日志和监测</title>
-    <para>Logging and monitoring does not significantly differ for a
-        multi-site OpenStack cloud. The same well known tools
-        described in the <link xlink:href="http://docs.openstack.org/openstack-ops/content/logging_monitoring.html">Logging
-        and monitoring chapter</link> of the <citetitle>Operations
-        Guide</citetitle> remain applicable. Logging and monitoring
-        can be provided both on a per-site basis and in a common
-        centralized location.</para>
+    <para>日志和监测对于多区域OpenStack云和其他类型没有任何显著的差别。在<citetitle>OpenStack运维手册</citetitle>中 <link xlink:href="http://docs.openstack.org/openstack-ops/content/logging_monitoring.html">日志和监测</link> 章节中提到的工具依然适用于多区域OpenStack云。日志和监测可同时提供per-site基础和通用的中心位置。
+    </para>
     <para>当尝试将日志和监测系统部署到一个中心位置时，要小心内部网络的负载。</para></section>
     <section xml:id="upgrades-multi-site">
       <title>升级</title>
-    <para>In multi-site OpenStack clouds deployed using regions each
-        site is, effectively, an independent OpenStack installation
-        which is linked to the others by using centralized services
-        such as Identity which are shared between sites. At a high
-        level the recommended order of operations to upgrade an
-        individual OpenStack environment is (see the <link xlink:href="http://docs.openstack.org/openstack-ops/content/ops_upgrades-general-steps.html">Upgrades
-        chapter</link> of the <citetitle>Operations Guide</citetitle>
-        for details):</para>
+    <para>多区域OpenStack云的部署使用region为单位，即每个站点。尽管每个站点都是相对独立安装的，但是如认证服务，是中心化的服>务，所有的站点共享使用，这就又将它们彼此联系起来了。关于升级分离的OpenStack环境，运维的高级别建议参考<citetitle>OpenStack>运维手册</citetitle> 中的(<link xlink:href="http://docs.openstack.org/openstack-ops/content/ops_upgrades-general-steps.html">>升级</link>)章节，获取更多详情。
+    </para>
     <orderedlist>
         <listitem>
             <para>升级OpenStack认证服务 (keystone).</para>
@@ -84,10 +70,8 @@
     <para>为防止系统资源被耗尽而没有任何通知，OpenStack提供给运维人员定义配额的能力。配额用户设置操作限制，当前可在租户(或项目)中实现了强制，而用户级别则没有实现。</para>
     <para>配置被定义为每个region的基本要素之一。运维人员也许希望定义相同的配额，在每个region下的租户，以提供给用户一致的体验，或者创建一个跨region同步分配配额的流程。但是请记住下面一点很重要，配额不会跨region进行限制。</para>
     <para>举例来说，一个云有两个region，如果运维人员给某个用户的配额是在每个region中可以启动25个实例，那么此用户在两个region加起来就可以启动50个实例。但是不可以这么相加，因为配额只在一个region生效。</para>
-    <para>For more information on managing quotas refer to the
-        <link xlink:href="http://docs.openstack.org/openstack-ops/content/projects_users.html">Managing
-        projects and users chapter</link> of the <citetitle>OpenStack
-        Operators Guide</citetitle>.</para>
+    <para>关于管理配额的更多参考信息请阅读  <citetitle>OpenStack 运维手册</citetitle>书中的<link xlink:href="http://docs.openstack.org/openstack-ops/content/projects_users.html">管理项目和用户</link> 章节。
+    </para>
     </section>
     <section xml:id="policy-management-multi-site">
       <title>规则管理</title>

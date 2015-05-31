@@ -61,19 +61,10 @@
     <para>此例子包含了由一个云管理平台连接的两个私有OpenStack云，来源的云，即1号OpenStack云，包括一个控制器和至少一个实例运行MySQL,也包括至少一个块存储卷和一个对象存储卷，以为用户在所有时间的数据都可用，该方法的用于保护每个数据不同的这些来源的细节。</para>
     <para>对象存储是否有复制能力要看对象存储具体的提供商。OpenStack对象存储内嵌此特性，可以创建基于地理位置不同的复制，在每个云中至少要配置一份复制，为了能够在单个磁盘可以工作，云需要被配置使用OpenStack身份且是联合的身份，且和通过Swift代理将多个
 云的OpenStack对象存储彼此通信。</para>
-    <para>For Block Storage, the replication is a little more
-        difficult, and involves tools outside of OpenStack itself. The
-        OpenStack Block Storage volume is not set as the drive itself
-        but as a logical object that points to a physical back end. The
-        disaster recovery is configured for Block Storage for
-        synchronous backup for the highest level of data protection,
-        but asynchronous backup could have been set as an alternative
-        that is not as latency sensitive. For asynchronous backup, the
-        Block Storage API makes it possible to export the data and also the
-        metadata of a particular volume, so that it can be moved and
-        replicated elsewhere. More information can be found here:
-        <link xlink:href="https://blueprints.launchpad.net/cinder/+spec/cinder-backup-volume-metadata-support">
-        https://blueprints.launchpad.net/cinder/+spec/cinder-backup-volume-metadata-support</link>.
+    <para>
+     对于块存储来说，复制多少有一些困难，且OpenStack本身不提供这样的工具。OpenStack块存储卷并非是驱动器本身而是指向后端
+物理设备的一个逻辑对象，为块存储配置灾难恢复就得同步备份，就得是高级别的数据保护，但是异步备份只能是为延迟敏感的替代方案，
+\n对于一步备份来说，块存储API须能够做到导出数据以及特别卷的元数据，所以它可以迁移和复制到任何地方。关于此方面更多信息请参>考 <link xlink:href="https://blueprints.launchpad.net/cinder/+spec/cinder-backup-volume-metadata-support">https://blueprints.launchpad.net/cinder/+spec/cinder-backup-volume-metadata-support</link>。
     </para>
     <para>同步备份，同时在云中创建相同的卷，且选择合适的类型，这样每个云都有相同的后端。这可以通过CMP来完成创建卷，因为CMP知道两个云创建相同的卷。一旦这被配置，一个解决方案包括DRDB就可以被用户同步真实的物理设备。</para>
     <para>数据库组件的备份使用同步备份。MySQL不支持跨地区的复制，所以灾难恢复是由复制文件本身来提供的。在类似MySQL数据库后端使用对象存储是不可能的，所以Swift的复制在这里就没有用武之地。它也不能被决定使用另外其他的地理分层的存储系统来存储数据，诸&gt;如Ceph作为块存储。它必须使用另外层次的保护，其中的一个选择就是使用OpenStack块存储卷来存储数据库，而且和块存储的备份一样来&gt;备份数据库。</para>

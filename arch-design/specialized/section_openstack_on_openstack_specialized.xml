@@ -35,9 +35,7 @@ format="SVG" scale="60"/>
   <section xml:id="possible-solutions-nested-cloud-deployment">
     <title>可能的解决方案：部署</title>
     <para>部署整个 OpenStack 环境是比较麻烦的，不过这个困难可以被轻松瓦解，通过创建一个 Heat 模板来部署整个环境或者使用一个配置管理系统。一旦 Heat 模板创建完成，部署新的 OpenStack 环境就变得非常简单并且可以使用自动化方式完成。</para>
-    <para>The OpenStack-on-OpenStack project (<glossterm>TripleO</glossterm>)
-      addresses this issue—currently, however, the project does
-      not completely cover nested stacks. For more information, see
+    <para>目前，OpenStack-on-OpenStack 项目(<glossterm>TripleO</glossterm>)能够解决这个问题，然而，这个项目并未完全覆盖嵌套 OpenStack 的场景。请参考
       <link xlink:href="https://wiki.openstack.org/wiki/TripleO">
       https://wiki.openstack.org/wiki/TripleO</link>.
     </para>
@@ -45,14 +43,9 @@ format="SVG" scale="60"/>
   <section xml:id="possible-solutions-nested-cloud-hypervisor">
     <title>可能的解决方案：宿主机</title>
     <para>在运行 TripleO 的场景下，底层的 OpenStack 环境以裸金属的方式部署计算节点。然后 OpenStack 将会被部署在这些计算的裸金属服务器上，并使用诸如 KVM 之类的管理程序。</para>
-    <para>In the case of running smaller OpenStack clouds for testing
-      purposes, and performance would not be a critical factor, QEMU
-      can be utilized instead. It is also possible to run a KVM
-      hypervisor in an instance
-      (see <link xlink:href="http://davejingtian.org/2014/03/30/nested-kvm-just-for-fun/">
-      http://davejingtian.org/2014/03/30/nested-kvm-just-for-fun/</link>),
-      though this is not a supported configuration, and could be a
-      complex solution for such a use case.</para>
+    <para>
+    如果是要为测试目的运行小规模的 OpenStack 云环境，并且性能不是关键的考虑因素的情况下，则 QEMU 可以被作为替代使用。>在实例中运行一个 KVM 的宿主机是可能的(参考<link xlink:href="http://davejingtian.org/2014/03/30/nested-kvm-just-for-fun/"> http://davejingtian.org/2014/03/30/nested-kvm-just-for-fun/</link>)，但这不是被支持的配置方式，并且对这样一个使用场景来说，也会是一个复杂的解决方案。
+    </para>
   </section>
   <section xml:id="nested-cloud-diagram">
     <title>图示</title>

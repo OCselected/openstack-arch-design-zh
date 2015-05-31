@@ -15,15 +15,8 @@
     <para>在大规模场景下运行 OpenStack 还有一个重要的考虑因素，是要对增长和利用率趋势进行规划，从而为短期和长期计划资本性支出。这需要计算、网络以及存储等资源的利用率的测量数据，以及这些数据的历史记录。固定的大客户租户可能造成所有资源的利用率有个迅速的增长，在一个组织内部的对其内部云，或者在公有云上的用户对公开提供的服务等的稳定增长的部署及使用，则会使得利用率出现一个稳定的增长趋势。</para></section>
     <section xml:id="skills-and-training">
       <title>技能和培训</title>
-    <para>Projecting growth for storage, networking, and compute is
-        only one aspect of a growth plan for running OpenStack at
-        massive scale. Growing and nurturing development and
-        operational staff is an additional consideration. Sending team
-        members to OpenStack conferences, meetup events, and
-        encouraging active participation in the mailing lists and
-        committees is a very important way to maintain skills and
-        forge relationships in the community. A list of OpenStack
-        training providers in the marketplace can be found here: <link xlink:href="http://www.openstack.org/marketplace/training/">http://www.openstack.org/marketplace/training/</link>.
+    <para>
+     对存储、网络以及计算等资源的增长进行规划只是为大规模运行 OpenStack 进行的扩展规划的一个方面。对于开发及运维人员的>增长以及能力的培养，也是一个重要的考虑因素。让团队的成员参加 OpenStack 大型会议和聚会，鼓励团队成员积极参与邮件列表以及委>员会的讨论等，都是让他们保持技能领先并与社区建立良好关系的非常重要的方式。另外，这里还有一个市场上提供 OpenStack 相关技能>培训的机构的列表：<link xlink:href="http://www.openstack.org/marketplace/training/">http://www.openstack.org/marketplace/training/</link>。
     </para>
     </section>
 </section>

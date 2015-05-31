@@ -38,25 +38,16 @@ format="SVG" scale="60"/>
     <section xml:id="geo-redundant-load-balancing">
       <title>地理冗余负载均衡</title>
     <para>在脑子里想着一个大型扩展的web应用被设计为遵循云的原则。应用被设计为在应用商店中7*24的提供服务，公司拥有典型的2层架构，前端是用户需求的web服务，后端是用NoSQL数据库存放信息。</para>
-    <para>As of late there has been several outages in number of major
-        public cloud providers—usually due to the fact these
-        applications were running out of a single geographical
-        location. The design therefore should mitigate the chance of a
-        single site causing an outage for their business.</para>
+    <para>最后，经常由于一些因素他们的应用运行在单个地理位置,主要的公有云提供者因此会停止一些服务。因此设计中要考虑如何降低>由于单个站点引起的中断业务的几率。
+    </para>
     <para>解决方案将由下列OpenStack组件组成：</para>
     <itemizedlist>
         <listitem>
             <para>防火墙、交换机、以及负载均衡设备在公网中直接面向全网的连接。</para>
         </listitem>
         <listitem>
-            <para>OpenStack Controller services running, Networking,
-                dashboard, Block Storage and Compute running locally in
-                each of the three regions. The other services,
-                Identity, Orchestration, Telemetry, Image Service and
-                Object Storage will be
-                installed centrally—with nodes in each of the region
-                providing a redundant OpenStack Controller plane
-                throughout the globe.</para>
+            <para>运行着OpenStack控制器服务的：网络服务、GUI界面、块存储以及计算服务，都运行在每三个region的本地。其他的服务：认证、Orchestration、Telemetry、镜像服务以及对象存储会安装到每个region的中心节点，通过全局来提供冗余的OpenStack控制器。
+                </para>
         </listitem>
         <listitem>
             <para>OpenStack计算节点运行着KVM的hypervisor。</para>
@@ -65,9 +56,8 @@ format="SVG" scale="60"/>
             <para>OpenStack对象存储为静态内容提供服务，例如图片，确保所有的图片都通过标准化的存于所有的region，且使用定期复制。</para>
         </listitem>
         <listitem>
-            <para>A Distributed DNS service available to all
-                regions—that allows for dynamic update of DNS records of
-                deployed instances.</para>
+            <para>在所有的region中都有一个分布式DNS服务可用，允许动态的为已经部署的实例更新DNS记录。
+            </para>
         </listitem>
         <listitem>
             <para>基于地理位置的负载均衡服务用于顾客过去使用的需求。</para>
@@ -85,30 +75,14 @@ format="SVG" scale="60"/>
             <para>正确的Telemetry警告，维护着应用的状态且允许掌控region或实例失效。</para>
         </listitem>
     </itemizedlist>
-    <para>Another autoscaling Heat template will be used to deploy a
-        distributed MongoDB shard over the three locations—with the
-        option of storing required data on a globally available swift
-        container. according to the usage and load on the database
-        server—additional shards will be provisioned according to
-        the thresholds defined in Telemetry.</para>
+    <para>另外一个自动伸缩的Heat模板会用于部署分布式MongoDB shard，在全部的三个地点存储全局可用的swift容器数据。基于数据库服务所使用的和负载，以及Telemetry定义的阀值，来决定是否增加额外的shard。
+    </para>
     <para>这里选择三个region的原因是由于担心偶然的异常负载在单个region会引发失效。两个数据中心足够可以满足需求。</para>
-    <para>Orchestration is used because of the built-in functionality of
-        autoscaling and auto healing in the event of increased load.
-        Additional configuration management tools, such as Puppet or
-        Chef could also have been used in this scenario, but were not
-        chosen due to the fact that Orchestration had the appropriate built-in
-        hooks into the OpenStack cloud—whereas the other tools were
-        external and not native to OpenStack. In addition—since this
-        deployment scenario was relatively straight forward—the
-        external tools were not needed.</para>
+    <para>这里用到Orchestration是由于自动伸缩的内部功能和偶然增长的负载后的自动复原功能。另外一些配置管理工具，如Puppet或Chef也会在此场景下用到，但是不会被选择用于Orchestration，在OpenStack云中它们做不到内部的钩子，也不是OpenStack本身的工具。此外，其实相对简单的场景根本用不到这些额外的工具。
+    </para>
     <para>
-        OpenStack Object Storage is used here to serve as a back end for
-        the Image Service since was the most suitable solution for a
-        globally distributed storage solution—with its own
-        replication mechanism. Home grown solutions could also have
-        been used including the handling of replication—but were not
-        chosen, because Object Storage is already an intricate part of the
-        infrastructure—and proven solution.</para>
+OpenStack对象存储在这里的使用，是为镜像服务提供后端支撑，而镜像存储最合适的解决方案就是全局的分布式存储解决方案，>而对象存储恰恰满足其自身的复制机制。本土的解决方案也已经被使用，包括复制的处理，但都没有选择，因为对象存储已经是基础设施和成熟的解决方案的复杂部分。
+    </para>
     <para>一个额外的负载均衡服务将被使用，而不是OpenStack的LBaaS,因为OpenStack的LBaaS在OpenStack中不是冗余的解决方案而且不具有地理位置的任何特征。</para>
     <mediaobject>
         <imageobject>

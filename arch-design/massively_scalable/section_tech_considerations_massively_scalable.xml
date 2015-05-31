@@ -42,13 +42,8 @@ format="SVG" scale="60"/>
     <para>不同于单元，主机聚合并没有自己的数据库服务器以及消息队列代理，它只是简单地代表一个抽象的计算节点组。通常说来，将计算节点分到同一个可用域中依据的是它们可能处于同一个故障域之中，因为他们共享了例如电源、物理网络连接等等的物理特性。可用域对用户来说是可见的，因为它们是能够被定位到的，但是，用户并不怎么需要去确定可用域的位置。另外，运维人员还可以设置默认的可用域，系统将会把实例调度到这个可用域之上，而不是系统中默认的 nova 的可用域。</para></section>
     <section xml:id="segregation-example">
       <title>隔离的例子</title>
-    <para>In this example the cloud is divided into two regions, one
-        for each site, with two availability zones in each based on
-        the power layout of the data centers. A number of host
-        aggregates have also been defined to allow targeting of
-        virtual machine instances using flavors, that require special
-        capabilities shared by the target hosts such as SSDs, 10 GbE
-        networks, or GPU cards.</para>
+    <para>在这个例子中，整个云被划分为两个区域，每个地点各一个，每个区域之中又有两个基于数据中心中的电源安排而划分的可用域。其中一系列的主机聚合也被定义以允许通过使用实例规格来指向虚拟机实例，这要求目标主机需要共享诸如 SSD、10GbE 网络或者显卡等特别的硬件和功能。
+    </para>
     <mediaobject>
         <imageobject>
             <imagedata contentwidth="4in" fileref="../figures/Massively_Scalable_Cells_+_regions_+_azs.png"/>

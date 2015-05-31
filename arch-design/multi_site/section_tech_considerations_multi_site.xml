@@ -3,23 +3,8 @@
     <title>技术因素</title>
     <para>设计一个多区域OpenStack有许多的技术因素需要被纳入有关的账单。一个OpenStack云有很多中办法来设计，去掌控分离的应用需求，一个多区域的部署相比于单一站点的安装会带来额外的挑战，也因此将会是一个更加复杂的解决方案。</para>
     <para>当决定容量要算计的不仅仅是技术问题，还要考虑经济和运营问题，这些都可能会带来更多麻烦。</para>
-    <para>Inter-site link capacity describes the capabilities of the
-        connectivity between the different OpenStack sites. This
-        includes parameters such as bandwidth, latency, whether or not
-        a link is dedicated, and any business policies applied to the
-        connection. The capability and number of the links between
-        sites will determine what kind of options may be available for
-        deployment. For example, if two sites have a pair of
-        high-bandwidth links available between them, it may be wise to
-        configure a separate storage replication network between the
-        two sites to support a single Swift endpoint and a shared
-        object storage capability between them. (An example of this
-        technique, as well as a configuration walk-through, is
-        available at <link xlink:href="http://docs.openstack.org/developer/swift/replication_network.html#dedicated-replication-network">http://docs.openstack.org/developer/swift/replication_network.html#dedicated-replication-network</link>).
-        Another option in this scenario is to build a dedicated set of
-        tenant private networks across the secondary link using
-        overlay networks with a third party mapping the site overlays
-        to each other.</para>
+    <para>站点间的链接能力描述的是在不同的OpenStack站点之间连通性的能力。这里包含的参数有带宽、延迟，线路是否是专用、以及任>何连接的业务规则认可。站点之间连接的能力和数量将决定部署时何种属性可用。例如，如果在两个站点之间有一组高带宽的连接可用，也许就想配置一个在两个站点之间分离的存储复制网络，以支持单一的Swift端点和共享的对象存储。 (此技术的一个更好的例子，详细的配>置，请参阅 <link xlink:href="http://docs.openstack.org/developer/swift/replication_network.html#dedicated-replication-network">http://docs.openstack.org/developer/swift/replication_network.html#dedicated-replication-network</link>)。此场景的另外一>个属性是构建专用的一组租户私有网络，在第二条线路使用覆盖网络，一个第三方的映射在彼此的站点覆盖。
+    </para>
     <para>应用的行为驱动着站点之间线路能力的需求，如果线路的延迟太高，某些应用使用大量的小包，比如RPC调用，就会遭遇彼此之间的通信问题和正确操作的问题。另外，OpenStack会遇到类似的问题，为了降低这些问题的发生几率，优化认证服务调用的超时时间就非常的有必要，这样可以防止认证在中心化身份服务的冲突。</para>
     <para>另外关于容量的考虑因素，当它涉及到多站点部署网络的可用量时，以及对于租户网络的负载网络的性能。如果使用了跨zone的共享租户网络，那么将外部覆盖管理或控制器映射到一起就很迫切。非常有必要确保zone之间的ID量一致。记住，在Icehouse版本发布时，OpenStack网络还没有在安装时拥有管理隧道ID的能力，这意味着如果其中一个站点用完了ID，但是另外一个站点没有用完，租户网络将无法达到其它站点。</para>
     <para>容量还有其它形式的表现，region增长的能力依赖于横向扩展更多可用的计算节点。此话题在章节计算型中会谈到更多的细节。总之，务必记得也许需要为各个region增加cell以超过一定的点，此点又依赖于集群的大小和每hypervisor对虚拟机的比例。</para>

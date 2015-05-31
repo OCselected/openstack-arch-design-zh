@@ -18,11 +18,7 @@
         </listitem>
     </itemizedlist>
     <para>
-      Examples of such legal frameworks include the <link xlink:href="http://ec.europa.eu/justice/data-protection/">data
-      protection framework</link> of the European Union and the
-      requirements of the <link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules/">Financial
-      Industry Regulatory Authority</link> in the United
-      States. Consult a local regulatory body for more information.
+     相关的法律制度包括了有欧盟的数据保护框架(<link xlink:href="http://ec.europa.eu/justice/data-protection/">http://ec.europa.eu/justice/data-protection/</link>)以及美国金融业监督管理局的要求(<link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules">http://www.finra.org/Industry/Regulation/FINRARules</link>)。请咨询当地的监管机构以了解更多相关信息。
     </para>
     <section xml:id="user-requirements-massive-scale">
       <title>用户需求</title>
@@ -47,18 +43,9 @@
             <para>首要的问题是，所有东西都必须能够自动化，从新硬件，包括计算硬件、存储硬件以及网络硬件的部署，到支撑软件的安装及配置，所有的这些都需要能够被自动化完成。手动操作的过程在一个可大规模扩展的 OpenStack 设计架构中是完全无法满足需要的。</para>
         </listitem>
         <listitem>
-            <para>The cloud operator requires that capital expenditure
-                (CapEx) is minimized at all layers of the stack.
-                Operators of massively scalable OpenStack clouds
-                require the use of dependable commodity hardware and
-                freely available open source software components to
-                reduce deployment costs and operational expenses.
-                Initiatives like OpenCompute (more information
-                available at <link xlink:href="http://www.opencompute.org">http://www.opencompute.org</link>)
-                provide additional information and pointers. To cut
-                costs, many operators sacrifice redundancy. For
-                example, redundant power supplies, redundant network
-                connections, and redundant rack switches.</para>
+               <para>
+               云运营者要求在云堆栈的所有层次上的资本输出(CapEx)最小化。可大规模扩展的 OpenStack 云的运营者需要使用可靠的商业硬件以及能够自由获取的开源软件组件以减小部署成本和运营费用。像 OpenCompute (关于这个项目更多的信息可以参见 <link xlink:href="http://www.opencompute.org">http://www.opencompute.org</link>)这样的项目提供了更多相关的信息和指导意见。很多运营商牺牲了冗余性>以减小成本，比如，冗余的电源供应、冗余的网络连接以及冗余的柜顶交换机。
+               </para>
         </listitem>
         <listitem>
             <para>运营可大规模扩展云的公司，同样也要求业务费用(OpEx)尽可能最小化。需要对运营开销进行管理的时候，我们则建议使用为云场景进行过优化的硬件。还有一些需要考虑的因素包括电源、冷却系统，以及甚至是底架的物理设计。由于这类实现的规模之大，定制硬件和系统以确保它们是优化过的适合完成相关类型的工作，是非常可能的一件事情。</para>

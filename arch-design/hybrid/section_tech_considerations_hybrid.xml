@@ -47,16 +47,11 @@ format="SVG" scale="60"/>
     <para>许多组织切换到混合云系统的一个主要原因是为了扩容但是又不想投入太多钱。尽管如此，容量计划在设计一个OpenStack安装时仍然有必要，即使是已经有了外部的云。</para>
     <para>特别地，当为一个有偶尔爆发能力的内部操作云设计时，整个的容量和负载的置放都需要计入考虑。一个长期的容量规划，诸如设计一个随时间推移而逐步增长，以放置被外部昂贵的云吞噬并占据。为避免此种情形，请认证思考将来的应用、容量需求以及进行合适的增长规划。</para>
     <para>容量规划的一个缺点就是不可预测。很难预测特定应用的负载可能承载的量，例如用户数量的波动或者是应用遇到的意外的增加。使用术语vCPU,RAM，带宽或其他资源来定义应用需求和进行合适的规划是可能的，但是其他的云未必有相同的元素或者相同的超额认购率。</para>
-    <para>Oversubscription is a method to emulate more capacity than
-        they may physically be present. For example, a physical
-        hypervisor node with 32 GB RAM may host 24
-        instances, each provisioned with 2 GB RAM. As long
-        as all 24 of them are not concurrently utilizing 2 full
-        gigabytes, this arrangement is a non-issue. However, some
-        hosts take oversubscription to extremes and, as a result,
-        performance can frequently be inconsistent. If at all
-        possible, determine what the oversubscription rates of each
-        host are and plan capacity accordingly.</para></section>
+    <para>
+    超额认购是一种模拟多于其本身物理容量的方法。举例说明，一个物理hypervisor节点拥有32GB内存托管24个实例，每个实例赋予
+2GB内存，只要不是每个实例全部并行的达到满2GB，这样就不会出现什么问题。然而，一些主机极限的使用超额认购，结果就是，性能经常
+是不一致的。如果可能的话，确定每个主机的超额认购率和容量规划相适应。
+    </para></section>
     <section xml:id="security-hybrid">
       <title>安全性</title>
     <para>一个混合云环境的本身特性就是对整个基础设施没有完全的控制权。安全就成了一个强烈的需求，因为在云中的数据或应用超越了企业组织的控制范围。当规划一个混合云环境以及它的容量时，安全域就成了一个重要的范畴。一个安全域包括用户，应用程序，服务器或网络共享公共信任需求，且满足系统的期望。</para>
@@ -86,9 +81,8 @@ format="SVG" scale="60"/>
     <para>如果实例的安全不被认为是重要的，就没有那么多问题了。大多数情况下，企业级需要避免这种脆弱性，且避免此种情形唯一的做法就是将实例运行在公有云中。这并不意味着一个OpenStack安装操作就需要拥有所有的基础设施，建议避免的情形是硬件可共享给其他人。</para>
     <para>其他值得考虑的就是能够提供裸金属实例，在一些场景中，有可能是通过集成私有的云即服务部署来复制一个私有云，这样企业还无须购买硬件，且不需要分享给另外的租户。也有可能是使用这样的供应商：仅为一个用户提供专用的硬件，提供裸金属公有云实例；或者是提供私有云即服务的提供商。</para>
     <para>千万要意识到每一个云实现的服务是不同的，这点很重要！在这个云里可以保证数据的安全，在另外一个就不一定安全。一定要知道，每个云处理其组织的数据或负载对于安全的需求是不一样的。</para>
-    <para>More information on OpenStack Security can be found in the
-        <link xlink:href="http://docs.openstack.org/security-guide"><citetitle>OpenStack
-        Security Guide</citetitle></link>.
+     <para>
+      关于OpenStack安全的更多信息，请参考<link xlink:href="http://docs.openstack.org/security-guide"><citetitle>OpenStack 安全指南</citetitle></link>。
         </para>
       </section>
     <section xml:id="utilization-hybrid">

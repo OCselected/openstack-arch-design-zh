@@ -17,12 +17,9 @@
             <para>数据合规性,管理由于监管上的问题因而特定类型的数据必须存放在特定的地点或者更重要的，由于相同的原因，不能够存放在其它地点的数据管理政策。</para>
         </listitem>
     </itemizedlist>
-    <para>Examples of such legal frameworks include the data
-        protection framework of the European Union (<link xlink:href="http://ec.europa.eu/justice/data-protection">http://ec.europa.eu/justice/data-protection</link>)
-        and the requirements of the Financial Industry Regulatory
-        Authority (<link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules">http://www.finra.org/Industry/Regulation/FINRARules</link>)
-        in the United States. Consult a local regulatory body for more
-        information.</para>
+    <para>
+     相关的法律制度包括了有欧盟的数据保护框架(<link xlink:href="http://ec.europa.eu/justice/data-protection/">http://ec.europa.eu/justice/data-protection/</link>)以及美国金融业监督管理局的要求(<link xlink:href="http://www.finra.org/Industry/Regulation/FINRARules">http://www.finra.org/Industry/Regulation/FINRARules</link>)。请咨询当地的监管机构以了解更多相关信息。
+    </para>
     <section xml:id="workload-characteristics">
       <title>负载特性</title>
     <para>预期的工作负荷是需要被捕获到指导决策的关键要求。理解负载在预想的多区域环境和用例上下文很重要。另外一个考虑负载的路径是想它怎么使用系统。一个负载可以是单个的应用或一组共同工作的应用。它也可以是在多个region中运行的多份应用的复制。通常在多区域部署的相同负载需要在多个不同物理地点运行相同的工作。</para>
@@ -35,10 +32,9 @@
     <section xml:id="high-availability-multi-site"><title>高可用</title>
     <para>如果高可用是提供持续基础设施运营的需求，那么高可用的基本需求就应该被定义。</para>
     <para>OpenStack管理组件需要哪怕是最基本的或最小级别的冗余，举个最简单的例子，这样当任何一个站点失效时而不会受到显著的影响，因为有OpenStack服务依然可用。</para>
-    <para>The <link xlink:href="http://docs.openstack.org/high-availability-guide/content/"><citetitle>OpenStack
-        High Availability Guide</citetitle></link>
-        contains more information on how to provide redundancy for the
-        OpenStack components.</para>
+    <para>
+     <link xlink:href="http://docs.openstack.org/high-availability-guide/content/">OpenStack 高可用指南</link>：关于如何为OpenStack 组件提供冗余性的资料信息。
+    </para>
     <para>多网络链路应该在站点之间部署，以提供所有组件的冗余。这其中包括存储的复制，存储应该使用专用网络隔离，或者使用VLAN的QoS功能来控制复制流量，或者为该流量提供高的优先级。记住，如果数据存储经常改动，网络的需求就会显著影响到维护站点的运维成本。</para>
     <para>维护对象可用性的能力会显著影响到对象存储的设计和实现，也会影响到站点之间的广域网网络设计。</para>
     <para>连接多于两个站点会增加挑战，会给设计考虑增加更多的复杂性。多站点实现需要额外的规划，增加交付内外部连通性的复杂拓扑，一些选项包括完全mesh拓扑，hub spoke,spine leaf,或3d Torus。</para>

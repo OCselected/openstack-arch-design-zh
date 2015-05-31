@@ -22,17 +22,9 @@
     </itemizedlist>
     <para>作为混合云设计所处理的系统，其实已经不是云架构或组织所能控制的，一个混合云架构需要考虑架构的方面可能没有其他云所必须的。举例，设计也许需要处理硬件、软件、以及其他组织控制下的应用程序接口。</para>
     <para>同样的，基于OpenStack的混合云架构在多大程度上影响着云的运维者和云的消费者，让他们可以使用OpenStack本身的工具去完成一些任务。根据定义，此中状况没有那个单一的云可以提供所有的功能。为了管理整个系统，用户、运维人员、最终用户会需要一个总体工具，即众所周知的云管理平台(CMP)。任何组织只要使用了混合云，都会有一个CMP，有些CMP还需要运维人员登录外部的门户以及创建一个公有云的实例。</para>
-    <para>There are commercially available options, such as
-        Rightscale, and open source options, such as ManageIQ
-        (<link xlink:href="http://manageiq.org">http://manageiq.org</link>),
-        but there is no single CMP that can
-        address all needs in all scenarios. Whereas most of the
-        sections of this book talk about the aspects of OpenStack, an
-        architect needs to consider when designing an OpenStack
-        architecture. This section will also discuss the things the
-        architect must address when choosing or building a CMP to run
-        a hybrid cloud design, even if the CMP will be a manually
-        built solution.</para>
+    <para>
+     CMP有商业产品，如Rightscale,也有开源产品，如ManageIQ (<link xlink:href="http://manageiq.org">http://manageiq.org</link>),但是么有那个单个的CMP可以掌控所有的场景、所有的需求。本书的大部分章节都是在探讨OpenStack方面，以及设计OpenStack架构时需要考虑的内容。这章内容讨论的是当选择或构建一个CMP运行混合云时，设计此架构时考虑的内容。哪怕是CMP是用户自行构建的解决方案。
+    </para>
 
     <xi:include href="hybrid/section_user_requirements_hybrid.xml"/>
     <xi:include href="hybrid/section_tech_considerations_hybrid.xml"/>

@@ -8,23 +8,11 @@
   </section>
   <section xml:id="solutions-specialized-hardware">
     <title>解决方案</title>
-    <para>In order to provide cryptography offloading to a set of
-      instances, it is possible to use Image Service configuration
-      options to assign the cryptography chip to a device node in
-      the guest. The <citetitle>OpenStack Command Line
-      Reference</citetitle> contains further information on
-      configuring this solution in the chapter <link xlink:href="http://docs.openstack.org/cli-reference/content/chapter_cli-glance-property.html">Image
-      Service property keys</link> , but it allows all guests using
-      the configured images to access the hypervisor cryptography
-      device.</para>
-    <para>If direct access to a specific device is required, it can be
-      dedicated to a single instance per hypervisor through the use
-      of PCI pass-through. The OpenStack administrator needs to
-      define a flavor that specifically has the PCI device in order
-      to properly schedule instances. More information regarding PCI
-      pass-through, including instructions for implementing and
-      using it, is available at <link xlink:href="https://wiki.openstack.org/wiki/Pci_passthrough#How_to_check_PCI_status_with_PCI_api_patches">
-      https://wiki.openstack.org/wiki/Pci_passthrough</link>.
+    <para>
+     要为一组实例提供加密卸载，可以通过使用镜像服务的配置选项将加密芯片分配至客户机中的一个设备节点。<citetitle>OpenStack 命令行参考</citetitle>中的<link xlink:href="http://docs.openstack.org/cli-reference/content/chapter_cli-glance-property.html">镜像服务属性键</link>一章包含了关于配置这个解决方案的更多信息。但是这个方案允许所有的客户机都通过该已配置的镜像来使用宿主机的加密设备。
+    </para>
+    <para>
+     如果需要直接使用某个特定的设备，可以通过使用 PCI 穿透技术将设备指定至每个宿主机上的单个实例。OpenStack 管理员需要定义一个明确具有 PCI 设备以便适当调度实例的实例类别。关于 PCI 穿透的更多信息，包括实施与使用的说明，请参考 <link xlink:href="https://wiki.openstack.org/wiki/Pci_passthrough#How_to_check_PCI_status_with_PCI_api_patches"> https://wiki.openstack.org/wiki/Pci_passthrough</link>。
     </para>
     <mediaobject>
       <imageobject>
