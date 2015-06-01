@@ -4,10 +4,13 @@
     <para>以下可用的资源是帮助用户运行和使用OpenStack。OpenStack社区会经常性的改进和增加OpenStack的主要特性，如果用户有问题，请不要在提问题方面犹豫。使用下面列出的资源，以获得OpenStack社区的支持，也能得到一些安装/使用时一些解决问题的思路和方法。</para>
     <section xml:id="support-documentation">
         <title>文档</title>
-        <para>For the available OpenStack documentation, see <link xlink:href="http://docs.openstack.org">docs.openstack.org</link>.</para>
-        <para>To provide feedback on documentation, join and use the
-                <email>openstack-docs@lists.openstack.org</email>
-            mailing list at <link xlink:href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-docs">OpenStack Documentation Mailing List</link>, or <link xlink:href="https://bugs.launchpad.net/openstack-manuals/+filebug">report a bug</link>.</para>
+        <para>
+           关于OpenStack文档，请访问 <link xlink:href="http://docs.openstack.org">docs.openstack.org</link>。
+        </para>
+        <para>
+        为文档提供反馈，请使用<email>openstack-docs@lists.openstack.org</email>加入<link xlink:href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-docs">OpenStack 文档邮件列表</link>，或者<link xlink:href="https://bugs.launchpad.net/openstack-manuals/+filebug">报告 bug</link>.
+        </para>
+
         <para>以下书籍解释了如何安装一个基于OpenStack云及其相关的组件</para>
         <itemizedlist>
             <listitem>
@@ -100,58 +103,33 @@
                 <para><link xlink:href="http://docs.openstack.org/api/openstack-object-storage/1.0/content/"><citetitle>OpenStack 对象存储 API v1参考</citetitle></link></para>
             </listitem>
         </itemizedlist>
-        <para>The <link xlink:href="http://docs.openstack.org/training-guides/content/"><citetitle>Training Guides</citetitle></link>
-            offer software training for cloud administration and
-            management.</para>
+            <para>
+              <link xlink:href="http://docs.openstack.org/training-guides/content/"><citetitle>培训指南</citetitle></link>提供了针>对云管理的软件培训信息。
+            </para>
     </section>
     <section xml:id="support-ask_openstack">
         <title><link xlink:href="http://ask.openstack.org">问答论坛</link></title>
-        <para>During the set up or testing of OpenStack, you might
-            have questions about how a specific task is completed or
-            be in a situation where a feature does not work correctly.
-            Use the <link xlink:href="http://ask.openstack.org">ask.openstack.org</link> site to ask questions and
-            get answers. When you visit the <link xlink:href="http://ask.openstack.org">http://ask.openstack.org</link> site, scan the
-            recently asked questions to see whether your question has
-            already been answered. If not, ask a new question. Be sure
-            to give a clear, concise summary in the title and provide
-            as much detail as possible in the description. Paste in
-            your command output or stack traces, links to screen
-            shots, and any other information which
-            might be useful.</para>
+        <para>
+          用户在部署或测试OpenStack的过程中，难免会遇到一些问题，诸如如何完成特定的任务，或一些特性无法正常的运行，于是可能>想问，其他人是否也遇到相同的问题？或者期待牛人帮助解决.那么请访问 <link xlink:href="http://ask.openstack.org">ask.openstack.org</link>来提问并获得答案。当作为用户的你访问 <link xlink:href="http://ask.openstack.org">ask.openstack.org</link>时，请先浏览>下近期已经提问的问题，看下你遇到的问题是否已经得到解决。如果没有，再去提交新的提问。请确保提交清晰、简洁的题目，尽可能提供详细的细节描述。将命令行的输出或者trace输出粘贴出来，如果是截图请贴链接，以及其他任何有用的信息。
+        </para>
     </section>
     <section xml:id="support-mailing-lists">
         <title>OpenStack 邮件列表</title>
-        <para>A great way to get answers and insights is to post your
-            question or problematic scenario to the OpenStack mailing
-            list. You can learn from and help others who might have
-            similar issues. To subscribe or view the archives, go to
-                <link xlink:href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack">http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack</link>.
-            You might be interested in the other mailing lists for
-            specific projects or development, which you can find <link xlink:href="http://wiki.openstack.org/MailingLists">on
-                the wiki</link>. A description of all mailing lists is
-            available at <link xlink:href="http://wiki.openstack.org/MailingLists">http://wiki.openstack.org/MailingLists</link>.</para>
+         <para>
+          到OpenStack的邮件列表中寻求答案，将问题或出问题的场景提交到邮件列表，亦是不错的方法之一。用户可以从中学习，或者帮>助他人解决和自己遇到的类似问题。订阅或查看归档请访问<link xlink:href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack">http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack</link>。也许用户对OpenStack其他项目或者开发感兴趣，OpenStack所有的邮件列表可以访问：<link xlink:href="http://wiki.openstack.org/MailingLists">维基百科页面</link>，这里也有对各邮件列表详细的介绍。
+         </para>
     </section>
     <section xml:id="support-wiki">
         <title>OpenStack 维基百科</title>
-        <para>The <link xlink:href="http://wiki.openstack.org/">OpenStack
-                wiki</link> contains a broad range of topics but some of the
-            information can be difficult to find or is a few pages deep.
-            Fortunately, the wiki search feature enables you to search by title
-            or content. If you search for specific information, such as about
-            networking or nova, you can find a large amount of relevant
-            material. More is being added all the time, so be sure to check back
-            often. You can find the search box in the upper-right corner of any
-            OpenStack wiki page.</para>
+          <para>
+             <link xlink:href="http://wiki.openstack.org/">OpenStack 维基百科</link> 有着大量的条目，这样带来的问题就是查找信息有点困难，或者说一些页面非常的深。幸运的是，维基百科的搜索可以解决，它支持不仅仅是标题，还支持内容检索。如果用户查找特定的信息，比如网络或者是计算服务，用户得到的结果是非常多的相关项。由于看到的是最后的页面，所以要经常查阅历史。用户可以在OpenStack>维基百科页面的右上角看到搜索框。
+          </para>
     </section>
     <section xml:id="support-bugs-area">
         <title>Launchpad的Bug区</title>
-        <para>The OpenStack community values your set up and testing efforts and
-            wants your feedback. To log a bug, you must sign up for a Launchpad
-            account at <link xlink:href="https://launchpad.net/+login">https://launchpad.net/+login</link>. You can view existing bugs
-            and report bugs in the Launchpad Bugs area. Use the search feature
-            to determine whether the bug has already been reported or already
-            been fixed. If it still seems like your bug is unreported, fill out
-            a bug report.</para>
+            <para>
+             OpenStack社区的价值之一就是通过用户创建和测试能够反馈问题。要提交bug，用户首先需要一个Launchpad的帐号，请访问 <link xlink:href="https://launchpad.net/+login">这里</link>。登录后，用户可以查看已经提交的bug列表，也可以在Launchpad的Bug区提交自己遇到的bug。使用搜索可以查找特定的已经被报告的bug，或者已经修复的bug。当然在提交之前，请确认是否其他人已经提交过了，以免>重复。
+            </para>
         <para>一些小贴士：</para>
         <itemizedlist>
             <listitem>
@@ -221,26 +199,15 @@
     </section>
     <section xml:id="support-irc-channel">
         <title>The OpenStack 在线聊天室频道</title>
-        <para>The OpenStack community lives in the #openstack IRC channel on the
-            Freenode network. You can hang out, ask questions, or get immediate
-            feedback for urgent and pressing issues. To install an IRC client or
-            use a browser-based client, go to <link xlink:href="http://webchat.freenode.net">http://webchat.freenode.net/</link>. You can also use Colloquy
-            (Mac OS X, <link xlink:href="http://colloquy.info/">http://colloquy.info/</link>), mIRC (Windows, <link xlink:href="http://www.mirc.com/">http://www.mirc.com/</link>),
-            or XChat (Linux). When you are in the IRC channel and want to share
-            code or command output, the generally accepted method is to use a
-            Paste Bin. The OpenStack project has one at <link xlink:href="http://paste.openstack.org">http://paste.openstack.org</link>. Just paste your longer
-            amounts of text or logs in the web form and you get a URL that you
-            can paste into the channel. The OpenStack IRC channel is
-                <literal>#openstack</literal> on
-                <literal>irc.freenode.net</literal>. You can find a list of all
-            OpenStack IRC channels at <link xlink:href="https://wiki.openstack.org/wiki/IRC">https://wiki.openstack.org/wiki/IRC</link>.</para>
+         <para>
+          OpenStack社区的聊天室频道是托管在Freenode上，频道名为：#openstack。用户可以一直挂着，问问题，可以得到及时相应的反>馈，这对于比较着急的问题尤其重要。登录聊天室需要在本地安装客户端，或者使用网页版的 <link xlink:href="http://webchat.freenode.net">http://webchat.freenode.net/</link>，客户端，如果用户是Windows，则安装mIRC( <link xlink:href="http://www.mirc.com/">http://www.mirc.com/</link>),如果是Mac OS X,则安装Colloquy (<link xlink:href="http://colloquy.info/">http://colloquy.info/</link>),Linux的话就用xchat。当在聊天室中要分享代码或者是命令行输出，一个通常的办法是使用粘贴板。OpenStack也有一个，请访问<link xlink:href="http://paste.openstack.org">http://paste.openstack.org</link>。用户只需要复制文本，粘贴到指定的输入框，最后系统会生成>一个固定的URL，只需要将这个分享到聊天室即可。OpenStack主要的频道名是<literal>#openstack</literal> 在<literal>irc.freenode.net</literal>上。用户可以到维基百科<link xlink:href="https://wiki.openstack.org/wiki/IRC">https://wiki.openstack.org/wiki/IRC</link>中找到所有项目的聊天室频道。
+         </para>
     </section>
     <section xml:id="support-documentation-feedback">
         <title>文档反馈</title>
-        <para>To provide feedback on documentation, join and use the
-            <email>openstack-docs@lists.openstack.org</email> mailing list at
-            <link xlink:href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-docs">OpenStack
-                Documentation Mailing List</link>, or <link xlink:href="https://bugs.launchpad.net/openstack-manuals/+filebug">report a bug</link>.</para>
+        <para>
+        为文档提供反馈，请使用<email>openstack-docs@lists.openstack.org</email>加入<link xlink:href="http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-docs">OpenStack 文档邮件列表</link>，或者<link xlink:href="https://bugs.launchpad.net/openstack-manuals/+filebug">报告 bug</link>.
+        </para>
     </section>
     <section xml:id="distro-support">
         <title>OpenStack分发包</title>
